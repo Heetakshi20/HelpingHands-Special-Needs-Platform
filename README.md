@@ -24,7 +24,7 @@
 
 The following flowchart illustrates the system logic and user journeys for Students, Mentors, and Administrators:
 
-![System Flowchart](https://i.imgur.com/your-uploaded-image-link.png) 
+![System Flowchart](https://github.com/Heetakshi20/HelpingHands-Special-Needs-Platform/blob/main/system-flowchart.png) 
 *(Note: Upload your image to GitHub or an image host and replace the link above)*
 
 ---
