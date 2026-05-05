@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B5 - Estimation Lab | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Gold: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f2f1 0%, #c3cfe2 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1100px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            background: #f39c12;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #f39c12; font-weight: 600; font-size: 1.3rem; margin: 0; }
+
+        .mode-toggle {
+            display: flex;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 5px;
+        }
+
+        .mode-btn {
+            padding: 6px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .mode-btn.active { background: #0D5791; color: white; }
+
+        /* HINT BOX */
+        .hint {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #fff9f0;
+            border-left: 5px solid #f39c12;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        /* ESTIMATION AREA */
+        .estimation-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .problem-card {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2.8rem;
+            color: #333;
+            background: #fdfdfd;
+            padding: 20px 40px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .equals-sign { font-size: 2rem; color: #999; margin: 0 15px; }
+
+        /* INPUTS */
+        .estimation-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .input-label { font-size: 0.9rem; color: #666; font-weight: 600; width: 140px; text-align: right; }
+
+        .est-input {
+            width: 140px;
+            padding: 12px;
+            font-size: 1.5rem;
+            font-family: 'Roboto Mono', monospace;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+        }
+
+        .est-input:focus { border-color: #f39c12; background: #fffcf8; }
+
+        .final-answer-box {
+            border: 3px solid #0D5791;
+            background: #f0f7ff;
+        }
+
+        /* VISUAL AID */
+        .visual-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            min-width: 300px;
+        }
+
+        .number-line {
+            height: 40px;
+            border-bottom: 2px solid #333;
+            position: relative;
+            margin: 20px 10px;
+        }
+
+        .tick {
+            position: absolute;
+            bottom: 0;
+            width: 2px;
+            height: 10px;
+            background: #333;
+        }
+
+        .tick-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.75rem;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .point {
+            position: absolute;
+            bottom: -5px;
+            width: 12px;
+            height: 12px;
+            background: #e74c3c;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        /* ACTIONS */
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .check-btn { background: #f39c12; color: white; }
+        .next-btn { background: #0D5791; color: white; display: none; }
+        
+        #message {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+            padding: 0 20px;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-logo-section { min-width: 120px; align-items: center; }
+        .footer-logo { display: flex; justify-content: center; align-items: center; height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links-section { flex: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; text-transform: capitalize; }
+        .footer-links ul { padding: 0; margin: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; display: inline-block; }
+        .footer-links a:hover { color: #f39c12; transform: translateX(5px); }
+        .footer-social-section { min-width: 80px; align-items: center; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #f39c12; background: rgba(243, 156, 18, 0.15); border-color:#f39c12; transform: translateY(-5px) scale(1.1); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .problem-card { font-size: 1.8rem; padding: 15px 25px; }
+            .input-label { width: 100px; font-size: 0.8rem; }
+            .est-input { width: 100px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-left">
+                    <div class="header-icon"><i class="fas fa-calculator"></i></div>
+                    <h2 id="lab-title">B5-Estimation Lab: Multiplication</h2>
+                </div>
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="mulMode" onclick="setMode('multiplication')">Products</button>
+                    <button class="mode-btn" id="divMode" onclick="setMode('division')">Quotients</button>
+                </div>
+            </div>
+
+            <div class="hint" id="hint-text">
+                <i class="fas fa-lightbulb" style="color: #f39c12; margin-right: 8px;"></i>
+                <strong>Multiplication Hint:</strong> Round the larger number to the nearest <strong>Ten</strong> or <strong>Hundred</strong>, then multiply by the single digit. (Example: $48 \times 6 \approx 50 \times 6 = 300$)
+            </div>
+
+            <div class="estimation-area">
+                <!-- Problem Card -->
+                <div class="problem-card" id="problem-display">
+                    42 × 7
+                </div>
+
+                <div class="equals-sign">≈</div>
+
+                <!-- Inputs -->
+                <div class="estimation-inputs">
+                    <div class="input-row">
+                        <span class="input-label">Round Number to:</span>
+                        <input type="number" id="rounded-num" class="est-input" placeholder="...">
+                    </div>
+                    <div class="input-row">
+                        <span class="input-label" id="est-op-label">Estimated Result:</span>
+                        <input type="number" id="final-est" class="est-input final-answer-box" placeholder="...">
+                    </div>
+                </div>
+
+                <!-- Visual Number Line -->
+                <div class="visual-container">
+                    <h4 style="font-size: 0.8rem; margin-bottom: 5px;">Visual Tool: Rounding</h4>
+                    <div class="number-line" id="n-line">
+                        <!-- Ticks and labels generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn check-btn" id="checkBtn" onclick="checkAnswer()">Verify Estimation</button>
+                <button class="action-btn next-btn" onclick="initLab()" id="nextBtn">New Problem <i class="fas fa-arrow-right"></i></button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Math Experts</div>
+    </footer>
+
+    <script>
+        let currentMode = 'multiplication';
+        let num1, num2, expectedRound, expectedResult;
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('mulMode').classList.toggle('active', mode === 'multiplication');
+            document.getElementById('divMode').classList.toggle('active', mode === 'division');
+            
+            const title = document.getElementById('lab-title');
+            const hint = document.getElementById('hint-text');
+            
+            if (mode === 'multiplication') {
+                title.innerText = "Estimation Lab: Products";
+                hint.innerHTML = `<i class="fas fa-lightbulb" style="color: #f39c12; margin-right: 8px;"></i><strong>Multiplication Hint:</strong> Round the larger number to the nearest <strong>Ten</strong> or <strong>Hundred</strong>, then multiply. (Example: $48 \\times 6 \\approx 50 \\times 6 = 300$)`;
+            } else {
+                title.innerText = "Estimation Lab: Quotients";
+                hint.innerHTML = `<i class="fas fa-lightbulb" style="color: #f39c12; margin-right: 8px;"></i><strong>Division Hint:</strong> Use <strong>Compatible Numbers</strong>. Round the dividend to a number that is easily divisible by the divisor. (Example: $432 \\div 7 \\approx 420 \\div 7 = 60$)`;
+            }
+            initLab();
+        }
+
+        function initLab() {
+            document.getElementById('message').innerHTML = "";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('checkBtn').style.display = "block";
+            
+            const inputs = document.querySelectorAll('.est-input');
+            inputs.forEach(i => {
+                i.value = "";
+                i.style.borderColor = "#ddd";
+                i.style.background = "white";
+            });
+
+            generateProblem();
+        }
+
+        function generateProblem() {
+            if (currentMode === 'multiplication') {
+                num1 = Math.floor(Math.random() * 85) + 15; // 15 to 99
+                num2 = Math.floor(Math.random() * 8) + 2;   // 2 to 9
+                
+                // For multiplication, we round num1 to nearest 10
+                expectedRound = Math.round(num1 / 10) * 10;
+                expectedResult = expectedRound * num2;
+                
+                document.getElementById('problem-display').innerText = `${num1} × ${num2}`;
+            } else {
+                // For division, find a divisor and a dividend that's "near" a multiple
+                num2 = Math.floor(Math.random() * 7) + 3; // 3 to 9
+                let multiplier = Math.floor(Math.random() * 15) + 5; // 5 to 19
+                expectedRound = num2 * multiplier * 10; // e.g., 7 * 60 = 420
+                
+                // Add some noise to the dividend
+                let noise = Math.floor(Math.random() * 20) - 10;
+                num1 = expectedRound + noise;
+                
+                expectedResult = expectedRound / num2;
+                document.getElementById('problem-display').innerText = `${num1} ÷ ${num2}`;
+            }
+
+            renderNumberLine();
+        }
+
+        function renderNumberLine() {
+            const line = document.getElementById('n-line');
+            line.innerHTML = "";
+            
+            // Calculate range for visual rounding
+            let step = 10;
+            let start = Math.floor(num1 / 10) * 10 - 10;
+            let end = start + 30;
+
+            if (currentMode === 'division') {
+                step = num2 * 10;
+                start = expectedRound - step;
+                end = expectedRound + step;
+            }
+
+            for (let i = start; i <= end; i += (end - start) / 5) {
+                let val = Math.round(i);
+                let pos = ((val - start) / (end - start)) * 100;
+                
+                // Tick
+                const tick = document.createElement('div');
+                tick.className = 'tick';
+                tick.style.left = `${pos}%`;
+                
+                const label = document.createElement('div');
+                label.className = 'tick-label';
+                label.style.left = `${pos}%`;
+                label.innerText = val;
+                
+                line.appendChild(tick);
+                line.appendChild(label);
+            }
+
+            // The actual number point
+            const point = document.createElement('div');
+            point.className = 'point';
+            let pointPos = ((num1 - start) / (end - start)) * 100;
+            point.style.left = `${Math.max(0, Math.min(100, pointPos))}%`;
+            line.appendChild(point);
+        }
+
+        function checkAnswer() {
+            const userRound = parseInt(document.getElementById('rounded-num').value);
+            const userFinal = parseInt(document.getElementById('final-est').value);
+            const msgEl = document.getElementById('message');
+
+            let isRoundOk = (userRound === expectedRound);
+            let isResultOk = (userFinal === expectedResult);
+
+            if (isRoundOk && isResultOk) {
+                msgEl.style.color = "#27ae60";
+                msgEl.innerHTML = `<i class="fas fa-check-circle"></i> Spot on! Using ${expectedRound} makes the calculation much easier.`;
+                
+                document.getElementById('rounded-num').style.borderColor = "#2ecc71";
+                document.getElementById('final-est').style.borderColor = "#2ecc71";
+                document.getElementById('checkBtn').style.display = "none";
+                document.getElementById('nextBtn').style.display = "block";
+            } else {
+                msgEl.style.color = "#e74c3c";
+                
+                if (!isRoundOk) {
+                    msgEl.innerHTML = `<i class="fas fa-times-circle"></i> Try a more "compatible" or rounded number for ${num1}.`;
+                    document.getElementById('rounded-num').style.borderColor = "red";
+                } else {
+                    msgEl.innerHTML = `<i class="fas fa-times-circle"></i> The rounding is good, but check your mental math for the final estimate!`;
+                    document.getElementById('final-est').style.borderColor = "red";
+                }
+            }
+        }
+
+        window.onload = initLab;
+    </script>
+</body>
+</html>

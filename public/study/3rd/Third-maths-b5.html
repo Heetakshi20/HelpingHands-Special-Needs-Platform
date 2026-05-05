@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B5- Fact Family Division Lab | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1, Orange: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #eef2f3 0%, #d5e1df 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #6f42c1;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px; height: 50px;
+            background: #6f42c1;
+            border-radius: 50%;
+            color: white; font-size: 1.5rem;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        h2 { color: #6f42c1; font-weight: 600; font-size: 1.4rem; margin: 0; }
+
+        /* PROBLEM STORY BOX */
+        .problem-card {
+            background: #f3f0ff;
+            border-left: 5px solid #6f42c1;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .problem-card p {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* FACT FAMILY HOUSE UI */
+        .lab-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        /* The Triangle/House for Family */
+        .family-house {
+            position: relative;
+            width: 300px;
+            height: 250px;
+            margin: 0 auto;
+            background: #f9f9f9;
+            border: 3px solid #6f42c1;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .family-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 3px solid #6f42c1;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .node-top { top: 40px; left: 120px; border-color: #f39c12; }
+        .node-left { bottom: 20px; left: 30px; }
+        .node-right { bottom: 20px; right: 30px; }
+
+        /* Equations Area */
+        .equations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .equation-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .math-input {
+            width: 55px; height: 50px;
+            text-align: center;
+            font-size: 1.4rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .math-input:focus { border-color: #6f42c1; background: #fdfbff; }
+        .math-input.correct { border-color: #27ae60; background: #f0fff4; }
+        .math-input:disabled { background: #f0f0f0; color: #555; }
+
+        .hint {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+            background: #fffbe6;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ffe58f;
+        }
+
+        /* BUTTONS */
+        .btn-group { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .action-btn {
+            padding: 12px 35px; border: none; border-radius: 8px;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+            width: 250px;
+        }
+        .check-btn { background: #6f42c1; color: white; }
+        .check-btn:hover { background: #5a32a3; }
+        .next-btn { background: #0D5791; color: white; display: none; }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-logo-section { min-width: 120px; align-items: center; }
+        .footer-logo { display: flex; justify-content: center; align-items: center; height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links-section { flex: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 8px; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; }
+        .footer-links a:hover { color: #A1E231; }
+        .footer-social { display: flex; flex-direction: column; gap: 10px; }
+        .footer-social a { color: white; font-size: 1.5rem; background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; }
+        .footer-bottom { text-align: center; margin-top: 30px; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+        @media (max-width: 768px) {
+            .lab-layout { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-house-chimney"></i></div>
+                <h2>B5- Fact Family Division Lab</h2>
+            </div>
+
+            <div class="problem-card">
+                <p id="problem-text">Loading...</p>
+            </div>
+
+            <div id="instruction" class="hint">Fill in the missing numbers in the family triangle first.</div>
+
+            <div class="lab-layout">
+                <div class="family-house">
+                    <div class="family-node node-top" id="node-product">?</div>
+                    <div class="family-node node-left" id="node-a">?</div>
+                    <div class="family-node node-right" id="node-b">?</div>
+                    <div style="margin-top: 100px; font-weight: bold; color: #6f42c1; font-size: 1.2rem;">FAMILY</div>
+                </div>
+
+                <div class="equations-grid">
+                    <!-- Mult 1 -->
+                    <div class="equation-row">
+                        <input type="number" id="m1-a" class="math-input" placeholder="?">
+                        <span>×</span>
+                        <input type="number" id="m1-b" class="math-input" placeholder="?">
+                        <span>=</span>
+                        <input type="number" id="m1-p" class="math-input" placeholder="?">
+                    </div>
+                    <!-- Mult 2 -->
+                    <div class="equation-row">
+                        <input type="number" id="m2-a" class="math-input" placeholder="?">
+                        <span>×</span>
+                        <input type="number" id="m2-b" class="math-input" placeholder="?">
+                        <span>=</span>
+                        <input type="number" id="m2-p" class="math-input" placeholder="?">
+                    </div>
+                    <!-- Div 1 -->
+                    <div class="equation-row">
+                        <input type="number" id="d1-p" class="math-input" placeholder="?">
+                        <span>÷</span>
+                        <input type="number" id="d1-a" class="math-input" placeholder="?">
+                        <span>=</span>
+                        <input type="number" id="d1-b" class="math-input" placeholder="?">
+                    </div>
+                    <!-- Div 2 -->
+                    <div class="equation-row">
+                        <input type="number" id="d2-p" class="math-input" placeholder="?">
+                        <span>÷</span>
+                        <input type="number" id="d2-b" class="math-input" placeholder="?">
+                        <span>=</span>
+                        <input type="number" id="d2-a" class="math-input" placeholder="?">
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn check-btn" onclick="checkEquations()" id="mainBtn">Check My Facts</button>
+                <button class="action-btn next-btn" onclick="initLab()" id="nextBtn">Next Family <i class="fas fa-arrow-right"></i></button>
+                <div id="message" style="font-weight: 600; margin-top: 10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo"><img src="logo.png" alt="Logo" /></div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Learning Made Visual</div>
+    </footer>
+
+    <script>
+        let numA, numB, product;
+
+        function initLab() {
+            // Random factors between 2 and 9
+            numA = Math.floor(Math.random() * 8) + 2;
+            numB = Math.floor(Math.random() * 8) + 2;
+            product = numA * numB;
+
+            // Problem story
+            const items = ["apples", "stars", "toy cars", "stickers", "blocks"];
+            const item = items[Math.floor(Math.random() * items.length)];
+            
+            document.getElementById('problem-text').innerText = 
+                `We have a family of numbers: ${product}, ${numA}, and ${numB}. Complete the 4 related facts for this family!`;
+
+            // Reset UI
+            document.getElementById('node-product').innerText = product;
+            document.getElementById('node-a').innerText = numA;
+            document.getElementById('node-b').innerText = numB;
+            
+            document.getElementById('message').innerText = "";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('mainBtn').style.display = "block";
+
+            const inputs = document.querySelectorAll('.math-input');
+            inputs.forEach(inp => {
+                inp.value = "";
+                inp.classList.remove('correct');
+                inp.disabled = false;
+            });
+        }
+
+        function checkEquations() {
+            const m1a = parseInt(document.getElementById('m1-a').value);
+            const m1b = parseInt(document.getElementById('m1-b').value);
+            const m1p = parseInt(document.getElementById('m1-p').value);
+
+            const m2a = parseInt(document.getElementById('m2-a').value);
+            const m2b = parseInt(document.getElementById('m2-b').value);
+            const m2p = parseInt(document.getElementById('m2-p').value);
+
+            const d1p = parseInt(document.getElementById('d1-p').value);
+            const d1a = parseInt(document.getElementById('d1-a').value);
+            const d1b = parseInt(document.getElementById('d1-b').value);
+
+            const d2p = parseInt(document.getElementById('d2-p').value);
+            const d2b = parseInt(document.getElementById('d2-b').value);
+            const d2a = parseInt(document.getElementById('d2-a').value);
+
+            let allCorrect = true;
+
+            // Validate Mult 1 (a*b=p)
+            if (m1a === numA && m1b === numB && m1p === product) {
+                markCorrect(['m1-a', 'm1-b', 'm1-p']);
+            } else if (m1a === numB && m1b === numA && m1p === product) {
+                markCorrect(['m1-a', 'm1-b', 'm1-p']);
+            } else { allCorrect = false; }
+
+            // Validate Mult 2 (b*a=p - must be different from Mult 1 or just valid)
+            if (m2a === numA && m2b === numB && m2p === product) {
+                markCorrect(['m2-a', 'm2-b', 'm2-p']);
+            } else if (m2a === numB && m2b === numA && m2p === product) {
+                markCorrect(['m2-a', 'm2-b', 'm2-p']);
+            } else { allCorrect = false; }
+
+            // Validate Div 1 (p/a=b)
+            if (d1p === product && ((d1a === numA && d1b === numB) || (d1a === numB && d1b === numA))) {
+                markCorrect(['d1-p', 'd1-a', 'd1-b']);
+            } else { allCorrect = false; }
+
+            // Validate Div 2 (p/b=a)
+            if (d2p === product && ((d2b === numA && d2a === numB) || (d2b === numB && d2a === numA))) {
+                markCorrect(['d2-p', 'd2-b', 'd2-a']);
+            } else { allCorrect = false; }
+
+            if (allCorrect) {
+                document.getElementById('message').innerHTML = "<span style='color: #27ae60'>🎉 Fantastic! All facts are correct!</span>";
+                document.getElementById('mainBtn').style.display = "none";
+                document.getElementById('nextBtn').style.display = "block";
+                document.querySelectorAll('.math-input').forEach(i => i.disabled = true);
+            } else {
+                document.getElementById('message').innerHTML = "<span style='color: #e74c3c'>Some facts aren't quite right. Use only the 3 numbers in the triangle!</span>";
+            }
+        }
+
+        function markCorrect(ids) {
+            ids.forEach(id => document.getElementById(id).classList.add('correct'));
+        }
+
+        window.onload = initLab;
+    </script>
+</body>
+</html>

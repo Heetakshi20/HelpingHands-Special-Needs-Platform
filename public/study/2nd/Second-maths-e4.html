@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E4- Money problems | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1, Orange: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #7CE04A; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+        
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #27ae60;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #27ae60;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #27ae60; font-weight: 600; font-size: 1.4rem; }
+        .instruction { font-size: 1.2rem; color: #444; margin-bottom: 30px; }
+
+        /* LAB ZONE - CASH REGISTER */
+        .lab-zone {
+            background: #fdfdfd;
+            border: 2px dashed #27ae60;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .register-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .object-area {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f1f8e9;
+            border-radius: 10px;
+            min-width: 120px;
+            transition: all 0.4s ease;
+        }
+
+        .cash-register {
+            width: 220px;
+            background: #7f8c8d;
+            border-radius: 10px 10px 5px 5px;
+            padding: 15px;
+            border-bottom: 8px solid #2c3e50;
+        }
+
+        .digital-display {
+            background: #1a1a1a;
+            border: 3px solid #333;
+            width: 100%;
+            height: 60px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px #000;
+            margin-bottom: 10px;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .key {
+            height: 10px;
+            background: #bdc3c7;
+            border-radius: 2px;
+        }
+
+        /* OPTIONS GRID */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .choice-card {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .choice-card:hover { border-color: #27ae60; background: #f0fff4; }
+        .choice-card.selected { border-color: #A1E231; background: #f1fde0; transform: scale(1.05); }
+
+        .check-btn { padding: 15px 40px; background: #27ae60; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; width: 100%; margin-top: 25px; transition: 0.2s;}
+        .check-btn:hover { background: #219150; }
+        
+        .next-btn { padding: 15px 40px; background: #0D5791; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; font-size: 1.1rem; width: 100%; margin-top: 10px; transition: 0.2s;}
+        .next-btn:hover { background: #0a4a82; }
+
+        #feedback { margin-top: 20px; font-weight: bold; font-size: 1.3rem; min-height: 35px; }
+
+        /* FOOTER */
+        .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#f39c12;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#f39c12;background:rgba(243,156,18,0.15);border-color:#f39c12;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+        
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; }
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-cash-register"></i></div>
+                <h2>E4- Money problems</h2>
+            </div>
+
+            <p class="instruction" id="questText">How much does the item cost?</p>
+
+            <div class="lab-zone">
+                <div class="register-container">
+                    <div id="game-object" class="object-area">
+                        <i class="fas fa-ice-cream fa-4x" style="color: #ff9ff3;"></i>
+                    </div>
+                    <div class="cash-register">
+                        <div class="digital-display" id="price-display">$0.00</div>
+                        <div class="buttons-grid">
+                            <div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div>
+                            <div class="key"></div><div class="key"></div><div class="key"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-grid" id="options"></div>
+
+            <button class="check-btn" onclick="checkAnswer()">Confirm Price</button>
+            <button class="next-btn" id="nextBtn" onclick="startNewMission()">Scan Next Item <i class="fas fa-barcode"></i></button>
+            
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo"><img src="logo.png" alt="Logo" /></div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands. All rights reserved.</div>
+    </footer>
+
+    <script>
+        const itemPool = [
+            { name: "Ice Cream", icon: "fa-ice-cream", color: "#ff9ff3" },
+            { name: "Teddy Bear", icon: "fa-teddy-bear", color: "#8d6e63" },
+            { name: "Toy Car", icon: "fa-car", color: "#e74c3c" },
+            { name: "Pencil Case", icon: "fa-pen-clip", color: "#3498db" },
+            { name: "Donut", icon: "fa-donut", color: "#f39c12" },
+            { name: "Notebook", icon: "fa-book", color: "#9b59b6" }
+        ];
+
+        let gameData = {
+            targetPrice: 0,
+            selection: null,
+            level: 0
+        };
+
+        function startNewMission() {
+            gameData.level++;
+            gameData.selection = null;
+            
+            document.getElementById('feedback').innerText = "";
+            document.getElementById('nextBtn').style.display = "none";
+            
+            // Randomly pick a price between $0.25 and $10.00
+            const whole = Math.floor(Math.random() * 10);
+            const cents = [0, 25, 50, 75][Math.floor(Math.random() * 4)];
+            gameData.targetPrice = (whole === 0 && cents === 0) ? 1.00 : whole + (cents / 100);
+
+            const item = itemPool[Math.floor(Math.random() * itemPool.length)];
+            const display = document.getElementById('price-display');
+            const visual = document.getElementById('game-object');
+            
+            visual.innerHTML = `<i class="fas ${item.icon} fa-4x" style="color: ${item.color};"></i>`;
+            
+            display.innerText = "$ --.--";
+            setTimeout(() => {
+                display.innerText = `$${gameData.targetPrice.toFixed(2)}`;
+                document.getElementById('questText').innerText = `Identify the price of the ${item.name} on the register!`;
+            }, 800);
+
+            renderOptions();
+        }
+
+        function renderOptions() {
+            const container = document.getElementById('options');
+            container.innerHTML = "";
+
+            let options = [gameData.targetPrice];
+            while (options.length < 4) {
+                const w = Math.floor(Math.random() * 10);
+                const c = [0, 25, 50, 75][Math.floor(Math.random() * 4)];
+                let d = w + (c / 100);
+                if (d === 0) d = 2.00;
+                
+                if (!options.includes(d)) options.push(d);
+            }
+            options.sort((a, b) => a - b);
+
+            options.forEach(val => {
+                const card = document.createElement('div');
+                card.className = 'choice-card';
+                card.innerText = `$${val.toFixed(2)}`;
+                card.onclick = () => {
+                    document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    gameData.selection = val;
+                };
+                container.appendChild(card);
+            });
+        }
+
+        function checkAnswer() {
+            const feedback = document.getElementById('feedback');
+            if (gameData.selection === null) {
+                feedback.innerText = "Select the matching price! 💰";
+                feedback.style.color = "#f39c12";
+                return;
+            }
+
+            if (Math.abs(gameData.selection - gameData.targetPrice) < 0.01) {
+                feedback.innerText = "✅ Excellent! You identified the correct price.";
+                feedback.style.color = "#27ae60";
+                document.getElementById('nextBtn').style.display = "block";
+            } else {
+                feedback.innerText = "❌ Look closer at the digital display on the register!";
+                feedback.style.color = "#e74c3c";
+            }
+        }
+
+        window.onload = () => {
+            startNewMission();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A4 · Compare and Contrast | 2nd Grade Reading</title>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Poppins font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #ffb5b5 0%, #ffd5d5 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background-color: #0d5791;
+        color: white;
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      .logo {
+        font-size: 26px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .logo span {
+        color: #7ce04a;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        padding: 8px 14px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .nav-buttons button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .manage-btn {
+        background-color: white;
+        color: #0d5791;
+      }
+      .manage-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .launch-btn {
+        background-color: #a1e231;
+        color: black;
+      }
+      .launch-btn:hover {
+        background-color: #8fd31a;
+        transform: translateY(-2px);
+      }
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #00d4ff;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        width: 100%;
+        max-width: 1100px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #e74c3c;
+        padding-bottom: 10px;
+      }
+      .header-icon {
+        width: 50px;
+        height: 50px;
+        background: #e74c3c;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      h2 {
+        color: #e74c3c;
+        font-weight: 600;
+        font-size: 1.7rem;
+      }
+      .question-text {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .speaker-icon {
+        width: 45px;
+        height: 45px;
+        background: #e74c3c;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 1.3rem;
+      }
+      .speaker-icon:hover {
+        background: #b03a2e;
+        transform: scale(1.1);
+      }
+      .reading-area {
+        background: #ffe8e8;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        border: 3px solid #e74c3c;
+      }
+      .compare-panel {
+        display: flex;
+        gap: 30px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .item-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        flex: 1;
+        min-width: 250px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .item-card:first-child {
+        border-top: 5px solid #3498db;
+      }
+      .item-card:last-child {
+        border-top: 5px solid #e67e22;
+      }
+      .item-title {
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      .item-card:first-child .item-title {
+        color: #3498db;
+      }
+      .item-card:last-child .item-title {
+        color: #e67e22;
+      }
+      .item-emoji {
+        font-size: 5rem;
+        text-align: center;
+        margin: 10px 0;
+      }
+      .item-description {
+        color: #2c3e50;
+        font-size: 1.2rem;
+        line-height: 1.6;
+      }
+      .venn-diagram {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px 0;
+        gap: 20px;
+      }
+      .venn-left,
+      .venn-right {
+        background: rgba(52, 152, 219, 0.2);
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #3498db;
+      }
+      .venn-right {
+        background: rgba(230, 126, 34, 0.2);
+        border-color: #e67e22;
+      }
+      .venn-middle {
+        background: rgba(46, 204, 113, 0.2);
+        border: 3px solid #2ecc71;
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 15px;
+        font-weight: 600;
+      }
+      .comparison-table {
+        width: 100%;
+        margin: 20px 0;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .comparison-table th {
+        background: #e74c3c;
+        color: white;
+        padding: 15px;
+        font-size: 1.2rem;
+      }
+      .comparison-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 1.1rem;
+      }
+      .comparison-table tr:last-child td {
+        border-bottom: none;
+      }
+      .comparison-table td:first-child {
+        font-weight: 600;
+        background: #f9f9f9;
+      }
+      .question-box {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #b03a2e;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0 25px;
+      }
+      .option-btn {
+        background: white;
+        border: 3px solid #ffb0b0;
+        border-radius: 60px;
+        min-height: 80px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .option-btn:hover {
+        background: #ffe0e0;
+        border-color: #e74c3c;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px #ffc0c0;
+      }
+      .option-btn.correct {
+        background: #2ecc71;
+        border-color: #27ae60;
+        color: white;
+      }
+      .option-btn.incorrect {
+        background: #e74c3c;
+        border-color: #c0392b;
+        color: white;
+      }
+      .submit-btn {
+        background: linear-gradient(145deg, #e74c3c, #b03a2e);
+        color: white;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 50px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+        display: block;
+        margin: 0 auto 10px;
+        box-shadow: 0 6px 0 #7a2a21;
+      }
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 9px 0 #7a2a21;
+      }
+      .submit-btn:disabled {
+        background: #ffa8a8;
+        box-shadow: 0 4px 0 #7a2a21;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .feedback {
+        margin: 15px 0 5px;
+        font-weight: 600;
+        font-size: 1.4rem;
+        text-align: center;
+        min-height: 40px;
+      }
+      .feedback.correct {
+        color: #1e8449;
+      }
+      .feedback.incorrect {
+        color: #943126;
+      }
+      .score-box {
+        margin-top: 30px;
+        border: 4px solid #e74c3c;
+        border-radius: 30px;
+        padding: 30px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 2.2rem;
+        background: #ffe0e0;
+        color: #7a2a21;
+      }
+      .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+      @media (max-width: 800px) {
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .footer-logo {
+          display: flex;
+          justify-content: center;
+        }
+        .footer-links {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-social {
+          flex-direction: row;
+          justify-content: center;
+        }
+        .venn-diagram {
+          flex-direction: column;
+        }
+        .venn-left,
+        .venn-right,
+        .venn-middle {
+          width: 150px;
+          height: 150px;
+        }
+      }
+      @media (max-width: 700px) {
+        .navbar {
+          flex-wrap: wrap;
+        }
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="manage-btn">Manage Account</button>
+        <button class="launch-btn" onclick="window.location.href = '#'">
+          Sign Up / Login
+        </button>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        <div class="header">
+          <div class="header-icon">🔄</div>
+          <h2>A4 · Compare and Contrast</h2>
+        </div>
+
+        <div class="question-text">
+          <span id="questionPhrase">"Compare and contrast the two items."</span>
+          <div class="speaker-icon" id="globalSpeaker">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="reading-area" id="readingArea">
+          <div class="compare-panel">
+            <div class="item-card">
+              <div class="item-title">Apples</div>
+              <div class="item-emoji">🍎🍏</div>
+              <div class="item-description">
+                <p>
+                  Apples grow on trees. They can be red, green, or yellow.
+                  Apples are sweet or tart. You can eat them fresh or bake them
+                  in pies. Apples have seeds inside.
+                </p>
+              </div>
+            </div>
+            <div class="item-card">
+              <div class="item-title">Oranges</div>
+              <div class="item-emoji">🍊🍊</div>
+              <div class="item-description">
+                <p>
+                  Oranges grow on trees too. They are orange and have a thick
+                  peel. Oranges are sweet and juicy. You can eat them fresh or
+                  drink orange juice. Oranges have seeds inside.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <table class="comparison-table">
+            <tr>
+              <th colspan="3">Compare and Contrast: Apples vs. Oranges</th>
+            </tr>
+            <tr>
+              <td style="width: 33%">Category</td>
+              <td style="width: 33%">Apples</td>
+              <td style="width: 33%">Oranges</td>
+            </tr>
+            <tr>
+              <td>Where they grow</td>
+              <td>on trees</td>
+              <td>on trees</td>
+            </tr>
+            <tr>
+              <td>Colors</td>
+              <td>red, green, yellow</td>
+              <td>orange</td>
+            </tr>
+            <tr>
+              <td>Have seeds</td>
+              <td>yes</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>Peel</td>
+              <td>thin skin</td>
+              <td>thick peel</td>
+            </tr>
+          </table>
+
+          <div class="question-box" id="questionBox"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <button class="submit-btn" id="nextBtn" disabled onclick="handleNext()">
+          Next
+        </button>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="scoreBox" class="score-box" style="display: none"></div>
+      </div>
+    </div>
+
+        <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+
+
+    <script>
+      (function () {
+        const questions = [
+          {
+            question: "How are apples and oranges the same?",
+            options: [
+              "Both grow on trees",
+              "Both are red",
+              "Both have thick peels",
+              "Both are only green",
+            ],
+            answer: "Both grow on trees",
+          },
+          {
+            question: "How are apples different from oranges?",
+            options: [
+              "Apples have thin skin, oranges have thick peel",
+              "Apples grow on trees, oranges grow on bushes",
+              "Oranges have seeds, apples do not",
+              "They are the same",
+            ],
+            answer: "Apples have thin skin, oranges have thick peel",
+          },
+          {
+            question: "What color can apples be?",
+            options: [
+              "red, green, or yellow",
+              "only red",
+              "orange only",
+              "purple and blue",
+            ],
+            answer: "red, green, or yellow",
+          },
+          {
+            question: "What is something both fruits have?",
+            options: ["seeds", "thick peels", "red color", "juice"],
+            answer: "seeds",
+          },
+          {
+            question: "Which fruit has a thick peel?",
+            options: ["oranges", "apples", "both", "neither"],
+            answer: "oranges",
+          },
+          {
+            question: "What can you make from oranges?",
+            options: ["orange juice", "apple pie", "applesauce", "cider"],
+            answer: "orange juice",
+          },
+          {
+            question: "What can you bake with apples?",
+            options: ["apple pie", "orange juice", "smoothies", "salad"],
+            answer: "apple pie",
+          },
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentQuestion = questions[0];
+
+        const questionPhraseEl = document.getElementById("questionPhrase");
+        const globalSpeaker = document.getElementById("globalSpeaker");
+        const questionBoxEl = document.getElementById("questionBox");
+        const optionsContainer = document.getElementById("optionsContainer");
+        const feedbackEl = document.getElementById("feedback");
+        const nextBtn = document.getElementById("nextBtn");
+        const scoreBox = document.getElementById("scoreBox");
+
+        function speakText(text, rate = 1) {
+          if (!window.speechSynthesis) return;
+          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "en-US";
+          utterance.rate = rate;
+          window.speechSynthesis.speak(utterance);
+        }
+
+        function loadQuestion() {
+          answered = false;
+          nextBtn.disabled = true;
+          currentQuestion = questions[currentIndex];
+
+          questionPhraseEl.textContent = `"Compare and contrast the two items."`;
+          questionBoxEl.textContent = currentQuestion.question;
+
+          feedbackEl.textContent = "";
+          feedbackEl.className = "feedback";
+          scoreBox.style.display = "none";
+          nextBtn.style.display = "block";
+
+          // Create option buttons
+          optionsContainer.innerHTML = "";
+          currentQuestion.options.forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = opt;
+            btn.addEventListener("click", () => selectOption(btn, opt));
+            optionsContainer.appendChild(btn);
+          });
+        }
+
+        function selectOption(btn, selected) {
+          if (answered) return;
+          answered = true;
+          nextBtn.disabled = false;
+
+          const correct = selected === currentQuestion.answer;
+          if (correct) {
+            score++;
+            btn.classList.add("correct");
+            feedbackEl.textContent =
+              "✅ Great! You understand comparing and contrasting.";
+            feedbackEl.classList.add("correct");
+            speakText(`Good job! ${selected} is correct.`);
+          } else {
+            btn.classList.add("incorrect");
+            feedbackEl.textContent = `❌ Not quite. The correct answer is: ${currentQuestion.answer}.`;
+            feedbackEl.classList.add("incorrect");
+            speakText(`The correct answer is: ${currentQuestion.answer}`);
+
+            // Highlight correct answer
+            Array.from(optionsContainer.children).forEach((b) => {
+              if (b.textContent === currentQuestion.answer) {
+                b.classList.add("correct");
+              }
+            });
+          }
+        }
+
+        function handleNext() {
+          if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+          } else {
+            showFinalScore();
+          }
+        }
+
+        function showFinalScore() {
+          questionPhraseEl.textContent =
+            "🎉 Comparing and contrasting mastered! 🎉";
+          document.querySelector(".compare-panel").style.display = "none";
+          document.querySelector(".comparison-table").style.display = "none";
+          questionBoxEl.textContent =
+            "You can compare and contrast like a pro!";
+          optionsContainer.innerHTML = "";
+          nextBtn.style.display = "none";
+          feedbackEl.textContent = "";
+          scoreBox.style.display = "block";
+          scoreBox.textContent = `You scored ${score} out of ${questions.length}!`;
+          speakText(
+            `Quiz finished. You got ${score} out of ${questions.length} correct.`,
+            0.9,
+          );
+        }
+
+        globalSpeaker.addEventListener("click", () => {
+          if (currentIndex < questions.length) {
+            speakText(
+              `${currentQuestion.question} Options: ${currentQuestion.options.join(", ")}`,
+            );
+          } else {
+            speakText(
+              `Quiz completed. Your score is ${score} out of ${questions.length}.`,
+            );
+          }
+        });
+
+        loadQuestion();
+        window.handleNext = handleNext;
+      })();
+    </script>
+  </body>
+</html>

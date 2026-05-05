@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Decorate Christmas Tree</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --xmas-green: #165b33; --xmas-red: #d42426; --gold: #f8b229; --snow: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; } /* Critical for mobile drag */
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #2c3e50, #0a192f);
+            color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        .header {
+            background: #1e293b; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--gold); z-index: 100;
+        }
+        .nav-btns { display: flex; gap: 15px; }
+        .btn { color: white; text-decoration: none; font-weight: bold; border: 2px solid white; padding: 8px 20px; border-radius: 50px; cursor: pointer; background: transparent; }
+
+        #game-canvas { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+        /* Tree Setup */
+        .tree-base { position: relative; width: 400px; height: 550px; display: flex; flex-direction: column; align-items: center; z-index: 5; }
+        .tree-top { width: 0; height: 0; border-left: 200px solid transparent; border-right: 200px solid transparent; border-bottom: 500px solid var(--xmas-green); border-radius: 20px; }
+        .tree-star { position: absolute; top: -30px; font-size: 5rem; color: var(--gold); filter: drop-shadow(0 0 15px gold); z-index: 6; }
+
+        /* Decoration Area */
+        .decor-menu {
+            position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 25px; background: rgba(255,255,255,0.1);
+            padding: 20px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.2); z-index: 50;
+        }
+
+        .source-item {
+            width: 80px; height: 80px; font-size: 3.5rem; cursor: grab;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.2); border-radius: 15px; transition: 0.2s;
+        }
+        .source-item:active { cursor: grabbing; transform: scale(1.1); }
+
+        /* The Draggable Ornament */
+        .ornament {
+            position: absolute; font-size: 3rem; cursor: grab; z-index: 100;
+            user-select: none; filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.3));
+        }
+
+        #start-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .play-btn { padding: 20px 60px; font-size: 2rem; border-radius: 50px; background: var(--xmas-red); color: white; border: none; cursor: pointer; font-family: 'Outfit'; }
+    </style>
+</head>
+<body>
+
+    <div id="start-overlay">
+        <h1 style="font-family:'Outfit'; font-size: 3rem; color: var(--gold); margin-bottom: 20px;">🎄 Drag & Decorate</h1>
+        <button class="play-btn" onclick="startGame()">START DRAGGING</button>
+        <p style="margin-top:20px; color:white;">Drag the items from the right onto the tree!</p>
+    </div>
+
+    <header class="header">
+        <h1>🌟 Tree Maker</h1>
+        <div class="nav-btns">
+            <button class="btn" onclick="location.reload()">RESET</button>
+            <a href="../autism.html" class="btn">EXIT</a>
+        </div>
+    </header>
+
+    <div id="game-canvas">
+        <div class="tree-base" id="tree-area">
+            <div class="tree-star">🌟</div>
+            <div class="tree-top"></div>
+        </div>
+
+        <div class="decor-menu">
+            <div class="source-item" onmousedown="createDraggable(event, '🔴')" ontouchstart="createDraggable(event, '🔴')">🔴</div>
+            <div class="source-item" onmousedown="createDraggable(event, '⭐')" ontouchstart="createDraggable(event, '⭐')">⭐</div>
+            <div class="source-item" onmousedown="createDraggable(event, '🔔')" ontouchstart="createDraggable(event, '🔔')">🔔</div>
+            <div class="source-item" onmousedown="createDraggable(event, '🎁')" ontouchstart="createDraggable(event, '🎁')">🎁</div>
+        </div>
+    </div>
+
+    <script>
+        let activeOrnament = null;
+
+        function startGame() {
+            document.getElementById('start-overlay').style.display = 'none';
+            speak("Pick up a decoration and drag it to the tree!");
+        }
+
+        function createDraggable(e, emoji) {
+            // Prevent default scrolling on touch
+            if (e.type === 'touchstart') e.preventDefault();
+
+            const ornament = document.createElement('div');
+            ornament.className = 'ornament';
+            ornament.innerText = emoji;
+            document.body.appendChild(ornament);
+
+            activeOrnament = ornament;
+            
+            // Initial position
+            moveAt(e.pageX || e.touches[0].pageX, e.pageY || e.touches[0].pageY);
+
+            function moveAt(pageX, pageY) {
+                ornament.style.left = pageX - ornament.offsetWidth / 2 + 'px';
+                ornament.style.top = pageY - ornament.offsetHeight / 2 + 'px';
+            }
+
+            function onMouseMove(event) {
+                moveAt(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY);
+            }
+
+            // Bind move events
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('touchmove', onMouseMove, { passive: false });
+
+            // Drop logic
+            const dropHandler = (endEvent) => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('touchmove', onMouseMove);
+                
+                // Final Check: Is it on the tree?
+                const treeRect = document.getElementById('tree-area').getBoundingClientRect();
+                const x = endEvent.pageX || (endEvent.changedTouches ? endEvent.changedTouches[0].pageX : 0);
+                const y = endEvent.pageY || (endEvent.changedTouches ? endEvent.changedTouches[0].pageY : 0);
+
+                if (x > treeRect.left && x < treeRect.right && y > treeRect.top && y < treeRect.bottom) {
+                    speak("Beautiful!");
+                    // Keep it where it was dropped
+                } else {
+                    // If dropped outside, remove it (or keep it if you want free-form)
+                    // ornament.remove(); 
+                }
+
+                activeOrnament = null;
+                document.onmouseup = null;
+                document.ontouchend = null;
+            };
+
+            document.onmouseup = dropHandler;
+            document.ontouchend = dropHandler;
+        }
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 1.2;
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>

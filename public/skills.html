@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Grade Skills - HelpingHands</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #0D5791;
+      color: white;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #7CE04A;
+    }
+
+  .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline-block;
+}
+
+.nav-links a {
+  text-decoration: none;     /* underline hatana */
+  color: inherit;
+  padding: 8px 14px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* hover effect */
+}
+
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .manage-btn {
+      background-color: white;
+      color: #0D5791;
+    }
+
+    .launch-btn {
+      background-color: #A1E231;
+      color: black;
+    }
+
+        /* Main Content Area - Full Width */
+        .main-container {
+            width: 100%;
+            min-height: 100vh;
+            background: white;
+        }
+
+        /* Header - Full Width */
+        .header {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            padding: 40px;
+            position: relative;
+            width: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-grade-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-text h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .header-text p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        /* Subject Toggle */
+        .subject-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            justify-content: center;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 100px;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: #17a2b8;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-btn.active:hover {
+            background: white;
+        }
+
+        /* Content Area - Full Width */
+        .content-area {
+            padding: 40px;
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Roman Numerals Sidebar */
+        .roman-sidebar {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .roman-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .roman-item:hover {
+            transform: scale(1.1);
+        }
+
+        .roman-item.active {
+            transform: scale(1.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .grade-lkg { background: linear-gradient(135deg, #17a2b8, #138496); }
+        .grade-ukg { background: linear-gradient(135deg, #fd7e14, #e8690b); }
+        .grade-1 { background: linear-gradient(135deg, #28a745, #218838); }
+        .grade-2 { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .grade-3 { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+        .grade-4 { background: linear-gradient(135deg, #e83e8c, #e21e7b); }
+        .grade-5 { background: linear-gradient(135deg, #20c997, #1ba085); }
+       
+
+        /* Skills Content - Full Width */
+        .skills-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            width: 100%;
+        }
+
+        .skill-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .skill-category {
+            background: white;
+        }
+
+        .category-header {
+            color: #4CAF50;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px 0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin: 2px 0;
+        }
+
+        .skill-item:hover {
+            background-color: #f0f8ff;
+            margin: 2px -10px;
+            padding: 8px 10px;
+            border-radius: 5px;
+        }
+
+        .skill-code {
+            background: #17a2b8;
+            color: white;
+            padding: 3px 7px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 10px;
+            min-width: 32px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .skill-text {
+            color: #333;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #17a2b8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        .footer {
+  background-color: #0a4a82;
+  color: white;
+  padding: 40px 20px 20px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-logo img {
+  height: 80px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-links h4 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-social a img {
+  height: 24px;
+  margin: 0 8px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+}
+.footer-social {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;   /* center horizontally */
+  gap: 12px;              /* space between icons */
+}
+
+.footer-social a {
+  color: white;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #178bf1;
+}
+
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .header-text h1 {
+                font-size: 2.2rem;
+            }
+
+            .toggle-buttons {
+                padding: 0 20px;
+                flex-wrap: wrap;
+            }
+
+            .content-area {
+                padding: 20px;
+                flex-direction: column;
+            }
+
+            .skills-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .roman-sidebar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .roman-item {
+                width: 45px;
+                height: 45px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+      <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+         <li><a href="learning.html" class="nav-item">Home</a></li>
+       <li><a href="resources.html" class="nav-item">Resources</a></li>
+         <li><a href="blog.html" class="nav-item">Blog</a></li>
+       <li><a href="contact.html" class="nav-item">Contact Us</a></li>
+    <li><a href="about.html" class="nav-item">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn" onclick="window.location.href='auth.html'">
+    Sign Up / Login
+</button>
+
+    </div>
+  </nav>
+    <!-- Main Content Container - Full Width -->
+    <div class="main-container">
+        <!-- Header - Full Width -->
+        <div class="header">
+            <div class="header-content">
+                <div class="main-grade-icon" id="main-icon">L</div>
+                <div class="header-text">
+                    <h1 id="grade-title">Lower kindergarten maths</h1>
+                    <p id="grade-description">Here is a list of all skills for this grade! Click on any skill to start practicing.</p>
+                </div>
+            </div>
+           
+            <!-- Subject Toggle -->
+            <div class="subject-toggle">
+                <div class="toggle-buttons">
+                    <button class="toggle-btn active" data-subject="maths">Maths</button>
+                    <button class="toggle-btn" data-subject="english">English</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area - Full Width -->
+        <div class="content-area">
+            <!-- Roman Numerals Sidebar -->
+            <div class="roman-sidebar">
+                <div class="roman-item grade-lkg" data-grade="lkg">L</div>
+                <div class="roman-item grade-ukg" data-grade="ukg">U</div>
+                <div class="roman-item grade-1" data-grade="1">1</div>
+                <div class="roman-item grade-2" data-grade="2">2</div>
+                <div class="roman-item grade-3" data-grade="3">3</div>
+                <div class="roman-item grade-4" data-grade="4">4</div>
+               
+            </div>
+
+            <!-- Skills Content - Full Width -->
+            <div class="skills-content" id="skills-content">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="img/logo.jpeg" alt="HelpingHands Logo">
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Games</a></li>
+          <li><a href="#">Activities</a></li>
+          <li><a href="#">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-social">
+      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 HelpingHands. All rights reserved.</p>
+  </div>
+</footer>
+
+    <script>
+        // Complete Grade and Subject Data - LKG to Class 12
+        const allGradeData = {
+            lkg: {
+                title: "Lower kindergarten",
+                icon: "L",
+                color: { primary: '#17a2b8', secondary: '#138496' },
+                maths: {
+                    description: "Here is a list of all maths skills students learn in LKG! These skills are organised into categories, and you can move your mouse over any skill name to preview the skill. To start practising, just click on any link. HelpingHands will track your score, and the questions will automatically increase in difficulty as you improve!",
+                    skills: [
+                        {
+                            category: "Shapes",
+                            skills: [
+                               { code: 'A.1', text: 'Name the shape', id: 'name-the-shape', isLink: true },
+                               
+                            ]
+                        },
+                        {
+                            category: "Count to 3",
+                            skills: [
+                                { code: "B.1", text: "Learn to count - up to 3", link: "L/b1.html" },
+                                { code: "B.2", text: "Count objects - up to 3", link: "L/b2.html" },
+                                { code: "B.3", text: "Count dots - up to 3", link: "L/b3.html" },
+                                { code: "B.4", text: "Count shapes - up to 3", link: "L/b4.html" },
+                                { code: "B.5", text: "Count on ten frames - up to 3", link: "L/b5.html" },
+                                { code: "B.6", text: "Show numbers on ten frames - up to 3", link: "L/b6.html" },
+                                { code: "B.7", text: "Represent numbers - up to 3", link: "L/b7.html" }
+                            ]
+                        }
+                        ,
+                        {
+                            category: "Count to 5",
+                            skills: [
+                                { code: "C.1", text: "Learn to count - up to 5" , link: "L/c1.html"},
+                                { code: "C.2", text: "Count objects - up to 5" , link: "L/c2.html"},
+                                { code: "C.3", text: "Count dots - up to 5" , link: "L/c3.html"},
+                                { code: "C.4", text: "Count shapes - up to 5", link: "L/c4.html" },
+                                { code: "C.5", text: "Count on ten frames - up to 5", link: "L/c5.html" },
+                                { code: "C.6", text: "Show numbers on ten frames - up to 5", link: "L/c6.html" },
+                               
+                            ]
+                        },
+                        {
+                            category: "Count to 10",
+                            skills: [
+                                { code: "D.1", text: "Learn to count - up to 10", link: "L/d1.html" },
+                                { code: "D.2", text: "Count objects - up to 10" , link: "L/d2.html" },
+                                { code: "D.3", text: "Count dots - up to 10" , link: "L/d3.html" },
+                                { code: "D.4", text: "Count shapes - up to 10", link: "L/d4.html" },
+                                { code: "D.5", text: "Count on ten frames - up to 10",  link: "L/d5.html" },
+                                { code: "D.6", text: "Show numbers on ten frames - up to 10", link: "L/d6.html" },
+                                { code: "D.7", text: "Represent numbers - up to 10" , link: "L/d7.html"}
+                            ]
+                        }
+                    ]
+                },
+                english: {
+                    description: "Here is a list of English skills students learn in LKG! These skills are organised into categories, and you can move your mouse over any skill name to preview the skill. To start practising, just click on any link. HelpingHands will track your score, and the questions will automatically increase in difficulty as you improve!",
+                    skills: [
+                        {
+                            category: "Letter identification",
+                            skills: [
+                                { code: "A.1", text: "Find the letter in the alphabet: uppercase" },
+                                { code: "A.2", text: "Find the letter in the alphabet: lowercase" },
+                                { code: "A.3", text: "Choose the letter that you hear: uppercase" },
+                                { code: "A.4", text: "Choose the letter that you hear: lowercase" },
+                                { code: "A.5", text: "Frequently confused letters: find the letter" }
+                            ]
+                        },
+                        {
+                            category: "Lowercase and uppercase letters",
+                            skills: [
+                                { code: "B.1", text: "Choose the lowercase letter that matches: c, k, o, p, s, u, v, w, x, z" },
+                                { code: "B.2", text: "Choose the lowercase letter that matches: f, i, j, l, m, n, r, t, y" },
+                                { code: "B.3", text: "Choose the lowercase letter that matches: a, b, d, e, g, h, n, q, r" },
+                                { code: "B.4", text: "Find all the lowercase letters" },
+                                { code: "B.5", text: "Choose the uppercase letter that matches: C, O, P, S, U, V, W, X, Z" }
+                            ]
+                        },
+                        {
+                            category: "Blending and segmenting",
+                            skills: [
+                                { code: "C.1", text: "Blend onset and rime together to make a word" },
+                                { code: "C.2", text: "Blend each sound in a word together" },
+                                { code: "C.3", text: "Identify the first sound in a word" },
+                                { code: "C.4", text: "Put the sounds in order" }
+                            ]
+                        }
+                    ]
+                }
+            },
+            ukg: {
+                title: "Upper kindergarten",
+                icon: "U",
+                color: { primary: '#fd7e14', secondary: '#e8690b' },
+                maths: {
+                    description: "Here is a list of all maths skills students learn in UKG! These skills build upon LKG foundations and introduce more advanced concepts.",
+                    skills: [
+                        {
+                            category: "Numbers and counting",
+                            skills: [
+                                { code: "A.1", text: "Count to 20" },
+                                { code: "A.2", text: "Count objects up to 20" },
+                                { code: "A.3", text: "Count by tens" },
+                                { code: "A.4", text: "Skip counting by 2s" },
+                                { code: "A.5", text: "Skip counting by 5s" }
+                            ]
+                        },
+                        {
+                            category: "Addition",
+                            skills: [
+                                { code: "B.1", text: "Add with pictures - sums to 5" },
+                                { code: "B.2", text: "Add with pictures - sums to 10" },
+                                { code: "B.3", text: "Addition sentences - sums to 5" },
+                                { code: "B.4", text: "Addition sentences - sums to 10" },
+                                { code: "B.5", text: "Addition facts - sums to 5" }
+                            ]
+                        },
+                        {
+                            category: "Subtraction",
+                            skills: [
+                                { code: "C.1", text: "Subtract with pictures - numbers up to 5" },
+                                { code: "C.2", text: "Subtract with pictures - numbers up to 10" },
+                                { code: "C.3", text: "Subtraction sentences - numbers up to 5" },
+                                { code: "C.4", text: "Subtraction sentences - numbers up to 10" }
+                            ]
+                        }
+                    ]
+                },
+                english: {
+                    description: "Here is a list of English skills students learn in UKG! These skills build upon LKG foundations and introduce more advanced reading concepts.",
+                    skills: [
+                        {
+                            category: "Phonics",
+                            skills: [
+                                { code: "A.1", text: "Letter sounds review" },
+                                { code: "A.2", text: "Beginning consonant sounds" },
+                                { code: "A.3", text: "Ending consonant sounds" },
+                                { code: "A.4", text: "Short vowel sounds" },
+                                { code: "A.5", text: "Consonant blends" }
+                            ]
+                        },
+                        {
+                            category: "Reading foundations",
+                            skills: [
+                                { code: "B.1", text: "Read simple words" },
+                                { code: "B.2", text: "Read CVC words" },
+                                { code: "B.3", text: "Read simple sentences" },
+                                { code: "B.4", text: "Picture comprehension" },
+                                { code: "B.5", text: "Story sequence" }
+                            ]
+                        },
+                        {
+                            category: "Writing basics",
+                            skills: [
+                                { code: "C.1", text: "Trace letters" },
+                                { code: "C.2", text: "Write letters" },
+                                { code: "C.3", text: "Write simple words" },
+                                { code: "C.4", text: "Copy sentences" }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "1": {
+                title: "Class I",
+                icon: "1",
+                color: { primary: '#28a745', secondary: '#218838' },
+                maths: {
+                    description: "Here is a list of all maths skills students learn in Class I! These skills introduce formal mathematical concepts and operations.",
+                    skills: [
+                        {
+                            category: "Numbers to 100",
+                            skills: [
+                                { code: "A.1", text: "Count to 100" },
+                                { code: "A.2", text: "Skip counting by 2s, 5s, and 10s" },
+                                { code: "A.3", text: "Number patterns" },
+                                { code: "A.4", text: "Comparing numbers" },
+                                { code: "A.5", text: "Ordering numbers" }
+                            ]
+                        },
+                        {
+                            category: "Addition",
+                            skills: [
+                                { code: "B.1", text: "Addition facts to 10" },
+                                { code: "B.2", text: "Addition facts to 20" },
+                                { code: "B.3", text: "Add two-digit numbers" },
+                                { code: "B.4", text: "Addition word problems" },
+                                { code: "B.5", text: "Properties of addition" }
+                            ]
+                        },
+                        {
+                            category: "Subtraction",
+                            skills: [
+                                { code: "C.1", text: "Subtraction facts to 10" },
+                                { code: "C.2", text: "Subtraction facts to 20" },
+                                { code: "C.3", text: "Subtract two-digit numbers" },
+                                { code: "C.4", text: "Subtraction word problems" } 
+                            ]
+                        }
+                    ]
+                },
+                english: {
+                    description: "Here is a list of English skills students learn in Class I! These skills introduce formal reading, writing and language concepts.",
+                    skills: [
+                        {
+                            category: "Reading skills",
+                            skills: [
+                                { code: "A.1", text: "Read grade-level text" },
+                                { code: "A.2", text: "Reading comprehension" },
+                                { code: "A.3", text: "Main idea and details" },
+                                { code: "A.4", text: "Story elements" },
+                                { code: "A.5", text: "Make predictions" }
+                            ]
+                        },
+                        {
+                            category: "Phonics and word study",
+                            skills: [
+                                { code: "B.1", text: "Long and short vowels" },
+                                { code: "B.2", text: "Consonant digraphs" },
+                                { code: "B.3", text: "Word families" },
+                                { code: "B.4", text: "Sight words" },
+                                { code: "B.5", text: "Syllables" }
+                            ]
+                        },
+                        {
+                            category: "Writing",
+                            skills: [
+                                { code: "C.1", text: "Sentence structure" },
+                                { code: "C.2", text: "Capitalization" },
+                                { code: "C.3", text: "End punctuation" },
+                                { code: "C.4", text: "Descriptive writing" }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "2": {
+                title: "Class II",
+                icon: "2",
+                color: { primary: '#dc3545', secondary: '#c82333' },
+                maths: {
+                    description: "Here is a list of all maths skills students learn in Class II! These skills build upon Class I foundations with more complex operations.",
+                    skills: [
+                        {
+                            category: "Numbers to 1000",
+                            skills: [
+                                { code: "A.1", text: "Count to 1000" },
+                                { code: "A.2", text: "Place value: hundreds, tens, ones" },
+                                { code: "A.3", text: "Compare and order numbers" },
+                                { code: "A.4", text: "Number patterns" },
+                                { code: "A.5", text: "Even and odd numbers" }
+                            ]
+                        },
+                        {
+                            category: "Addition and subtraction",
+                            skills: [
+                                { code: "B.1", text: "Add three-digit numbers" },
+                                { code: "B.2", text: "Subtract three-digit numbers" },
+                                { code: "B.3", text: "Addition with regrouping" },
+                                { code: "B.4", text: "Subtraction with regrouping" },
+                                { code: "B.5", text: "Multi-step word problems" }
+                            ]
+                        },
+                        {
+                            category: "Multiplication and division",
+                            skills: [
+                                { code: "C.1", text: "Arrays and groups" },
+                                { code: "C.2", text: "Multiplication facts to 5" },
+                                { code: "C.3", text: "Division as sharing" },
+                                { code: "C.4", text: "Division facts to 5" },
+                                { code: "C.5", text: "Word problems" }
+                            ]
+                        }
+                    ]
+                },
+                english: {
+                    description: "Here is a list of English skills students learn in Class II! These skills advance reading fluency and writing abilities.",
+                    skills: [
+                        {
+                            category: "Reading comprehension",
+                            skills: [
+                                { code: "A.1", text: "Read fluently" },
+                                { code: "A.2", text: "Ask and answer questions" },
+                                { code: "A.3", text: "Describe characters" },
+                                { code: "A.4", text: "Compare and contrast" },
+                                { code: "A.5", text: "Use text features" }
+                            ]
+                        },
+                        {
+                            category: "Vocabulary",
+                            skills: [
+                                { code: "B.1", text: "Context clues" },
+                                { code: "B.2", text: "Word meanings" },
+                                { code: "B.3", text: "Prefixes and suffixes" },
+                                { code: "B.4", text: "Synonyms and antonyms" },
+                                { code: "B.5", text: "Multiple meaning words" }
+                            ]
+                        },
+                        {
+                            category: "Writing",
+                            skills: [
+                                { code: "C.1", text: "Opinion writing" },
+                                { code: "C.2", text: "Informative writing" },
+                                { code: "C.3", text: "Narrative writing" },
+                                { code: "C.4", text: "Research and inquiry" },
+                                { code: "C.5", text: "Editing and revising" }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "3": {
+                title: "Class III",
+                icon: "3",
+                color: { primary: '#6f42c1', secondary: '#5a32a3' },
+                maths: {
+                    description: "Here is a list of all maths skills students learn in Class III! These skills introduce multiplication tables, division, and advanced problem solving.",
+                    skills: [
+                        {
+                            category: "Multiplication",
+                            skills: [
+                                { code: "A.1", text: "Multiplication tables 2-10" },
+                                { code: "A.2", text: "Multiply by multiples of 10" },
+                                { code: "A.3", text: "Multiply three-digit numbers" },
+                                { code: "A.4", text: "Properties of multiplication" },
+                                { code: "A.5", text: "Multiplication word problems" }
+                            ]
+                        },
+                        {
+                            category: "Division",
+                            skills: [
+                                { code: "B.1", text: "Division facts" },
+                                { code: "B.2", text: "Divide with remainders" },
+                                { code: "B.3", text: "Long division basics" },
+                                { code: "B.4", text: "Division word problems" },
+                                { code: "B.5", text: "Fact families" }
+                            ]
+                        },
+                        {
+                            category: "Fractions",
+                            skills: [
+                                { code: "C.1", text: "Equivalent fractions" },
+                                { code: "C.2", text: "Compare fractions" },
+                                { code: "C.3", text: "Add fractions" },
+                                { code: "C.4", text: "Subtract fractions" },
+                                { code: "C.5", text: "Mixed numbers" }
+                            ]
+                        }
+                    ]
+                },
+                english: {
+                    description: "Here is a list of English skills students learn in Class III! These skills focus on advanced reading strategies and writing techniques.",
+                    skills: [
+                        {
+                            category: "Reading strategies",
+                            skills: [
+                                { code: "A.1", text: "Reading with expression" },
+                                { code: "A.2", text: "Summarizing" },
+                                { code: "A.3", text: "Making inferences" },
+                                { code: "A.4", text: "Author's purpose" },
+                                { code: "A.5", text: "Fact and opinion" }
+                            ]
+                        },
+                        {
+                            category: "Literary analysis",
+                            skills: [
+                                { code: "B.1", text: "Story structure" },
+                                { code: "B.2", text: "Character traits" },
+                                { code: "B.3", text: "Setting and plot" },
+                                { code: "B.4", text: "Theme" },
+                                { code: "B.5", text: "Poetry elements" }
+                            ]
+                        },
+                        {
+                            category: "Writing skills",
+                            skills: [
+                                { code: "C.1", text: "Paragraph structure" },
+                                { code: "C.2", text: "Descriptive writing" },
+                                { code: "C.3", text: "Persuasive writing" },
+                                { code: "C.4", text: "Research skills" },
+                                { code: "C.5", text: "Presentation skills" }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "4": {
+                title: "Class IV",
+                icon: "4",
+                color: { primary: '#e83e8c', secondary: '#e21e7b' },
+                maths: {
+                    description: "Here is a list of all maths skills students learn in Class IV! These skills include advanced operations, decimals, and geometric concepts.",
+                    skills: [
+                        {
+                            category: "Large numbers",
+                            skills: [
+                                { code: "A.1", text: "Numbers to 10,000" },
+                                { code: "A.2", text: "Place value to ten thousands" },
+                                { code: "A.3", text: "Round to nearest 100 and 1000" },
+                                { code: "A.4", text: "Compare large numbers" },
+                                { code: "A.5", text: "Number patterns and sequences" }
+                            ]
+                        },
+                        {
+                            category: "Multi-digit operations",
+                            skills: [
+                                { code: "B.1", text: "Multi-digit addition" },
+                                { code: "B.2", text: "Multi-digit subtraction" },
+                                { code: "B.3", text: "Multiply 2-digit by 1-digit" },
+                                { code: "B.4", text: "Divide 3-digit by 1-digit" },
+                                { code: "B.5", text: "Estimate products and quotients" }
+                            ]
+                        },
+                        {
+                            category: "Fractions and decimals",
+                            skills: [
+                                { code: "C.1", text: "Equivalent fractions" },
+                                { code: "C.2", text: "Add and subtract fractions" },
+                                { code: "C.3", text: "Multiply fractions" },
+                                { code: "C.4", text: "Introduction to decimals" },
+                                { code: "C.5", text: "Decimal place value" }
+                            ]
+                        }
+                    ]
+                },
+                english: {
+                    description: "Here is a list of English skills students learn in Class IV! These skills emphasize critical thinking and advanced writing techniques.",
+                    skills: [
+                        {
+                            category: "Reading comprehension",
+                            skills: [
+                                { code: "A.1", text: "Main idea and supporting details" },
+                                { code: "A.2", text: "Draw conclusions" },
+                                { code: "A.3", text: "Compare texts" },
+                                { code: "A.4", text: "Text structure" },
+                                { code: "A.5", text: "Critical analysis" }
+                            ]
+                        },
+                        {
+                            category: "Vocabulary development",
+                            skills: [
+                                { code: "B.1", text: "Word roots and origins" },
+                                { code: "B.2", text: "Academic vocabulary" },
+                                { code: "B.3", text: "Figurative language" },
+                                { code: "B.4", text: "Context clues advanced" },
+                                { code: "B.5", text: "Dictionary skills" }
+                            ]
+                        },
+                        {
+                            category: "Writing development",
+                            skills: [
+                                { code: "C.1", text: "Essay structure" },
+                                { code: "C.2", text: "Research and citations" },
+                                { code: "C.3", text: "Argumentative writing" },
+                                { code: "C.4", text: "Creative writing" },
+                                { code: "C.5", text: "Peer review and editing" }
+                            ]
+                        }
+                    ]
+                }
+            },             
+        };
+
+        let currentGrade = 'lkg';
+        let currentSubject = 'maths';
+
+        // Get URL parameters
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                grade: params.get('grade') || 'lkg',
+                subject: params.get('subject') || 'maths'
+            };
+        }
+
+        // Update URL without refreshing
+        function updateURL(grade, subject) {
+            const newURL = `${window.location.pathname}?grade=${grade}&subject=${subject}`;
+            window.history.pushState({grade, subject}, '', newURL);
+        }
+
+        // Load content for specific grade and subject
+        function loadContent(grade, subject) {
+            const gradeData = allGradeData[grade];
+            if (!gradeData) return;
+
+            // Update header
+            const headerGradient = `linear-gradient(135deg, ${gradeData.color.primary}, ${gradeData.color.secondary})`;
+            document.querySelector('.header').style.background = headerGradient;
+            document.getElementById('main-icon').textContent = gradeData.icon;
+            document.getElementById('grade-title').textContent = `${gradeData.title} ${subject}`;
+            document.getElementById('grade-description').textContent = gradeData[subject].description;
+
+            // Update subject toggle
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.subject === subject);
+            });
+
+            // Update active grade in sidebar
+            document.querySelectorAll('.roman-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.grade === grade) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Show loading
+            const skillsContent = document.getElementById('skills-content');
+            skillsContent.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading ${subject} skills...</p>
+                </div>
+            `;
+
+            // Load skills after short delay
+            setTimeout(() => {
+                loadSkills(gradeData[subject].skills);
+            }, 500);
+
+            // Update URL
+            updateURL(grade, subject);
+        }
+       
+       
+
+        // Load skills into the grid
+        function loadSkills(skillsData) {
+            const skillsContent = document.getElementById('skills-content');
+            const columns = [[], [], []]; // 3 columns
+           
+            // Distribute categories across columns
+            skillsData.forEach((category, index) => {
+                columns[index % 3].push(category);
+            });
+           
+
+            skillsContent.innerHTML = columns.map(column => `
+                <div class="skill-column">
+                    ${column.map(category => `
+                        <div class="skill-category">
+                            <h3 class="category-header">${category.category}</h3>
+                            <ul class="skill-list">
+                                ${category.skills.map(skill => `
+                                    <li class="skill-item" data-skill="${skill.code}">
+                                        <span class="skill-code">${skill.code}</span>
+                                        <span class="skill-text">${skill.text}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+
+            // Add event listeners to skills
+            addSkillListeners();
+        }
+       
+
+// Add event listeners to skill items
+function addSkillListeners() {
+    document.querySelectorAll('.skill-item').forEach(item => {
+        item.addEventListener('click', function() {
+
+            const skillCode = this.querySelector('.skill-code').textContent.trim();
+            const skillTextEl = this.querySelector('.skill-text') || this.querySelector('.skill-text-link');
+            const skillText = skillTextEl ? skillTextEl.textContent.trim() : '';
+
+            // Special case
+            if (skillCode === 'A.1' && skillText === 'Name the shape') {
+                window.location.href = `practice.html?skill=name-the-shape&name=${encodeURIComponent(skillText)}&code=${skillCode}&grade=${currentGrade}`;
+                return;
+            }
+
+            // ✅ UNIQUE KEY (IMPORTANT FIX)
+            const key = `${currentGrade}-${currentSubject}-${skillCode}`;
+
+            const codeToPage = {
+
+                // ================= LKG =================
+                'lkg-maths-B.1': 'study/L/LMb1.html',
+                'lkg-maths-B.2': 'study/L/LMb2.html',
+                'lkg-maths-B.3': 'study/L/LMb3.html',
+                'lkg-maths-B.4': 'study/L/LMb4.html',
+                'lkg-maths-B.5': 'study/L/LMb5.html',
+                'lkg-maths-B.6': 'study/L/LMb6.html',
+                'lkg-maths-B.7': 'study/L/LMb7.html',
+
+                'lkg-maths-C.1': 'study/L/LMc1.html',
+                'lkg-maths-C.2': 'study/L/LMc2.html',
+                'lkg-maths-C.3': 'study/L/LMc3.html',
+                'lkg-maths-C.4': 'study/L/LMc4.html',
+                'lkg-maths-C.5': 'study/L/LMc5.html',
+                'lkg-maths-C.6': 'study/L/LMc6.html',
+
+                'lkg-maths-D.1': 'study/L/LMd1.html',
+                'lkg-maths-D.2': 'study/L/LMd2.html',
+                'lkg-maths-D.3': 'study/L/LMd3.html',
+                'lkg-maths-D.4': 'study/L/LMd4.html',
+                'lkg-maths-D.5': 'study/L/LMd5.html',
+                'lkg-maths-D.6': 'study/L/LMd6.html',
+                'lkg-maths-D.7': 'study/L/LMd7.html',
+
+                'lkg-english-A.1': 'study/L/Lkg-english-a1.html',
+                'lkg-english-A.2': 'study/L/Lkg-english-a2.html',
+                'lkg-english-A.3': 'study/L/Lkg-english-a3.html',
+                'lkg-english-A.4': 'study/L/Lkg-english-a4.html',
+                'lkg-english-A.5': 'study/L/Lkg-english-a5.html',
+
+                'lkg-english-B.1': 'study/L/Lkg-english-b1.html',
+                'lkg-english-B.2': 'study/L/Lkg-english-b2.html',
+                'lkg-english-B.3': 'study/L/Lkg-english-b3.html',
+                'lkg-english-B.4': 'study/L/Lkg-english-b4.html',
+                'lkg-english-B.5': 'study/L/Lkg-english-b5.html',
+
+                'lkg-english-C.1': 'study/L/Lkg-english-c1.html',
+                'lkg-english-C.2': 'study/L/Lkg-english-c2.html',
+                'lkg-english-C.3': 'study/L/Lkg-english-c3.html',
+                'lkg-english-C.4': 'study/L/Lkg-english-c4.html',
+
+                // ================= UKG =================
+                'ukg-maths-A.1': 'study/U/Ukg-maths-a1.html',
+                'ukg-maths-A.2': 'study/U/Ukg-maths-a2.html',
+                'ukg-maths-A.3': 'study/U/Ukg-maths-a3.html',
+                'ukg-maths-A.4': 'study/U/Ukg-maths-a4.html',
+                'ukg-maths-A.5': 'study/U/Ukg-maths-a5.html',
+
+                'ukg-maths-B.1': 'study/U/Ukg-maths-b1.html',
+                'ukg-maths-B.2': 'study/U/Ukg-maths-b2.html',
+                'ukg-maths-B.3': 'study/U/Ukg-maths-b3.html',
+                'ukg-maths-B.4': 'study/U/Ukg-maths-b4.html',
+                'ukg-maths-B.5': 'study/U/Ukg-maths-b5.html',
+
+                'ukg-maths-C.1': 'study/U/Ukg-maths-c1.html',
+                'ukg-maths-C.2': 'study/U/Ukg-maths-c2.html',
+                'ukg-maths-C.3': 'study/U/Ukg-maths-c3.html',
+                'ukg-maths-C.4': 'study/U/Ukg-maths-c4.html',
+
+                'ukg-english-A.1': 'study/U/Ukg-english-a1.html',
+                'ukg-english-A.2': 'study/U/Ukg-english-a2.html',
+                'ukg-english-A.3': 'study/U/Ukg-english-a3.html',
+                'ukg-english-A.4': 'study/U/Ukg-english-a4.html',
+
+                'ukg-english-B.1': 'study/U/Ukg-english-b1.html',
+                'ukg-english-B.2': 'study/U/Ukg-english-b2.html',
+                'ukg-english-B.3': 'study/U/Ukg-english-b3.html',
+                'ukg-english-B.4': 'study/U/Ukg-english-b4.html',
+                'ukg-english-B.5': 'study/U/Ukg-english-b5.html',
+
+                'ukg-english-C.1': 'study/U/Ukg-english-c1.html',
+                'ukg-english-C.2': 'study/U/Ukg-english-c2.html',
+                'ukg-english-C.3': 'study/U/Ukg-english-c3.html',
+                'ukg-english-C.4': 'study/U/Ukg-english-c4.html',
+
+                // ================= CLASS 1 =================
+                '1-maths-A.1': 'study/1st/First-maths-a1.html',
+                '1-maths-A.2': 'study/1st/First-maths-a2.html',
+                '1-maths-A.3': 'study/1st/First-maths-a3.html',
+                '1-maths-A.4': 'study/1st/First-maths-a4.html',
+                '1-maths-A.5': 'study/1st/First-maths-a5.html',
+
+                '1-maths-B.1': 'study/1st/First-maths-b1.html',
+                '1-maths-B.2': 'study/1st/First-maths-b2.html',
+                '1-maths-B.3': 'study/1st/First-maths-b3.html',
+                '1-maths-B.4': 'study/1st/First-maths-b4.html',
+                '1-maths-B.5': 'study/1st/First-maths-b5.html',
+
+                '1-maths-C.1': 'study/1st/First-maths-c1.html',
+                '1-maths-C.2': 'study/1st/First-maths-c2.html',
+                '1-maths-C.3': 'study/1st/First-maths-c3.html',
+                '1-maths-C.4': 'study/1st/First-maths-c4.html',
+
+                '1-english-A.1': 'study/1st/First-english-a1.html',
+                '1-english-A.2': 'study/1st/First-english-a2.html',
+                '1-english-A.3': 'study/1st/First-english-a3.html',
+                '1-english-A.4': 'study/1st/First-english-a4.html',
+                '1-english-A.5': 'study/1st/First-english-a5.html',
+
+                '1-english-B.1': 'study/1st/First-english-b1.html',
+                '1-english-B.2': 'study/1st/First-english-b2.html',
+                '1-english-B.3': 'study/1st/First-english-b3.html',
+                '1-english-B.4': 'study/1st/First-english-b4.html',
+                '1-english-B.5': 'study/1st/First-english-b5.html',
+
+                '1-english-C.1': 'study/1st/First-english-c1.html',
+                '1-english-C.2': 'study/1st/First-english-c2.html',
+                '1-english-C.3': 'study/1st/First-english-c3.html',
+                '1-english-C.4': 'study/1st/First-english-c4.html',
+
+                // ================= CLASS 2 =================
+
+                // Maths
+                '2-maths-A.1': 'study/2nd/Second-maths-a1.html',
+                '2-maths-A.2': 'study/2nd/Second-maths-a2.html',
+                '2-maths-A.3': 'study/2nd/Second-maths-a3.html',
+                '2-maths-A.4': 'study/2nd/Second-maths-a4.html',
+                '2-maths-A.5': 'study/2nd/Second-maths-a5.html',
+                '2-maths-A.6': 'study/2nd/Second-maths-a6.html',
+
+                '2-maths-B.1': 'study/2nd/Second-maths-b1.html',
+                '2-maths-B.2': 'study/2nd/Second-maths-b2.html',
+                '2-maths-B.3': 'study/2nd/Second-maths-b3.html',
+                '2-maths-B.4': 'study/2nd/Second-maths-b4.html',
+                '2-maths-B.5': 'study/2nd/Second-maths-b5.html',
+
+                '2-maths-C.1': 'study/2nd/Second-maths-c1.html',
+                '2-maths-C.2': 'study/2nd/Second-maths-c2.html',
+                '2-maths-C.3': 'study/2nd/Second-maths-c3.html',
+                '2-maths-C.4': 'study/2nd/Second-maths-c4.html',
+                '2-maths-C.5': 'study/2nd/Second-maths-c5.html',
+
+                '2-maths-D.1': 'study/2nd/Second-maths-d1.html',
+                '2-maths-D.2': 'study/2nd/Second-maths-d2.html',
+                '2-maths-D.3': 'study/2nd/Second-maths-d3.html',
+                '2-maths-D.4': 'study/2nd/Second-maths-d4.html',
+
+                '2-maths-E.1': 'study/2nd/Second-maths-e1.html',
+                '2-maths-E.2': 'study/2nd/Second-maths-e2.html',
+                '2-maths-E.3': 'study/2nd/Second-maths-e3.html',
+                '2-maths-E.4': 'study/2nd/Second-maths-e4.html',
+                '2-maths-E.5': 'study/2nd/Second-maths-e5.html',
+
+                // English
+                '2-english-A.1': 'study/2nd/Second-english-a1.html',
+                '2-english-A.2': 'study/2nd/Second-english-a2.html',
+                '2-english-A.3': 'study/2nd/Second-english-a3.html',
+                '2-english-A.4': 'study/2nd/Second-english-a4.html',
+                '2-english-A.5': 'study/2nd/Second-english-a5.html',
+
+                '2-english-B.1': 'study/2nd/Second-english-b1.html',
+                '2-english-B.2': 'study/2nd/Second-english-b2.html',
+                '2-english-B.3': 'study/2nd/Second-english-b3.html',
+                '2-english-B.4': 'study/2nd/Second-english-b4.html',
+                '2-english-B.5': 'study/2nd/Second-english-b5.html',
+
+                '2-english-C.1': 'study/2nd/Second-english-c1.html',
+                '2-english-C.2': 'study/2nd/Second-english-c2.html',
+                '2-english-C.3': 'study/2nd/Second-english-c3.html',
+                '2-english-C.4': 'study/2nd/Second-english-c4.html',
+                '2-english-C.5': 'study/2nd/Second-english-c5.html',
+
+                '2-english-D.1': 'study/2nd/Second-english-d1.html',
+                '2-english-D.2': 'study/2nd/Second-english-d2.html',
+                '2-english-D.3': 'study/2nd/Second-english-d3.html',
+                '2-english-D.4': 'study/2nd/Second-english-d4.html',
+                '2-english-D.5': 'study/2nd/Second-english-d5.html',
+
+                // ================= CLASS 3 =================
+
+                // English
+                '3-english-A.1': 'study/3rd/Third-english-a1.html',
+                '3-english-A.2': 'study/3rd/Third-english-a2.html',
+                '3-english-A.3': 'study/3rd/Third-english-a3.html',
+                '3-english-A.4': 'study/3rd/Third-english-a4.html',
+                '3-english-A.5': 'study/3rd/Third-english-a5.html',
+
+                '3-english-B.1': 'study/3rd/Third-english-b1.html',
+                '3-english-B.2': 'study/3rd/Third-english-b2.html',
+                '3-english-B.3': 'study/3rd/Third-english-b3.html',
+                '3-english-B.4': 'study/3rd/Third-english-b4.html',
+                '3-english-B.5': 'study/3rd/Third-english-b5.html',
+
+                '3-english-C.1': 'study/3rd/Third-english-c1.html',
+                '3-english-C.2': 'study/3rd/Third-english-c2.html',
+                '3-english-C.3': 'study/3rd/Third-english-c3.html',
+                '3-english-C.4': 'study/3rd/Third-english-c4.html',
+                '3-english-C.5': 'study/3rd/Third-english-c5.html',
+
+                '3-english-D.1': 'study/3rd/Third-english-d1.html',
+                '3-english-D.2': 'study/3rd/Third-english-d2.html',
+                '3-english-D.3': 'study/3rd/Third-english-d3.html',
+                '3-english-D.4': 'study/3rd/Third-english-d4.html',
+                '3-english-D.5': 'study/3rd/Third-english-d5.html',
+
+                '3-english-E.1': 'study/3rd/Third-english-e1.html',
+                '3-english-E.2': 'study/3rd/Third-english-e2.html',
+                '3-english-E.3': 'study/3rd/Third-english-e3.html',
+                '3-english-E.4': 'study/3rd/Third-english-e4.html',
+
+                // ================= CLASS 4 =================
+
+                // English
+                '4-english-A.1': 'study/4th/Fourth-english-a1.html',
+                '4-english-A.2': 'study/4th/Fourth-english-a2.html',
+                '4-english-A.3': 'study/4th/Fourth-english-a3.html',
+                '4-english-A.4': 'study/4th/Fourth-english-a4.html',
+                '4-english-A.5': 'study/4th/Fourth-english-a5.html',
+
+                '4-english-B.1': 'study/4th/Fourth-english-b1.html',
+                '4-english-B.2': 'study/4th/Fourth-english-b2.html',
+                '4-english-B.3': 'study/4th/Fourth-english-b3.html',
+                '4-english-B.4': 'study/4th/Fourth-english-b4.html',
+                '4-english-B.5': 'study/4th/Fourth-english-b5.html',
+
+                '4-english-C.1': 'study/4th/Fourth-english-c1.html',
+                '4-english-C.2': 'study/4th/Fourth-english-c2.html',
+                '4-english-C.3': 'study/4th/Fourth-english-c3.html',
+                '4-english-C.4': 'study/4th/Fourth-english-c4.html',
+                '4-english-C.5': 'study/4th/Fourth-english-c5.html',
+
+                '4-english-D.1': 'study/4th/Fourth-english-d1.html',
+                '4-english-D.2': 'study/4th/Fourth-english-d2.html',
+                '4-english-D.3': 'study/4th/Fourth-english-d3.html',
+                '4-english-D.4': 'study/4th/Fourth-english-d4.html',
+                '4-english-D.5': 'study/4th/Fourth-english-d5.html',
+
+                '4-english-E.1': 'study/4th/Fourth-english-e1.html',
+                '4-english-E.2': 'study/4th/Fourth-english-e2.html',
+                '4-english-E.3': 'study/4th/Fourth-english-e3.html',
+                '4-english-E.4': 'study/4th/Fourth-english-e4.html',
+                '4-english-E.5': 'study/4th/Fourth-english-e5.html',
+            };
+
+            // ✅ Redirect
+            if (codeToPage[key]) {
+                window.location.href = codeToPage[key];
+                return;
+            }
+
+            // fallback
+            alert(`Page not found for: ${key}`);
+        });
+    });
+}
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = getURLParams();
+            currentGrade = params.grade;
+            currentSubject = params.subject;
+
+            // Load initial content
+            loadContent(currentGrade, currentSubject);
+
+            // Subject toggle listeners
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentSubject = this.dataset.subject;
+                    loadContent(currentGrade, currentSubject);
+                });
+            });
+
+            // Roman numeral listeners
+            document.querySelectorAll('.roman-item').forEach((item) => {
+                item.addEventListener('click', function() {
+                    const newGrade = this.dataset.grade;
+                    if (allGradeData[newGrade]) {
+                        currentGrade = newGrade;
+                        loadContent(currentGrade, currentSubject);
+                    }
+                });
+            });
+
+            // Browser back/forward button support
+            window.addEventListener('popstate', function(event) {
+                if (event.state) {
+                    currentGrade = event.state.grade;
+                    currentSubject = event.state.subject;
+                    loadContent(currentGrade, currentSubject);
+                }
+            });
+        });
+
+        // Function to be called from main grade selection page
+        function loadGradeContent(grade, subject = 'maths') {
+            currentGrade = grade;
+            currentSubject = subject;
+            loadContent(grade, subject);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Astronaut Flight | UFO Puzzle</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Nunito:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#050a18;color:white;min-height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
+
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d) infinite alternate;}
+@keyframes twinkle{0%{opacity:.2;} 100%{opacity:.8;}}
+
+.navbar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;margin-bottom:10px;z-index:100;}
+.logo{font-family:'Outfit',sans-serif;font-size:1.6rem;color:#ffeb3b;}
+.exit-btn{background:#f44336;color:white;text-decoration:none;padding:10px 20px;border-radius:30px;font-weight:bold;font-size:0.9rem;}
+
+.instr-bar{background:#ffeb3b;color:#0D5791;padding:12px 30px;border-radius:50px;font-weight:900;margin-bottom:15px;font-size:1.1rem;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+
+#gameContainer {
+    position: relative; width: 400px; height: 500px;
+    border: 6px solid #7ce04a; border-radius: 20px;
+    background: rgba(255,255,255,0.05); overflow: hidden; cursor: pointer;
+}
+canvas { display: block; }
+
+.ui-text {
+    position: absolute; top: 10px; font-family: 'Outfit'; z-index: 5;
+}
+#score { right: 20px; font-size: 1.8rem; color: #7ce04a; }
+#risk-lvl { left: 20px; font-size: 1rem; color: #ffeb3b; text-transform: uppercase; }
+
+.overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.7);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 10; border-radius: 14px; text-align: center; padding: 20px;
+}
+.play-btn { background: #7ce04a; color: black; padding: 15px 40px; border-radius: 50px; font-weight: 900; border: none; cursor: pointer; font-size: 1.2rem; }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<nav class="navbar">
+    <div class="logo">🛸 UFO PUZZLE: FLIGHT</div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="../down_syndrome.html" class="exit-btn">EXIT GAME</a>
+    </div>
+</nav>
+
+<div class="instr-bar" id="status">Tap to help the Astronaut fly through space!</div>
+
+<div id="gameContainer">
+    <div id="risk-lvl" class="ui-text">Risk: Normal</div>
+    <div id="score" class="ui-text">0</div>
+    <canvas id="gameCanvas"></canvas>
+    
+    <div id="menu" class="overlay">
+        <h1 id="menuTitle" style="font-size: 2.5rem; color: #ffeb3b; margin-bottom: 10px; font-family: 'Outfit';">READY?</h1>
+        <p id="menuSub" style="margin-bottom: 20px;">Avoid the space pillars!</p>
+        <button class="play-btn" onclick="startGame()">START MISSION!</button>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const container = document.getElementById('gameContainer');
+const menu = document.getElementById('menu');
+const scoreEl = document.getElementById('score');
+const riskEl = document.getElementById('risk-lvl');
+
+canvas.width = 400;
+canvas.height = 500;
+
+let astro = { x: 50, y: 200, w: 50, h: 50, gravity: 0.35, velocity: 0, jump: -6.5 };
+let pipes = [];
+let frame = 0;
+let score = 0;
+let gameRunning = false;
+let gameSpeed = 2; // Starting normal speed
+
+const astroImg = new Image();
+// Using the same cute astronaut from the puzzle game
+astroImg.src = 'https://img.freepik.com/free-vector/cute-astronaut-flying-with-rocket-cartoon-vector-icon-illustration_138676-3534.jpg';
+
+function setupStars() {
+    const sc = document.getElementById('stars');
+    for(let i=0; i<80; i++){
+        let s = document.createElement('div');
+        s.className = 'star';
+        let sz = Math.random()*3;
+        s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*3+1}s`;
+        sc.appendChild(s);
+    }
+}
+
+function startGame() {
+    astro.y = 200;
+    astro.velocity = 0;
+    pipes = [];
+    score = 0;
+    frame = 0;
+    gameSpeed = 2;
+    scoreEl.innerText = '0';
+    riskEl.innerText = 'Risk: Normal';
+    gameRunning = true;
+    menu.style.display = 'none';
+    speak("Mission start! Fly high!");
+    animate();
+}
+
+function jump() {
+    if(gameRunning) {
+        astro.velocity = astro.jump;
+    }
+}
+
+container.addEventListener('mousedown', jump);
+container.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
+
+function animate() {
+    if(!gameRunning) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Physics
+    astro.velocity += astro.gravity;
+    astro.y += astro.velocity;
+    
+    // Risk Level Scaling
+    if (score > 5 && score <= 10) {
+        gameSpeed = 2.5;
+        riskEl.innerText = "Risk: Rising";
+        riskEl.style.color = "#ffa726";
+    } else if (score > 10) {
+        gameSpeed = 3.2;
+        riskEl.innerText = "Risk: High";
+        riskEl.style.color = "#f44336";
+    }
+
+    // Draw Astronaut
+    ctx.drawImage(astroImg, astro.x, astro.y, astro.w, astro.h);
+    
+    // Pipes (Pillars)
+    let spawnRate = Math.max(70, 110 - (score * 2)); // Pipes appear faster as score goes up
+    if(frame % Math.floor(spawnRate) === 0) {
+        let gap = 170; 
+        let pipeHeight = Math.floor(Math.random() * (canvas.height - gap - 120)) + 60;
+        pipes.push({ x: canvas.width, y: 0, w: 60, h: pipeHeight, scored: false });
+        pipes.push({ x: canvas.width, y: pipeHeight + gap, w: 60, h: canvas.height });
+    }
+    
+    for (let i = pipes.length - 1; i >= 0; i--) {
+        let p = pipes[i];
+        p.x -= gameSpeed;
+        
+        ctx.fillStyle = '#4fc3f7'; // Space blue pillars
+        ctx.fillRect(p.x, p.y, p.w, p.h);
+        
+        // Collision
+        if (astro.x < p.x + p.w && astro.x + astro.w > p.x &&
+            astro.y < p.y + p.h && astro.y + astro.h > p.y) {
+            gameOver();
+        }
+        
+        // Score logic
+        if(!p.scored && p.x + p.w < astro.x) {
+            score += 0.5; // Since there are two pipes (top/bottom), we add 0.5 for each pair
+            if (Number.isInteger(score)) {
+                scoreEl.innerText = score;
+                if(score % 5 === 0) speak("Point " + score);
+            }
+            p.scored = true;
+        }
+        
+        if(p.x + p.w < 0) pipes.splice(i, 1);
+    }
+    
+    if(astro.y + astro.h > canvas.height || astro.y < 0) gameOver();
+    
+    frame++;
+    requestAnimationFrame(animate);
+}
+
+function gameOver() {
+    gameRunning = false;
+    document.getElementById('menuTitle').innerText = "MISSION OVER";
+    document.getElementById('menuSub').innerText = "Final Score: " + Math.floor(score);
+    menu.style.display = 'flex';
+    speak("Great flying astronaut! Try again.");
+}
+
+function speak(t) {
+    window.speechSynthesis.cancel();
+    const m = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(m);
+}
+
+setupStars();
+</script>
+</body>
+</html>

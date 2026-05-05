@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrightMinds | Student Registration</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  body {
+    background: linear-gradient(to right, #FFDEE9, #B5FFFC);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
+
+  .container {
+    background: #fff;
+    width: 50%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px 40px;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: fadeIn 0.8s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+  }
+
+  h1 {
+    text-align: center;
+    color: #0D5791;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    color: #0D5791;
+    border-left: 5px solid #0D5791;
+    padding-left: 10px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-top: 10px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #0D5791;
+    border-radius: 8px;
+    margin-top: 5px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .checkbox-group, .multi-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .checkbox-group label, .multi-select label {
+    font-weight: normal;
+  }
+
+  .section {
+    margin-bottom: 30px;
+    background: #f9fcff;
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    background-color: #0D5791;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: #08426b;
+    transform: scale(1.03);
+  }
+
+  .file-label {
+    display: block;
+    margin-top: 10px;
+    background: #E3F2FD;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px dashed #0D5791;
+  }
+
+  .file-name {
+    font-size: 14px;
+    color: #333;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .consent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .submit-success {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+    display: none;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🧩 HelpingHands Student Registration Form</h1>
+
+  <form id="registrationForm" action="/register" method="POST" enctype="multipart/form-data">
+
+
+    <!-- 🧒 1. Student Details -->
+    <div class="section">
+      <h2>🧒 Student Details</h2>
+
+      <label>Full Name:</label>
+      <input type="text" name="fullName" required>
+
+      <label>Gender:</label>
+      <select name="gender" required>
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+
+      <label>Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+
+      <label>Age:</label>
+      <input type="number" id="age" name="age" required>
+
+      <label>Address:</label>
+      <textarea name="address" rows="2" required></textarea>
+
+      <label>City / State:</label>
+      <input type="text" name="cityState" required>
+
+      <label>Learning Level:</label>
+      <select name="learningLevel" required>
+        <option value="">Select</option>
+        <option>Beginner</option>
+        <option>Intermediate</option>
+        <option>Advanced</option>
+      </select>
+
+      <label>Primary Language:</label>
+      <input type="text" name="language" placeholder="e.g. English, Hindi" required>
+
+      <label>School Name (if any):</label>
+      <input type="text" name="school"><br><br>
+
+      <label>Learning Interests:</label>
+      <div class="multi-select">
+        <label><input type="checkbox" name="interests" value="Rhymes"> Rhymes</label>
+        <label><input type="checkbox" name="interests" value="Reading"> Reading</label>
+        <label><input type="checkbox" name="interests" value="Drawing"> Drawing</label>
+        <label><input type="checkbox" name="interests" value="Numbers"> Numbers</label>
+        <label><input type="checkbox" name="interests" value="Games"> Games</label>
+      </div>
+    </div>
+
+    <!-- ❤️ 2. Medical & Behavioral Details -->
+    <div class="section">
+      <h2>❤️ Medical & Behavioral Details</h2>
+
+      <label>Diagnosis / Condition:</label>
+      <input type="text" name="diagnosis" placeholder="e.g. Autism Spectrum, ADHD"><br><br>
+
+      <label>Severity Level:</label>
+      <select name="severity">
+        <option value="">Select</option>
+        <option>Mild</option>
+        <option>Moderate</option>
+        <option>Severe</option>
+      </select><br><br>
+
+      <label>Ongoing Therapies:</label>
+      <div class="multi-select">
+        <label><input type="checkbox" name="therapy" value="Speech"> Speech Therapy</label>
+        <label><input type="checkbox" name="therapy" value="Occupational"> Occupational Therapy</label>
+        <label><input type="checkbox" name="therapy" value="Behavioral"> Behavioral Therapy</label>
+      </div><br>
+
+      <label>Physical Fitness:</label>
+      <select name="fitness">
+        <option value="">Select</option>
+        <option>Good</option>
+        <option>Moderate</option>
+        <option>Needs Attention</option>
+      </select>
+    </div>
+
+    <!-- 👨‍👩‍👧 3. Parent / Guardian Details -->
+    <div class="section">
+      <h2>👨‍👩‍👧 Parent / Guardian Details</h2>
+
+      <label>Parent / Guardian Name:</label>
+      <input type="text" name="parentName" required>
+
+      <label>Relationship to Child:</label>
+      <select name="relation" required>
+        <option value="">Select</option>
+        <option>Mother</option>
+        <option>Father</option>
+        <option>Guardian</option>
+      </select>
+
+      <label>Contact Number:</label>
+      <input type="tel" name="contact" required>
+
+      <label>Email ID:</label>
+      <input type="email" name="email" required>
+
+      <label>Occupation:</label>
+      <input type="text" name="occupation">
+
+      <label>Emergency Contact:</label>
+      <input type="tel" name="emergency">
+    </div>
+
+    <!-- 🖼️ 5. Upload Section -->
+    <div class="section">
+      <h2>🖼️ Upload Section (Optional)</h2>
+
+      <label class="file-label">
+        Child’s Photo
+        <input type="file" name="photo" accept="image/*" hidden onchange="showFileName(this)">
+      </label>
+      <div class="file-name" id="photoName"></div>
+
+      <label class="file-label">
+        Medical Certificate / Doctor’s Report
+        <input type="file" name="medicalReport" accept=".pdf,image/*" hidden onchange="showFileName(this)">
+      </label>
+      <div class="file-name" id="reportName"></div>
+
+    </div>
+
+    <button type="submit">Submit Registration</button>
+
+    <p class="submit-success" id="successMsg">🎉 Registration Submitted Successfully!</p>
+
+  </form>
+</div>
+
+<script>
+  // 1. Auto-calculate Age based on Date of Birth
+  const dobInput = document.getElementById("dob");
+  if (dobInput) {
+      dobInput.addEventListener("change", function() {
+        const dob = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+          age--;
+        }
+        document.getElementById("age").value = age >= 0 ? age : "";
+      });
+  }
+
+  // 2. Show uploaded file names next to the buttons
+  function showFileName(input) {
+    const idMap = {
+      "photo": "photoName",
+      "medicalReport": "reportName"
+    };
+    const field = Object.keys(idMap).find(key => input.name === key);
+    if (field) {
+      document.getElementById(idMap[field]).innerText = input.files[0]?.name || "";
+    }
+  }
+
+  // 3. Handle Form Submission seamlessly with the Backend
+  document.getElementById("registrationForm").addEventListener("submit", async function(e) {
+      e.preventDefault(); // Stop the page from reloading!
+      
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = "Submitting...";
+      submitBtn.disabled = true;
+
+      // Gather all the form data (including images/PDFs)
+      const formData = new FormData(this);
+
+      try {
+          // Send it to the secure backend route
+          const response = await fetch('/api/submitRegistration', {
+              method: 'POST',
+              body: formData
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+              // Show success message and clear the form
+              document.getElementById("successMsg").style.display = "block";
+              this.reset(); 
+              document.getElementById("photoName").innerText = "";
+              document.getElementById("reportName").innerText = "";
+              
+              // Hide success message after 5 seconds
+              setTimeout(() => {
+                  document.getElementById("successMsg").style.display = "none";
+              }, 5000);
+          } else {
+              alert("Error: " + data.error);
+          }
+      } catch (error) {
+          console.error(error);
+          alert("Server connection failed. Is your Node.js server running?");
+      } finally {
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
+      }
+  });
+</script>
+
+</body>
+</html>

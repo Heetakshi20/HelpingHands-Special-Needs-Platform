@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpingHands | Contact</title>
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f8fa;
+    }
+
+   .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: #0D5791;
+      color: white;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #7CE04A;
+    }
+
+  .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline-block;
+  font-size: 17px;
+}
+
+.nav-links a {
+  text-decoration: none;     /* underline hatana */
+  color: inherit;            /* parent ka color use karna */
+  padding: 8px 14px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* hover effect */
+}
+
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .manage-btn {
+      background-color: white;
+      color: #0D5791;
+    }
+
+    .launch-btn {
+      background-color: #A1E231;
+      color: black;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .contact-info {
+      flex: 1;
+      margin-right: 40px;
+    }
+
+    .contact-info h2 {
+      color: #0D5791;
+    }
+
+    .contact-info ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .contact-info ul li {
+      margin: 15px 0;
+      font-size: 16px;
+    }
+
+    .contact-info i {
+      color: #0D5791;
+      margin-right: 10px;
+    }
+
+    /* Form Styling */
+    .contact-form {
+      flex: 1;
+    }
+
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-form input, 
+    .contact-form textarea {
+      margin-bottom: 15px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .send-btn {
+      background-color: #0D5791;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .send-btn:hover {
+      background-color: #094165;
+    }
+      /* Extra Contact Options Section */
+    .extra-contact {
+      max-width: 1100px;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    .extra-contact h2 {
+      color: #0D5791;
+    }
+
+    .extra-contact p {
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .contact-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .contact-card i {
+      font-size: 40px;
+      color: #0D5791;
+      margin-bottom: 15px;
+    }
+
+    .contact-card h3 {
+      color: #0D5791;
+      margin-bottom: 5px;
+    }
+
+    .contact-card p {
+      color: #444;
+      font-size: 14px;
+    }
+     .footer {
+  background-color: #0a4a82;
+  color: white;
+  padding: 40px 20px 20px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-logo img {
+  height: 80px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-links h4 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-social a img {
+  height: 24px;
+  margin: 0 8px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+}
+.footer-social {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;   /* center horizontally */
+  gap: 12px;              /* space between icons */
+}
+
+.footer-social a {
+  color: white;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #178bf1;
+}
+
+  </style>
+</head>
+<link rel="stylesheet" href="chatbot.css">
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="#">Contact Us</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn" onclick="window.location.href='register.html'">
+        Register Yourself
+      </button>
+      <button class="launch-btn" onclick="window.location.href='signup.html'">
+        Sign Up / Login
+      </button>
+    </div>
+  </nav>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="contact-info">
+      <h2>Get in Touch</h2>
+      <p>We’d love to hear from you! Fill out the form and our team will get back to you as soon as possible.</p>
+      <ul>
+        <li><i class="fa-solid fa-location-dot"></i> 123 Helping Hands Street, New Delhi, India</li>
+        <li><i class="fa-solid fa-phone"></i> +91 98765 43210</li>
+        <li><i class="fa-solid fa-envelope"></i> support@helpinghands.org</li>
+      </ul>
+    </div>
+
+    <div class="contact-form">
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit" class="send-btn">Send Message</button>
+      </form>
+    </div>
+  </section>
+   <!-- Extra Contact Ways Section -->
+  <section class="extra-contact">
+    <h2>Other easy ways to get in touch.</h2>
+    <p>If you have a question and would like to get in touch with us, we’re happy to help you find the answers you need.</p>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <i class="fa-solid fa-phone"></i>
+        <h3>Telephone</h3>
+        <p>+91 98765 43210</p>
+      </div>
+      <div class="contact-card">
+        <i class="fa-solid fa-envelope"></i>
+        <h3>Email</h3>
+        <p>support@helpinghands.org</p>
+      </div>
+      <div class="contact-card">
+        <i class="fa-solid fa-headset"></i>
+        <h3>Livechat</h3>
+        <p>Speak to an advisor!</p>
+      </div>
+      <div class="contact-card">
+        <i class="fa-solid fa-pen"></i>
+        <h3>Write to us</h3>
+        <p>Helping Hands Office, New Delhi, India</p>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="img/logo.jpeg" alt="HelpingHands Logo">
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Games</a></li>
+          <li><a href="#">Activities</a></li>
+          <li><a href="#">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-social">
+      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 HelpingHands. All rights reserved.</p>
+  </div>
+</footer>
+<div id="chatbot-placeholder"></div>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop page refresh
+
+    const name = document.querySelector('input[name="name"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const message = document.querySelector('textarea[name="message"]').value;
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("Thank you! Your message has been sent to the Admin.");
+        document.getElementById('contactForm').reset(); // Clear the form
+      } else {
+        alert("Oops! Something went wrong.");
+      }
+    } catch (error) {
+      alert("Failed to connect to the server.");
+    }
+  });
+</script>
+
+<script src="chatbot.js"></script>
+
+
+</body>
+</html>

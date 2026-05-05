@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>Stable Jelly Crush | UFO Puzzle</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Nunito:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;touch-action:none;}
+body{font-family:'Nunito',sans-serif;background:#050a18;color:white;min-height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
+
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d) infinite alternate;}
+@keyframes twinkle{0%{opacity:.2;} 100%{opacity:.8;}}
+
+.navbar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;margin-bottom:10px;z-index:100;}
+.logo{font-family:'Outfit',sans-serif;font-size:1.6rem;color:#ffeb3b;}
+.exit-btn{background:#f44336;color:white;text-decoration:none;padding:10px 20px;border-radius:30px;font-weight:bold;font-size:0.9rem;}
+
+.instr-bar{background:#ffeb3b;color:#0D5791;padding:12px 30px;border-radius:50px;font-weight:900;margin-bottom:15px;font-size:1.1rem;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+
+.board-container {
+    background: rgba(255,255,255,0.05);
+    padding: 10px; border: 6px solid #e040fb; border-radius: 25px;
+    box-shadow: 0 0 30px rgba(224, 64, 251, 0.4);
+}
+
+#grid {
+    display: grid; grid-template-columns: repeat(6, 60px);
+    grid-template-rows: repeat(6, 60px); gap: 8px;
+}
+
+.jelly {
+    width: 60px; height: 60px; border-radius: 15px; cursor: pointer;
+    position: relative; transition: all 0.25s ease;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Realistic Gradients */
+.j-0 { background: radial-gradient(circle at 30% 30%, #ff7675, #d63031); }
+.j-1 { background: radial-gradient(circle at 30% 30%, #74b9ff, #0984e3); }
+.j-2 { background: radial-gradient(circle at 30% 30%, #ffeaa7, #fdcb6e); }
+.j-3 { background: radial-gradient(circle at 30% 30%, #55efc4, #00b894); }
+
+.selected { transform: scale(1.15); filter: brightness(1.4); z-index: 10; border: 3px solid #fff; }
+
+.pop { animation: popOut 0.4s forwards; }
+@keyframes popOut {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); filter: brightness(2); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+.score-text { margin-top: 15px; font-family: 'Outfit'; font-size: 1.8rem; color: #7ce04a; }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<nav class="navbar">
+    <div class="logo"> JELLY CRUSH</div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="../down_syndrome.html" class="exit-btn">EXIT</a>
+    </div>
+</nav>
+
+<div class="instr-bar">Switch two jellies to make a line!</div>
+
+<div class="board-container">
+    <div id="grid"></div>
+</div>
+
+<div class="score-text">Score: <span id="score">0</span></div>
+
+<script>
+const gridEl = document.getElementById('grid');
+const scoreEl = document.getElementById('score');
+const width = 6;
+let squares = [];
+let score = 0;
+let activeIdx = null;
+
+function createBoard() {
+    gridEl.innerHTML = '';
+    squares = [];
+    for (let i = 0; i < width * width; i++) {
+        const square = document.createElement('div');
+        square.setAttribute('id', i);
+        let color = Math.floor(Math.random() * 4);
+        square.className = `jelly j-${color}`;
+        square.dataset.color = color; // Use data-attribute for matching
+        gridEl.appendChild(square);
+        squares.push(square);
+
+        square.addEventListener('mousedown', () => handleClick(i));
+        square.addEventListener('touchstart', (e) => { e.preventDefault(); handleClick(i); });
+    }
+}
+
+function handleClick(idx) {
+    if (activeIdx === null) {
+        activeIdx = idx;
+        squares[idx].classList.add('selected');
+    } else {
+        const first = activeIdx;
+        const second = idx;
+        
+        // Check if neighbor
+        const isNeighbor = [first-1, first+1, first-width, first+width].includes(second);
+        
+        if (isNeighbor) {
+            swap(first, second);
+        } else {
+            // Just change selection
+            squares[first].classList.remove('selected');
+            activeIdx = second;
+            squares[second].classList.add('selected');
+        }
+    }
+}
+
+function swap(idx1, idx2) {
+    const s1 = squares[idx1];
+    const s2 = squares[idx2];
+    
+    const c1 = s1.dataset.color;
+    const c2 = s2.dataset.color;
+
+    // Visual Swap
+    updateSquare(idx1, c2);
+    updateSquare(idx2, c1);
+    
+    // Tiny delay to let visuals catch up
+    setTimeout(() => {
+        if (!checkMatches()) {
+            // Fail: Swap back
+            updateSquare(idx1, c1);
+            updateSquare(idx2, c2);
+            speak("Try again!");
+        } else {
+            speak("Crush!");
+        }
+        s1.classList.remove('selected');
+        activeIdx = null;
+    }, 100);
+}
+
+function updateSquare(idx, color) {
+    squares[idx].className = `jelly j-${color}`;
+    squares[idx].dataset.color = color;
+}
+
+function checkMatches() {
+    let matchFound = false;
+    let toRemove = new Set();
+
+    // Check Rows
+    for (let r = 0; r < width; r++) {
+        for (let c = 0; c < width - 2; c++) {
+            let i = r * width + c;
+            let color = squares[i].dataset.color;
+            if (color && squares[i+1].dataset.color === color && squares[i+2].dataset.color === color) {
+                [i, i+1, i+2].forEach(x => toRemove.add(x));
+                matchFound = true;
+            }
+        }
+    }
+
+    // Check Columns
+    for (let c = 0; c < width; c++) {
+        for (let r = 0; r < width - 2; r++) {
+            let i = r * width + c;
+            let color = squares[i].dataset.color;
+            if (color && squares[i+width].dataset.color === color && squares[i+width*2].dataset.color === color) {
+                [i, i+width, i+width*2].forEach(x => toRemove.add(x));
+                matchFound = true;
+            }
+        }
+    }
+
+    if (matchFound) {
+        toRemove.forEach(idx => squares[idx].classList.add('pop'));
+        score += toRemove.size;
+        scoreEl.innerText = score;
+        setTimeout(refill, 400);
+    }
+    return matchFound;
+}
+
+function refill() {
+    squares.forEach(s => {
+        if (s.classList.contains('pop')) {
+            let newColor = Math.floor(Math.random() * 4);
+            s.classList.remove('pop');
+            updateSquare(s.id, newColor);
+        }
+    });
+    // Check for combos
+    setTimeout(checkMatches, 100);
+}
+
+function speak(t) {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+}
+
+// Background
+const sc = document.getElementById('stars');
+for(let i=0; i<60; i++){
+    let s = document.createElement('div');
+    s.className = 'star';
+    let sz = Math.random()*2;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*3+1}s`;
+    sc.appendChild(s);
+}
+
+createBoard();
+</script>
+</body>
+</html>

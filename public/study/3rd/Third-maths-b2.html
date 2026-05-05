@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B2- Division with Remainders | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1, Orange: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #7CE04A; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+        
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e83e8c;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #e83e8c;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #e83e8c; font-weight: 600; font-size: 1.4rem; }
+        .instruction { font-size: 1.3rem; color: #333; margin-bottom: 30px; font-weight: 500;}
+
+        /* MATH ZONE */
+        .math-zone {
+            background: #fdfdfd;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 250px;
+            justify-content: center;
+        }
+
+        .story-text {
+            color: #444;
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .equation-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: #333;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .input-blank {
+            width: 100px;
+            height: 60px;
+            border: 3px solid #0D5791;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-family: inherit;
+            color: #0D5791;
+            outline: none;
+            transition: 0.3s;
+        }
+        
+        .input-blank:focus {
+            border-color: #A1E231;
+            box-shadow: 0 0 10px rgba(161, 226, 49, 0.3);
+        }
+
+        .check-btn { padding: 15px 40px; background: #0D5791; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; width: 100%; margin-top: 25px; transition: 0.2s;}
+        .check-btn:hover { background: #0a4a82; }
+        
+        .next-btn { padding: 15px 40px; background: #A1E231; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; font-size: 1.1rem; width: 100%; margin-top: 10px; transition: 0.2s;}
+        
+        #feedback { margin-top: 20px; font-weight: bold; font-size: 1.3rem; min-height: 35px; }
+
+        /* FOOTER STYLES */
+        .footer {
+            background: #0a4a82;
+            color: white;
+            padding: 40px 20px 15px;
+            margin-top: auto;
+            width: 100%;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            max-width: 1100px;
+            margin: 0 auto;
+            gap: 50px;
+            align-items: flex-start;
+        }
+        .footer-logo-section { min-width: 120px; align-items: center; }
+        .footer-logo { display: flex; justify-content: center; align-items: center; height: 100px; width: 120px; }
+        .footer-logo img { height: 90px; width: auto; max-width: 140px; object-fit: contain; display: block; }
+        .footer-links-section { flex: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; text-transform: capitalize; }
+        .footer-links ul { padding: 0; margin: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; display: inline-block; }
+        .footer-links a:hover { color: #A1E231; transform: translateX(5px); }
+        .footer-social-section { min-width: 80px; align-items: center; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #A1E231; background: rgba(161, 226, 49, 0.15); border-color: #A1E231; transform: translateY(-5px) scale(1.1); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .footer-links { grid-template-columns: 1fr; gap: 20px; }
+            .footer-social { flex-direction: row; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-divide"></i></div>
+                <h2>B2- Division with Remainders</h2>
+            </div>
+
+            <p class="instruction">How many in each group, and how many are left over?</p>
+
+            <div class="math-zone">
+                <div id="story" class="story-text">
+                    <!-- Story content goes here -->
+                </div>
+                <div class="equation-box">
+                    <span id="equationParts"></span>
+                    <span>=</span>
+                    <div class="input-group">
+                        <span class="input-label">Quotient</span>
+                        <input type="number" id="ansInput" class="input-blank" placeholder="?">
+                    </div>
+                    <span style="font-weight: bold; color: #e83e8c;">R</span>
+                    <div class="input-group">
+                        <span class="input-label">Remainder</span>
+                        <input type="number" id="remInput" class="input-blank" placeholder="?">
+                    </div>
+                </div>
+            </div>
+
+            <button class="check-btn" onclick="checkAnswer()">Check My Answer</button>
+            <button class="next-btn" id="nextBtn" onclick="generateProblem()">Next Story <i class="fas fa-arrow-right"></i></button>
+            
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo"><img src="logo.png" alt="Logo" /></div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands. All rights reserved.</div>
+    </footer>
+
+    <script>
+        let correctQuotient = 0;
+        let correctRemainder = 0;
+
+        const templates = [
+            {
+                text: (total, groups) => `There are ${total} markers. If the teacher puts ${groups} markers into each box, how many boxes are full and how many markers are left over?`,
+                icon: "🖍️"
+            },
+            {
+                text: (total, groups) => `You have ${total} balloons to give to ${groups} friends equally. How many balloons does each friend get, and how many are left over?`,
+                icon: "🎈"
+            },
+            {
+                text: (total, groups) => `A farmer has ${total} eggs. He packs them into cartons of ${groups}. How many full cartons does he have, and how many extra eggs are there?`,
+                icon: "🥚"
+            },
+            {
+                text: (total, groups) => `There are ${total} kids playing a game. If they form teams of ${groups}, how many teams can they make and how many kids will be waiting for the next game?`,
+                icon: "🏃"
+            },
+            {
+                text: (total, groups) => `A baker has ${total} donuts. He puts ${groups} donuts in each bag. How many bags did he fill, and how many donuts are left?`,
+                icon: "🍩"
+            }
+        ];
+
+        function generateProblem() {
+            const storyDiv = document.getElementById('story');
+            const equationSpan = document.getElementById('equationParts');
+            const feedback = document.getElementById('feedback');
+            const nextBtn = document.getElementById('nextBtn');
+            const inputQ = document.getElementById('ansInput');
+            const inputR = document.getElementById('remInput');
+
+            // Reset UI
+            feedback.innerText = "";
+            nextBtn.style.display = "none";
+            inputQ.value = "";
+            inputR.value = "";
+            inputQ.disabled = false;
+            inputR.disabled = false;
+
+            // Logic: Total = (Quotient * Divisor) + Remainder
+            const divisor = Math.floor(Math.random() * 7) + 3; // Divisor (3-9)
+            const quotient = Math.floor(Math.random() * 8) + 2; // Quotient (2-9)
+            const remainder = Math.floor(Math.random() * (divisor - 1)) + 1; // Remainder (1 to divisor-1)
+            
+            const total = (quotient * divisor) + remainder;
+            
+            correctQuotient = quotient;
+            correctRemainder = remainder;
+
+            const template = templates[Math.floor(Math.random() * templates.length)];
+            
+            // Display
+            storyDiv.innerHTML = `${template.icon} ${template.text(total, divisor)}`;
+            equationSpan.innerText = `${total} ÷ ${divisor}`;
+            
+            inputQ.focus();
+        }
+
+        function checkAnswer() {
+            const inputQ = document.getElementById('ansInput');
+            const inputR = document.getElementById('remInput');
+            const userQ = parseInt(inputQ.value);
+            const userR = parseInt(inputR.value);
+            const feedback = document.getElementById('feedback');
+
+            if (isNaN(userQ) || isNaN(userR)) {
+                feedback.innerText = "Fill in both the quotient and the remainder! ✍️";
+                feedback.style.color = "#f39c12";
+                return;
+            }
+
+            if (userQ === correctQuotient && userR === correctRemainder) {
+                feedback.innerText = "🌟 Spot on! You handled those leftovers perfectly.";
+                feedback.style.color = "#27ae60";
+                document.getElementById('nextBtn').style.display = "block";
+                inputQ.disabled = true;
+                inputR.disabled = true;
+            } else if (userQ === correctQuotient && userR !== correctRemainder) {
+                feedback.innerText = "Almost! Your quotient is right, but check the remainder.";
+                feedback.style.color = "#e67e22";
+            } else {
+                feedback.innerText = "❌ Not quite. Try dividing the total again!";
+                feedback.style.color = "#e74c3c";
+            }
+        }
+
+        // Allow 'Enter' key to check answer
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        window.onload = () => generateProblem();
+    </script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C4 - Sound Order (FIXED)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',"Poppins",sans-serif;background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%);min-height:100vh;display:flex;flex-direction:column;}
+    
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .manage-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.2);}
+    .launch-btn{background:#A1E231;color:black;}
+    .launch-btn:hover{background:#8fd31a;transform:translateY(-2px);}
+    
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+    .container{background:white;border-radius:15px;padding:30px;max-width:1000px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+    
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #6f42c1;padding-bottom:10px;}
+    .header-icon{width:50px;height:50px;background:#6f42c1;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#6f42c1;font-weight:600;font-size:1.5rem;}
+    
+    .question-section{display:flex;flex-direction:column;align-items:center;gap:25px;margin-bottom:25px;padding:30px;border-radius:15px;background:#f8f9fa;border:3px dashed #6f42c1;}
+    .speaker-btn{
+      width:60px;height:60px;background:linear-gradient(135deg,#6f42c1,#5a32a3);
+      border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;font-size:1.8rem;color:white;transition:all .3s ease;
+      box-shadow:0 6px 20px rgba(111,66,193,0.4);position:relative;
+    }
+    .speaker-btn:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 10px 30px rgba(111,66,193,0.6);}
+    .speaker-btn:active{transform:translateY(-2px) scale(0.98);}
+    
+    .sequencing-area{display:flex;flex-direction:column;align-items:center;gap:25px;}
+    .instruction-text{font-weight:600;font-size:1.8rem;color:#6f42c1;text-align:center;}
+    
+    .sequence-zone{display:flex;gap:15px;align-items:center;justify-content:center;flex-wrap:wrap;min-height:120px;padding:20px;background:linear-gradient(135deg,#e9d5ff,#d6bcfa);border:4px dashed #6f42c1;border-radius:20px;}
+    .sound-slot{
+      background:linear-gradient(135deg,white,#f8f0fc);border:3px dashed #d6bcfa;border-radius:18px;
+      width:100px;height:100px;display:flex;align-items:center;justify-content:center;
+      font-size:3.5rem;font-weight:700;color:#4c1d95;user-select:none;transition:all .3s;
+      position:relative;
+    }
+    .sound-slot.drag-over{border-color:#28a745 !important;background:linear-gradient(135deg,#d4edda,#c3e6cb) !important;}
+    .sound-slot.filled{border-color:#6f42c1;background:#e9d5ff;transform:scale(1.05);}
+    .sound-slot.correct{border:4px solid #28a745;background:linear-gradient(135deg,#d4edda,#c3e6cb) !important;}
+    .sound-slot.wrong{border:4px solid #dc3545;background:linear-gradient(135deg,#f8d7da,#f5c6cb) !important;}
+    
+    .sounds-pool{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
+    .sound-card{
+      background:linear-gradient(135deg,#e9d5ff,#d6bcfa);border:4px solid #6f42c1;border-radius:20px;
+      padding:15px;font-size:3.5rem;font-weight:700;color:#4c1d95;display:flex;align-items:center;
+      justify-content:center;width:90px;height:90px;cursor:grab;box-shadow:0 8px 25px rgba(111,66,193,0.3);
+      user-select:none;transition:all .3s;overflow:hidden;touch-action:manipulation;
+    }
+    .sound-card:active{cursor:grabbing;transform:scale(0.95);}
+    .sound-card.dragging{opacity:0.5;transform:rotate(5deg);}
+    .sound-card.used{opacity:0.4;cursor:not-allowed;border-style:dashed;}
+    
+    .target-word{display:flex;align-items:center;justify-content:center;width:220px;height:140px;background:linear-gradient(135deg,#d4edda,#c3e6cb);border:5px solid #28a745;border-radius:25px;font-size:3.2rem;font-weight:700;color:#155724;box-shadow:0 12px 35px rgba(40,167,69,0.3);}
+    .emoji-container{display:flex;align-items:center;justify-content:center;gap:8px;}
+    .emoji-container span{font-size:2.8rem;line-height:1;}
+    .word-text{font-size:2.8rem;font-weight:700;}
+    
+    .submit-section{display:flex;justify-content:center;gap:15px;}
+    .check-btn{background:linear-gradient(135deg,#28a745,#218838);color:white;border:none;border-radius:12px;padding:14px 30px;font-weight:600;font-size:1.1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:8px;user-select:none;box-shadow:0 4px 15px rgba(40,167,69,0.3);}
+    .check-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(40,167,69,0.4);}
+    .check-btn:disabled{background:#94d3a2;cursor:not-allowed;transform:none;box-shadow:none;}
+    
+    .feedback{margin-top:20px;font-weight:600;font-size:1.4rem;text-align:center;min-height:40px;}
+    .feedback.correct{color:#155724;}
+    .feedback.incorrect{color:#721c24;}
+    .score-box{margin-top:30px;border:3px solid #6f42c1;border-radius:15px;padding:25px;text-align:center;font-weight:700;font-size:1.6rem;color:#6f42c1;background:linear-gradient(135deg,#f3e8ff,#e9d5ff);}
+    
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+    @media(max-width:768px){
+      .sequence-zone{flex-direction:column;gap:10px;}
+      .sound-slot{width:80px;height:80px;font-size:2.8rem;}
+      .sound-card{width:70px;height:70px;font-size:2.8rem;}
+      .target-word{width:180px;height:120px;font-size:2.5rem;}
+      .emoji-container span{font-size:2.2rem;}
+      .word-text{font-size:2.2rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn" onclick="window.location.href='auth.html'">Sign Up / Login</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">🔄</div>
+        <h2>C4-Sound Order (FIXED)</h2>
+      </div>
+
+      <div class="question-section">
+        <button class="speaker-btn" id="speakerBtn" title="Hear sounds">
+          <i class="fas fa-volume-up"></i>
+        </button>
+        <div class="sequencing-area">
+          <div class="instruction-text" id="instructionText">Put the sounds in order</div>
+          <div class="sequence-zone" id="sequenceZone"></div>
+          <div class="sounds-pool" id="soundsPool"></div>
+          <div class="target-word" id="targetWord"></div>
+        </div>
+      </div>
+      
+      <div class="submit-section">
+        <button class="check-btn" id="checkBtn" disabled onclick="checkSequence()">
+          <i class="fas fa-check"></i> Check Order
+        </button>
+      </div>
+      
+      <div id="feedback" class="feedback"></div>
+      <div id="scoreBox" class="score-box" style="display: none"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER - Same as before -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo">
+          <img src="logo.png" alt="HelpingHands Logo" />
+        </div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li><li><a href="#">Resources</a></li></ul></div>
+          <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li><li><a href="#">Blog</a></li></ul></div>
+          <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms & Conditions</a></li></ul></div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const synth = window.speechSynthesis;
+    
+    const questions = [
+      {sounds: ['c','a','t'], word: 'cat', picture: '🐱'},
+      {sounds: ['d','o','g'], word: 'dog', picture: '🐶'},
+      {sounds: ['b','a','t'], word: 'bat', picture: '🦇'},
+      {sounds: ['h','a','t'], word: 'hat', picture: '🎩'},
+      {sounds: ['p','i','g'], word: 'pig', picture: '🐷'},
+      {sounds: ['m','a','t'], word: 'mat', picture: '🛏️'},
+      {sounds: ['s','u','n'], word: 'sun', picture: '☀️'},
+      {sounds: ['f','i','sh'], word: 'fish', picture: '🐟'},
+      {sounds: ['r','a','t'], word: 'rat', picture: '🐀'},
+      {sounds: ['b','u','g'], word: 'bug', picture: '🐛'}
+    ];
+    
+    let currentIdx = 0, score = 0, currentQuestion = null, draggedElement = null, slotsFilled = 0;
+    
+    const elements = {
+      instructionText: document.getElementById('instructionText'),
+      sequenceZone: document.getElementById('sequenceZone'),
+      soundsPool: document.getElementById('soundsPool'),
+      targetWord: document.getElementById('targetWord'),
+      checkBtn: document.getElementById('checkBtn'),
+      feedback: document.getElementById('feedback'),
+      scoreBox: document.getElementById('scoreBox'),
+      speakerBtn: document.getElementById('speakerBtn')
+    };
+
+    function speakSounds() {
+      synth.cancel();
+      currentQuestion.sounds.forEach((sound, i) => {
+        setTimeout(() => {
+          const utterance = new SpeechSynthesisUtterance(sound);
+          utterance.lang = 'en-US';
+          utterance.pitch = 1.2;
+          utterance.rate = 0.8;
+          synth.speak(utterance);
+        }, i * 800);
+      });
+    }
+
+    elements.speakerBtn.addEventListener('click', speakSounds);
+
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      currentQuestion = questions[currentIdx];
+      slotsFilled = 0;
+      draggedElement = null;
+      
+      elements.instructionText.textContent = `Put the sounds in order to make "${currentQuestion.word}"`;
+      elements.feedback.textContent = '';
+      elements.feedback.className = 'feedback';
+      elements.checkBtn.disabled = true;
+      elements.scoreBox.style.display = 'none';
+
+      // ✅ FIXED: Create slots with INDIVIDUAL event handlers
+      elements.sequenceZone.innerHTML = '';
+      for (let i = 0; i < currentQuestion.sounds.length; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'sound-slot';
+        slot.dataset.index = i;
+        slot.draggable = false;
+        
+        // ✅ INDIVIDUAL HANDLERS PER SLOT
+        slot.addEventListener('dragover', handleDragOver);
+        slot.addEventListener('dragenter', handleDragEnter);
+        slot.addEventListener('dragleave', handleDragLeave);
+        slot.addEventListener('drop', handleDrop);
+        
+        elements.sequenceZone.appendChild(slot);
+      }
+
+      // Create shuffled sound pool
+      const shuffledSounds = shuffleArray([...currentQuestion.sounds]);
+      elements.soundsPool.innerHTML = '';
+      shuffledSounds.forEach(sound => {
+        const card = document.createElement('div');
+        card.className = 'sound-card';
+        card.dataset.sound = sound;
+        card.textContent = sound;
+        card.draggable = true;
+        
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragend', handleDragEnd);
+        
+        elements.soundsPool.appendChild(card);
+      });
+
+      // Show target word
+      const emojiContainer = document.createElement('div');
+      emojiContainer.className = 'emoji-container';
+      emojiContainer.innerHTML = `<span>${currentQuestion.picture}</span><span class="word-text">${currentQuestion.word}</span>`;
+      elements.targetWord.innerHTML = '';
+      elements.targetWord.appendChild(emojiContainer);
+
+      speakSounds();
+    }
+
+    // ✅ FIXED DRAG HANDLERS
+    function handleDragStart(e) {
+      draggedElement = this;
+      e.dataTransfer.setData('text/plain', this.dataset.sound);
+      e.dataTransfer.effectAllowed = 'move';
+      this.classList.add('dragging');
+    }
+
+    function handleDragEnd(e) {
+      this.classList.remove('dragging');
+      draggedElement = null;
+      Array.from(elements.sequenceZone.children).forEach(slot => {
+        slot.classList.remove('drag-over');
+      });
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      return false;
+    }
+
+    function handleDragEnter(e) {
+      e.preventDefault();
+      if (!this.classList.contains('filled')) {
+        this.classList.add('drag-over');
+      }
+    }
+
+    function handleDragLeave(e) {
+      this.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      
+      if (this.classList.contains('filled') || !draggedElement) return;
+      
+      const sound = e.dataTransfer.getData('text/plain');
+      this.textContent = sound;
+      this.dataset.sound = sound;
+      this.classList.add('filled');
+      slotsFilled++;
+      
+      draggedElement.classList.add('used');
+      
+      if (slotsFilled === currentQuestion.sounds.length) {
+        elements.checkBtn.disabled = false;
+      }
+    }
+
+    function checkSequence() {
+      const slots = Array.from(elements.sequenceZone.children);
+      const userSequence = slots.map(slot => slot.dataset.sound).join('');
+      const correctSequence = currentQuestion.sounds.join('');
+      
+      slots.forEach((slot, i) => {
+        slot.classList.remove('correct', 'wrong', 'drag-over');
+        if (slot.dataset.sound === currentQuestion.sounds[i]) {
+          slot.classList.add('correct');
+        } else {
+          slot.classList.add('wrong');
+        }
+      });
+
+      if (userSequence === correctSequence) {
+        elements.feedback.textContent = 'Perfect order! 🎉';
+        elements.feedback.classList.add('correct');
+        score++;
+        setTimeout(() => {
+          currentIdx++;
+          if (currentIdx < questions.length) {
+            loadQuestion();
+          } else {
+            showFinalScore();
+          }
+        }, 1500);
+      } else {
+        elements.feedback.textContent = `Try again! Correct order: ${correctSequence}`;
+        elements.feedback.classList.add('incorrect');
+      }
+    }
+
+    function showFinalScore() {
+      elements.sequenceZone.parentElement.innerHTML = '<div style="text-align:center;font-size:2.5rem;color:#6f42c1;">Sound Sequencing Master! 🎉</div>';
+      elements.soundsPool.parentElement.innerHTML = '';
+      elements.checkBtn.style.display = 'none';
+      elements.feedback.style.display = 'none';
+      elements.scoreBox.style.display = 'block';
+      elements.scoreBox.innerHTML = `Your final score is <strong>${score} out of ${questions.length}</strong>`;
+    }
+
+    // Initialize
+    loadQuestion();
+  </script>
+</body>
+</html>

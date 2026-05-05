@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D1 - Unit Conversion Lab | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Gold: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f7fa 0%, #f1f8e9 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #A1E231;
+            padding-bottom: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            background: #A1E231;
+            border-radius: 50%;
+            color: #0D5791;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #0D5791; font-weight: 600; font-size: 1.3rem; margin: 0; }
+
+        .hint {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 25px;
+            padding: 12px;
+            background: #fff9c4;
+            border-left: 5px solid #f39c12;
+            border-radius: 4px;
+        }
+
+        /* CONVERSION INTERFACE */
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .converter-grid { grid-template-columns: 1fr; }
+        }
+
+        /* INPUT CARD */
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus { border-color: #0D5791; }
+
+        /* LADDER VISUALIZER */
+        .ladder {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 15px;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .step.active {
+            background: #A1E231;
+            color: #0D5791;
+            font-weight: bold;
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(161, 226, 49, 0.3);
+        }
+
+        .step-val { font-family: 'Roboto Mono', monospace; }
+
+        /* RESULT AREA */
+        .result-display {
+            margin-top: 25px;
+            text-align: center;
+            padding: 25px;
+            background: #0D5791;
+            color: white;
+            border-radius: 12px;
+        }
+
+        .result-value {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #A1E231;
+        }
+
+        .math-logic {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-logo { height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; }
+        .footer-links ul { padding: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; }
+        .footer-links a:hover { color: #A1E231; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #A1E231; transform: translateY(-5px); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-left">
+                    <div class="header-icon"><i class="fas fa-arrows-left-right"></i></div>
+                    <h2>D1 - Metric Units Conversion Lab</h2>
+                </div>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-info-circle" style="color: #f39c12; margin-right: 8px;"></i>
+                <strong>Pro Tip:</strong> Moving <strong>Down</strong> the ladder? Multiply by 10 (shift decimal right). Moving <strong>Up</strong>? Divide by 10 (shift decimal left).
+            </div>
+
+            <div class="converter-grid">
+                <!-- Left Side: Controls -->
+                <div class="card">
+                    <div class="input-group">
+                        <label>Base Type</label>
+                        <select id="base-type" onchange="updateLabels()">
+                            <option value="m">Length (Meters)</option>
+                            <option value="g">Mass (Grams)</option>
+                            <option value="L">Volume (Liters)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Enter Value</label>
+                        <input type="number" id="input-val" value="5" oninput="convert()">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="input-group">
+                            <label>From</label>
+                            <select id="from-unit" onchange="convert()"></select>
+                        </div>
+                        <div class="input-group">
+                            <label>To</label>
+                            <select id="to-unit" onchange="convert()"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Visualizer -->
+                <div class="card">
+                    <label>The Metric Ladder</label>
+                    <div class="ladder" id="metric-ladder">
+                        <!-- Ladder steps generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-display">
+                <div id="result-label">Resulting Value</div>
+                <div class="result-value" id="result-text">5,000 m</div>
+                <div class="math-logic" id="math-logic">5 × 1,000 = 5,000</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Science & Math Tools</div>
+    </footer>
+
+    <script>
+        const units = [
+            { name: "Kilo", prefix: "k", power: 3 },
+            { name: "Hecto", prefix: "h", power: 2 },
+            { name: "Deka", prefix: "da", power: 1 },
+            { name: "Base", prefix: "", power: 0 },
+            { name: "Deci", prefix: "d", power: -1 },
+            { name: "Centi", prefix: "c", power: -2 },
+            { name: "Milli", prefix: "m", power: -3 }
+        ];
+
+        function updateLabels() {
+            const base = document.getElementById('base-type').value;
+            const fromSelect = document.getElementById('from-unit');
+            const toSelect = document.getElementById('to-unit');
+            const ladderDiv = document.getElementById('metric-ladder');
+            
+            const prevFrom = fromSelect.value || "k";
+            const prevTo = toSelect.value || "";
+
+            fromSelect.innerHTML = "";
+            toSelect.innerHTML = "";
+            ladderDiv.innerHTML = "";
+
+            units.forEach(u => {
+                const label = u.name + (u.prefix ? ` (${u.prefix}${base})` : ` (${base})`);
+                
+                // Dropdowns
+                let optFrom = new Option(label, u.prefix);
+                let optTo = new Option(label, u.prefix);
+                fromSelect.add(optFrom);
+                toSelect.add(optTo);
+
+                // Ladder
+                const step = document.createElement('div');
+                step.className = 'step';
+                step.id = `step-${u.prefix}`;
+                step.innerHTML = `<span>${u.name}</span> <span class="step-val">10<sup>${u.power}</sup></span>`;
+                ladderDiv.appendChild(step);
+            });
+
+            fromSelect.value = prevFrom;
+            toSelect.value = prevTo;
+            convert();
+        }
+
+        function convert() {
+            const val = parseFloat(document.getElementById('input-val').value) || 0;
+            const fromPrefix = document.getElementById('from-unit').value;
+            const toPrefix = document.getElementById('to-unit').value;
+            const base = document.getElementById('base-type').value;
+
+            const fromUnit = units.find(u => u.prefix === fromPrefix);
+            const toUnit = units.find(u => u.prefix === toPrefix);
+
+            // Calculation
+            const powerDiff = fromUnit.power - toUnit.power;
+            const multiplier = Math.pow(10, powerDiff);
+            const result = val * multiplier;
+
+            // Update UI
+            document.getElementById('result-text').innerText = `${result.toLocaleString()} ${toPrefix}${base}`;
+            
+            const op = powerDiff >= 0 ? "×" : "÷";
+            const factor = Math.abs(multiplier);
+            document.getElementById('math-logic').innerText = `${val} ${op} ${Math.pow(10, Math.abs(powerDiff)).toLocaleString()} = ${result.toLocaleString()}`;
+
+            // Highlight ladder
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${fromPrefix}`).classList.add('active');
+            document.getElementById(`step-${toPrefix}`).classList.add('active');
+        }
+
+        window.onload = updateLabels;
+    </script>
+</body>
+</html>

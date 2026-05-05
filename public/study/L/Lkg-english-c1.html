@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C1 - Blend Onset + Rime</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',"Poppins",sans-serif;background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%);min-height:100vh;display:flex;flex-direction:column;}
+    
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .manage-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.2);}
+    .launch-btn{background:#A1E231;color:black;}
+    .launch-btn:hover{background:#8fd31a;transform:translateY(-2px);}
+    
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+    .container{background:white;border-radius:15px;padding:30px;max-width:1000px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+    
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #6f42c1;padding-bottom:10px;}
+    .header-icon{width:50px;height:50px;background:#6f42c1;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#6f42c1;font-weight:600;font-size:1.5rem;}
+    
+    .question-section{display:flex;flex-direction:column;align-items:center;gap:20px;margin-bottom:25px;padding:25px;border-radius:15px;background:#f8f9fa;border:3px dashed #6f42c1;}
+    .speaker-btn{
+      width:60px;height:60px;background:linear-gradient(135deg,#6f42c1,#5a32a3);
+      border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;font-size:1.8rem;color:white;transition:all .3s ease;
+      box-shadow:0 6px 20px rgba(111,66,193,0.4);position:relative;
+    }
+    .speaker-btn:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 10px 30px rgba(111,66,193,0.6);}
+    .speaker-btn:active{transform:translateY(-2px) scale(0.98);}
+    
+    .blend-area{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;}
+    .onset-rime-container{display:flex;flex-direction:column;align-items:center;gap:15px;}
+    .label{font-weight:600;font-size:1.3rem;color:#6f42c1;text-transform:uppercase;}
+    .onset-card,.rime-card{background:linear-gradient(135deg,#e9d5ff,#d6bcfa);border:4px solid #6f42c1;border-radius:20px;padding:20px 25px;font-size:3.2rem;font-weight:700;color:#4c1d95;display:flex;align-items:center;justify-content:center;min-width:110px;min-height:110px;max-width:140px;cursor:grab;box-shadow:0 8px 25px rgba(111,66,193,0.3);user-select:none;transition:all .3s;overflow:hidden;}
+    .onset-card:active,.rime-card:active{cursor:grabbing;transform:scale(0.95);}
+    
+    .target-word{display:flex;align-items:center;justify-content:center;width:220px;height:140px;background:linear-gradient(135deg,#d4edda,#c3e6cb);border:5px dashed #28a745;border-radius:25px;font-size:3.2rem;font-weight:700;color:#155724;box-shadow:0 12px 35px rgba(40,167,69,0.3);overflow:hidden;word-break:break-all;}
+    .target-word.empty::before{content:"??";color:#adb5bd;}
+    
+    /* ✅ EMOJI FIX - Specific emoji container */
+    .emoji-container{display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;}
+    .emoji-container span{font-size:2.8rem;line-height:1;display:inline-block;}
+    .word-text{font-size:2.8rem;font-weight:700;}
+    
+    .options-container{background:#f3e8ff;border-radius:20px;padding:35px 25px;margin-bottom:25px;border:3px solid #6f42c1;box-shadow:0 10px 35px rgba(0,0,0,0.15);}
+    .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;}
+    .option-btn{background:linear-gradient(135deg,#e9d5ff,#d6bcfa);border:3px solid #6f42c1;border-radius:18px;height:140px;font-size:2.8rem;font-weight:700;color:#4c1d95;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:15px;user-select:none;transition:all .3s ease;box-shadow:0 8px 25px rgba(111,66,193,0.2);}
+    .option-btn:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 15px 35px rgba(111,66,193,0.4);}
+    .option-btn:active{transform:translateY(-2px);}
+    .option-btn.correct{background:linear-gradient(135deg,#28a745,#20c997);border-color:#218838;color:white;}
+    .option-btn.used{opacity:0.5;cursor:not-allowed;}
+    
+    .submit-section{display:flex;justify-content:center;}
+    .submit-btn{background:linear-gradient(135deg,#28a745,#218838);color:white;border:none;border-radius:12px;padding:14px 40px;font-weight:600;font-size:1.2rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:10px;user-select:none;box-shadow:0 4px 15px rgba(40,167,69,0.3);}
+    .submit-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(40,167,69,0.4);}
+    .submit-btn:disabled{background:#94d3a2;cursor:not-allowed;transform:none;box-shadow:none;}
+    
+    .feedback{margin-top:20px;font-weight:600;font-size:1.4rem;text-align:center;min-height:40px;}
+    .feedback.correct{color:#155724;}
+    .feedback.incorrect{color:#721c24;}
+    .score-box{margin-top:30px;border:3px solid #6f42c1;border-radius:15px;padding:25px;text-align:center;font-weight:700;font-size:1.6rem;color:#6f42c1;user-select:none;background:linear-gradient(135deg,#f3e8ff,#e9d5ff);}
+    
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+    @media(max-width:1024px){
+      .navbar{flex-wrap:wrap;padding:10px 15px;gap:10px;}
+      .nav-links{order:3;width:100%;justify-content:center;gap:10px;font-size:0.85rem;}
+      .nav-buttons{gap:8px;}.nav-buttons button{padding:6px 12px;font-size:0.85rem;}
+      .footer{padding:30px 20px 15px;}
+      .footer-content{grid-template-columns:1fr;gap:40px;text-align:center;}
+    }
+    @media(max-width:768px){
+      .blend-area{flex-direction:column;gap:20px;}
+      .onset-card,.rime-card{font-size:2.5rem;min-width:100px;min-height:100px;max-width:130px;}
+      .target-word{width:180px;height:120px;font-size:2.5rem;}
+      .emoji-container span{font-size:2.2rem;}
+      .word-text{font-size:2.2rem;}
+      .options{grid-template-columns:repeat(2,1fr);}
+      .option-btn{height:120px;font-size:2.2rem;}
+      .footer{padding:20px 15px 10px;}
+    }
+    @media(max-width:480px){
+      .onset-card,.rime-card{font-size:2.2rem;min-width:90px;}
+      .target-word{width:160px;font-size:2rem;}
+      .emoji-container span{font-size:2rem;}
+      .word-text{font-size:2rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn" onclick="window.location.href='auth.html'">Sign Up / Login</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">🧩</div>
+        <h2>C1 - Blend Onset + Rime</h2>
+      </div>
+
+      <div class="question-section" aria-live="polite">
+        <button class="speaker-btn" id="speakerBtn" title="Hear instructions">
+          <i class="fas fa-volume-up"></i>
+        </button>
+        <div class="blend-area" id="blendArea">
+          <div class="onset-rime-container">
+            <div class="label">Onset</div>
+            <div class="onset-card" id="onsetCard" draggable="true">b</div>
+          </div>
+          <div class="target-word" id="targetWord">??</div>
+          <div class="onset-rime-container">
+            <div class="label">Rime</div>
+            <div class="rime-card" id="rimeCard" draggable="true">at</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-container">
+        <div class="options" id="optionsContainer"></div>
+      </div>
+      
+      <div class="submit-section">
+        <button class="submit-btn" id="submitBtn" disabled onclick="checkAnswer()">
+          <i class="fas fa-check"></i> Check Word
+        </button>
+      </div>
+      
+      <div id="feedback" class="feedback" aria-live="assertive"></div>
+      <div id="scoreBox" class="score-box" style="display: none"></div>
+    </div>
+  </div>
+
+  <!-- FULL FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo">
+          <img src="logo.png" alt="HelpingHands Logo" />
+        </div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Games</a></li>
+              <li><a href="#">Activities</a></li>
+              <li><a href="#">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const synth = window.speechSynthesis;
+    
+    const questions = [
+      {onset: 'b', rime: 'at', word: 'bat', picture: '🦇'},
+      {onset: 'c', rime: 'at', word: 'cat', picture: '🐱'},
+      {onset: 'h', rime: 'at', word: 'hat', picture: '🎩'},
+      {onset: 'm', rime: 'at', word: 'mat', picture: '🛏️'},
+      {onset: 'r', rime: 'at', word: 'rat', picture: '🐀'},
+      {onset: 's', rime: 'at', word: 'sat', picture: '🪑'},
+      {onset: 'f', rime: 'at', word: 'fat', picture: '🥑'},
+      {onset: 'p', rime: 'an', word: 'pan', picture: '🥘'},
+      {onset: 'm', rime: 'an', word: 'man', picture: '👨'},
+      {onset: 'c', rime: 'an', word: 'can', picture: '🥫'}
+    ];
+    
+    let currentIdx = 0, score = 0, currentQuestion = null, draggedItem = null;
+    
+    const elements = {
+      onsetCard: document.getElementById('onsetCard'),
+      rimeCard: document.getElementById('rimeCard'),
+      targetWord: document.getElementById('targetWord'),
+      optionsContainer: document.getElementById('optionsContainer'),
+      submitBtn: document.getElementById('submitBtn'),
+      feedback: document.getElementById('feedback'),
+      scoreBox: document.getElementById('scoreBox'),
+      speakerBtn: document.getElementById('speakerBtn'),
+      blendArea: document.getElementById('blendArea')
+    };
+
+    function speak(text) {
+      synth.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.pitch = 1.1;
+      utterance.rate = 0.9;
+      synth.speak(utterance);
+    }
+
+    elements.speakerBtn.addEventListener('click', () => {
+      speak(`Blend ${currentQuestion.onset} with ${currentQuestion.rime} to make ${currentQuestion.word}`);
+    });
+
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function loadQuestion() {
+      currentQuestion = questions[currentIdx];
+      elements.onsetCard.textContent = currentQuestion.onset;
+      elements.rimeCard.textContent = currentQuestion.rime;
+      elements.targetWord.innerHTML = '??';
+      elements.targetWord.className = 'target-word empty';
+      elements.feedback.textContent = '';
+      elements.feedback.className = 'feedback';
+      elements.submitBtn.disabled = true;
+      elements.scoreBox.style.display = 'none';
+
+      const options = [currentQuestion.word];
+      while (options.length < 6) {
+        const randOnset = ['b','c','d','f','h','m','p','r','s','t'][Math.floor(Math.random()*10)];
+        const randRime = ['at','an','ap','in','ip','og','op'][Math.floor(Math.random()*7)];
+        const fakeWord = randOnset + randRime;
+        if (fakeWord !== currentQuestion.word && !options.includes(fakeWord)) {
+          options.push(fakeWord);
+        }
+      }
+
+      const shuffledOptions = shuffleArray(options);
+      elements.optionsContainer.innerHTML = '';
+      shuffledOptions.forEach(word => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.dataset.word = word;
+        btn.innerHTML = `${word}`;
+        btn.addEventListener('click', () => selectOption(word));
+        elements.optionsContainer.appendChild(btn);
+      });
+
+      speak(`Blend ${currentQuestion.onset} and ${currentQuestion.rime}`);
+    }
+
+    function selectOption(selectedWord) {
+      if (selectedWord === currentQuestion.word) {
+        // ✅ EMOJI FIX - Use structured container
+        const emojiContainer = document.createElement('div');
+        emojiContainer.className = 'emoji-container';
+        emojiContainer.innerHTML = `<span>${currentQuestion.picture}</span><span class="word-text">${currentQuestion.word}</span>`;
+        elements.targetWord.innerHTML = '';
+        elements.targetWord.appendChild(emojiContainer);
+        elements.targetWord.className = 'target-word';
+        elements.submitBtn.disabled = false;
+        elements.feedback.textContent = 'Perfect! 🎉';
+        elements.feedback.classList.add('correct');
+        score++;
+      } else {
+        elements.feedback.textContent = 'Try blending the onset and rime together!';
+        elements.feedback.classList.add('incorrect');
+      }
+    }
+
+    function checkAnswer() {
+      currentIdx++;
+      if (currentIdx < questions.length) {
+        loadQuestion();
+      } else {
+        elements.blendArea.innerHTML = '<div style="text-align:center;font-size:2.5rem;color:#6f42c1;">Word Blending Master! 🎉</div>';
+        elements.optionsContainer.parentElement.innerHTML = '';
+        elements.submitBtn.style.display = 'none';
+        elements.feedback.style.display = 'none';
+        elements.scoreBox.style.display = 'block';
+        elements.scoreBox.innerHTML = `Your final score is <strong>${score} out of ${questions.length}</strong>`;
+      }
+    }
+
+    // Drag and Drop
+    function handleDragStart(e) {
+      draggedItem = e.target;
+      e.target.style.opacity = '0.5';
+    }
+
+    function handleDragEnd(e) {
+      e.target.style.opacity = '1';
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      const word = elements.onsetCard.textContent + elements.rimeCard.textContent;
+      if (word === currentQuestion.word) {
+        selectOption(word);
+      }
+    }
+
+    elements.onsetCard.addEventListener('dragstart', handleDragStart);
+    elements.onsetCard.addEventListener('dragend', handleDragEnd);
+    elements.rimeCard.addEventListener('dragstart', handleDragStart);
+    elements.rimeCard.addEventListener('dragend', handleDragEnd);
+    elements.targetWord.addEventListener('dragover', handleDragOver);
+    elements.targetWord.addEventListener('drop', handleDrop);
+
+    // Initialize
+    loadQuestion();
+  </script>
+</body>
+</html>

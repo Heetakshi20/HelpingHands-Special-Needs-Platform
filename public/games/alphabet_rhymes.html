@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhyme Time Adventure</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        :root {
+            --purple: #9c27b0;
+            --mint: #00acc1;
+            --orange: #ff9800;
+            --bg: #0f172a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #1e293b, #020617);
+            color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.8); padding: 15px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 4px solid var(--mint);
+        }
+
+        .game-stage {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 20px; gap: 30px;
+        }
+
+        /* --- Rhyme Cards Sidebar --- */
+        .sidebar {
+            width: 280px; height: 70vh; overflow-y: auto;
+            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 15px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .base-word-btn {
+            padding: 15px; border-radius: 12px; border: none; cursor: pointer;
+            font-weight: 900; font-size: 1.1rem; text-align: center;
+            background: white; color: var(--bg); transition: 0.3s;
+            box-shadow: 0 4px 0 #cbd5e1;
+        }
+        .base-word-btn:hover { background: var(--orange); color: white; transform: scale(1.05); }
+
+        /* --- Main Display Area --- */
+        .display-screen {
+            flex: 1; max-width: 700px; height: 70vh;
+            background: rgba(255,255,255,0.1); border-radius: 40px;
+            border: 6px solid rgba(0, 172, 193, 0.3);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative;
+        }
+
+        .rhyme-cloud {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+            margin-top: 30px;
+        }
+
+        .word-bubble {
+            background: white; color: var(--bg); padding: 20px 30px;
+            border-radius: 50px; font-size: 2.5rem; font-weight: 900;
+            font-family: 'Outfit'; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        @keyframes bounce { 
+            from { transform: translateY(0); } 
+            to { transform: translateY(-10px); } 
+        }
+
+        #play-overlay {
+            position: fixed; inset: 0; background: var(--bg); z-index: 2000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--mint); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="play-overlay">
+        <button onclick="start()" style="padding:20px 60px; font-size:2rem; border-radius:50px; background:var(--mint); border:none; color:white; font-weight:900; cursor:pointer;">START RHYMING!</button>
+    </div>
+
+    <header class="header">
+        <h1 style="font-family:'Outfit'; color:var(--mint);">🎵 Rhyme Time Adventure</h1>
+        <a href="../autism.html" style="color:white; text-decoration:none; font-weight:bold; border:2px solid white; padding:5px 20px; border-radius:30px;">EXIT</a>
+    </header>
+
+    <div class="game-stage">
+        <div class="sidebar" id="word-list"></div>
+
+        <div class="display-screen" id="stage">
+            <h2 id="instruction" style="opacity:0.5;">Select a word to find its friends!</h2>
+            <div class="rhyme-cloud" id="cloud"></div>
+        </div>
+    </div>
+
+    <script>
+        const rhymes = [
+            { base: "CAT", group: ["HAT", "BAT", "MAT"], emoji: "🐱" },
+            { base: "SUN", group: ["RUN", "FUN", "BUN"], emoji: "☀️" },
+            { base: "DOG", group: ["FOG", "LOG", "JOG"], emoji: "🐶" },
+            { base: "PEN", group: ["TEN", "HEN", "MEN"], emoji: "🖊️" },
+            { base: "BOX", group: ["FOX", "SOX"], emoji: "📦" },
+            { base: "CAKE", group: ["BAKE", "LAKE", "MAKE"], emoji: "🍰" }
+        ];
+
+        function start() { document.getElementById('play-overlay').style.display = 'none'; }
+
+        const list = document.getElementById('word-list');
+        rhymes.forEach((item, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'base-word-btn';
+            btn.innerHTML = `${item.emoji} ${item.base}`;
+            btn.onclick = () => showRhymes(index);
+            list.appendChild(btn);
+        });
+
+        function showRhymes(index) {
+            const data = rhymes[index];
+            const cloud = document.getElementById('cloud');
+            const instr = document.getElementById('instruction');
+            
+            instr.style.display = 'none';
+            cloud.innerHTML = ''; // Clear old
+
+            // Add the base word first
+            addBubble(data.base, "#ff9800");
+
+            // Add rhyming words with delay
+            data.group.forEach((word, i) => {
+                setTimeout(() => {
+                    addBubble(word, "white");
+                    speak(word);
+                }, (i + 1) * 800);
+            });
+
+            speak(`Words that rhyme with ${data.base} are...`);
+        }
+
+        function addBubble(text, bg) {
+            const b = document.createElement('div');
+            b.className = 'word-bubble';
+            b.innerText = text;
+            b.style.background = bg;
+            if(bg !== "white") b.style.color = "white";
+            document.getElementById('cloud').appendChild(b);
+        }
+
+        function speak(text) {
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 0.8;
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>

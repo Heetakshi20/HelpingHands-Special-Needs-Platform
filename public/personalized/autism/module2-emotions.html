@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Module 2 - Emotions</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+      /* Base variables and styles */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Times New Roman', Times, serif; background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%); min-height: 100vh; display: flex; flex-direction: column; }
+
+      /* Navbar */
+      .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #0D5791; color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+      .logo { font-size: 26px; font-weight: bold; cursor: pointer;}
+      .logo span { color: #7CE04A; }
+      .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+      .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+      .nav-links a:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+      /* Main Layout */
+      .main-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+      .container { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 900px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); }
+
+      /* Header & TTS */
+      .header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; border-bottom: 3px solid #17a2b8; padding-bottom: 15px; }
+      .header-icon { width: 55px; height: 55px; background: #17a2b8; border-radius: 50%; color: white; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; }
+      h2 { color: #17a2b8; font-weight: 700; font-size: 1.8rem; }
+
+      .question-bar { display: flex; justify-content: space-between; align-items: center; background: #f0fbff; padding: 20px 30px; border-radius: 15px; margin-bottom: 30px; border: 2px solid #87ceeb; }
+      .question-text { font-size: 1.8rem; font-weight: 600; color: #333; }
+      
+      .speaker-icon { width: 50px; height: 50px; background: #87ceeb; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(135,206,235,0.4); }
+      .speaker-icon:hover { background: #17a2b8; transform: scale(1.1); }
+
+      /* Options Grid */
+      .options { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 30px; }
+      
+      .option-btn { background: #fff; border: 3px solid #e0e0e0; border-radius: 20px; width: 140px; height: 140px; font-size: 5rem; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      .option-btn:hover { border-color: #17a2b8; transform: translateY(-8px) scale(1.05); box-shadow: 0 10px 25px rgba(23,162,184,0.2); }
+      
+      /* Animations for Feedback */
+      .option-btn.correct { background: #d4edda; border-color: #28a745; animation: pulse-green 0.5s ease; }
+      .option-btn.incorrect { background: #f8d7da; border-color: #dc3545; opacity: 0.6; animation: shake-red 0.4s ease; }
+
+      @keyframes pulse-green {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+      @keyframes shake-red {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+      }
+
+      /* Controls & Feedback */
+      .feedback { text-align: center; font-size: 1.5rem; font-weight: 700; min-height: 40px; margin-bottom: 20px; opacity: 0; transition: opacity 0.3s; }
+      .feedback.show { opacity: 1; }
+      .feedback.correct-text { color: #28a745; }
+      .feedback.incorrect-text { color: #dc3545; }
+
+      .submit-btn { background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; border-radius: 12px; padding: 15px 50px; font-weight: 700; font-size: 1.3rem; cursor: pointer; display: block; margin: 0 auto; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3); }
+      .submit-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4); }
+      .submit-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; transform: none; }
+
+      .score-box { display: none; margin-top: 30px; background: #f0f9ff; border: 3px solid #87ceeb; border-radius: 15px; padding: 30px; text-align: center; font-weight: 700; font-size: 2rem; color: #0D5791; animation: pulse-green 1s ease; }
+      
+      /* Footer */
+      .footer { background-color: #0a4a82; color: white; padding: 20px; text-align: center; margin-top: auto; }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="logo" onclick="window.location.href='index.html'">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Back to Modules</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        
+        <div class="header">
+          <div class="header-icon">🤝</div>
+          <h2>Module 2: Emotions & Faces</h2>
+        </div>
+
+        <div class="question-bar">
+          <div class="question-text" id="questionText">Loading...</div>
+          <div class="speaker-icon" onclick="speakText(currentQuestion.question)" title="Read Aloud">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="options" id="optionsContainer">
+          </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button class="submit-btn" id="nextBtn" disabled onclick="nextQuestion()">
+          Next Activity <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+        </button>
+
+        <div id="scoreBox" class="score-box"></div>
+
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 HelpingHands. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // The Curriculum Data for this specific module
+      const questions = [
+        {
+          question: "Which face is happy?",
+          options: ["😢", "😊", "😡"],
+          answer: "😊"
+        },
+        {
+          question: "Who is feeling sad?",
+          options: ["😊", "😢", "😨"],
+          answer: "😢"
+        },
+        {
+          question: "Which face looks angry?",
+          options: ["😡", "😊", "😢"],
+          answer: "😡"
+        },
+        {
+          question: "Who is feeling scared?",
+          options: ["😊", "😡", "😨"],
+          answer: "😨"
+        }
+      ];
+
+      let currentIdx = 0;
+      let score = 0;
+      let answered = false;
+      let currentQuestion = null;
+
+      // DOM Elements
+      const questionTextEl = document.getElementById("questionText");
+      const optionsContainer = document.getElementById("optionsContainer");
+      const feedbackEl = document.getElementById("feedback");
+      const nextBtn = document.getElementById("nextBtn");
+      const scoreBox = document.getElementById("scoreBox");
+
+      // Text to Speech Function
+      function speakText(text) {
+        if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-IN";
+        utterance.rate = 0.9; // Slightly slower for clarity
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function loadQuestion() {
+        answered = false;
+        nextBtn.disabled = true;
+        currentQuestion = questions[currentIdx];
+        
+        // Update text
+        questionTextEl.textContent = currentQuestion.question;
+        
+        // Reset feedback
+        feedbackEl.className = "feedback";
+        feedbackEl.textContent = "";
+        
+        // Generate Options
+        optionsContainer.innerHTML = "";
+        currentQuestion.options.forEach((emoji) => {
+          const btn = document.createElement("button");
+          btn.className = "option-btn";
+          btn.textContent = emoji;
+          btn.onclick = () => selectOption(btn, emoji);
+          optionsContainer.appendChild(btn);
+        });
+
+        // Auto-read the question when it loads
+        setTimeout(() => speakText(currentQuestion.question), 500);
+      }
+
+      function selectOption(btn, selectedEmoji) {
+        if (answered) return;
+        answered = true;
+        nextBtn.disabled = false;
+
+        // Disable all buttons
+        Array.from(optionsContainer.children).forEach(b => b.style.pointerEvents = 'none');
+
+        if (selectedEmoji === currentQuestion.answer) {
+          score++;
+          btn.classList.add("correct");
+          feedbackEl.textContent = "✓ Great job! That is correct.";
+          feedbackEl.classList.add("show", "correct-text");
+          speakText("Great job! That is correct.");
+        } else {
+          btn.classList.add("incorrect");
+          feedbackEl.textContent = "✗ Not quite. Look for the highlighted answer.";
+          feedbackEl.classList.add("show", "incorrect-text");
+          speakText("Not quite. Let's look at the correct answer.");
+          
+          // Highlight the right answer
+          Array.from(optionsContainer.children).forEach(b => {
+            if (b.textContent === currentQuestion.answer) {
+              b.classList.add("correct");
+            }
+          });
+        }
+      }
+
+      function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < questions.length) {
+          loadQuestion();
+        } else {
+          // Finish Quiz
+          questionTextEl.textContent = "Module Completed! 🎉";
+          document.querySelector(".speaker-icon").style.display = "none";
+          optionsContainer.innerHTML = "";
+          nextBtn.style.display = "none";
+          feedbackEl.style.display = "none";
+
+          scoreBox.style.display = "block";
+          scoreBox.innerHTML = `Awesome work!<br>You scored ${score} out of ${questions.length}! 🌟`;
+          speakText(`Awesome work! You scored ${score} out of ${questions.length}.`);
+        }
+      }
+
+      // Start the module
+      loadQuestion();
+    </script>
+  </body>
+</html>

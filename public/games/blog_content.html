@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog Post | HelpingHands</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+    :root {
+        --navy: #0D5791;
+        --green: #7CE04A;
+        --bg-gray: #f4f7f9;
+        --text-dark: #2c3e50;
+        --white: #ffffff;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Nunito',sans-serif;background: var(--bg-gray);color: var(--text-dark);line-height:1.8;}
+
+    /* Navbar */
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background: var(--navy);position:sticky;top:0;z-index:100;border-bottom:5px solid var(--green);}
+    .logo{font-family:'Outfit',sans-serif;font-size:24px;font-weight:900;text-decoration:none;color:white;}
+    .logo span{color: var(--green);}
+    .back-link{color:white;text-decoration:none;font-weight:700;display:flex;align-items:center;gap:8px;}
+
+    /* Main Content Wrapper */
+    .post-container {max-width: 800px; margin: 40px auto; padding: 0 20px;}
+
+    /* Article Styling */
+    .article-card {
+        background: var(--white);
+        padding: 50px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        border-top: 8px solid var(--green);
+    }
+
+    .post-category {
+        display: inline-block;
+        background: var(--navy);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        margin-bottom: 20px;
+    }
+
+    h1 {font-family: 'Outfit'; font-size: 2.5rem; color: var(--navy); margin-bottom: 15px; line-height: 1.2;}
+    
+    .meta-info {
+        display: flex;
+        gap: 20px;
+        color: #777;
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+    }
+
+    /* Content Body */
+    .content-body p {margin-bottom: 25px; font-size: 1.1rem; color: #444;}
+    
+    .content-body h2 {
+        font-family: 'Outfit';
+        color: var(--navy);
+        margin: 40px 0 15px;
+        border-left: 5px solid var(--green);
+        padding-left: 15px;
+    }
+
+    .featured-image {
+        width: 100%;
+        height: 400px;
+        background: #ddd;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-weight: 700;
+        overflow: hidden;
+    }
+    
+    .featured-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Action Buttons */
+    .post-footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid var(--bg-gray);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-share {
+        padding: 10px 20px;
+        background: var(--navy);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+    .btn-share:hover { background: var(--green); color: var(--navy); }
+
+    @media (max-width: 600px) {
+        .article-card { padding: 25px; }
+        h1 { font-size: 1.8rem; }
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="../autismLkg.html" class="logo">Helping<span>Hands</span></a>
+    <a href="blog.html" class="back-link"><i class="fas fa-chevron-left"></i> ALL POSTS</a>
+</nav>
+
+<div class="post-container">
+    <article class="article-card">
+        <span class="post-category">EDUCATIONAL</span>
+        
+        <h1>NGO Efforts in Rural Areas</h1>
+        
+        <div class="meta-info">
+            <span><i class="far fa-calendar-alt"></i> March 22, 2026</span>
+            <span><i class="far fa-user"></i> Admin</span>
+            <span><i class="far fa-clock"></i> 5 Min Read</span>
+        </div>
+
+        <div class="featured-image">
+            <img src="https://img.freepik.com/free-photo/medium-shot-kid-carrying-plate-head_23-2148761593.jpg?semt=ais_hybrid&w=740&q=80" alt="NGO Efforts in Rural Areas">
+            </div>
+
+        <div class="content-body">
+            <p></p>
+
+            <h2>Education and skill development</h2>
+            <p>One of the most profound effects of NGOs is in the classroom. By introducing digital literacy and interactive learning tools, NGOs help bridge the "urban-rural divide."Localized Learning: NGOs often translate complex concepts into local languages.
+
+Vocational Training: Beyond school, they provide adults with skills in sustainable farming, tailoring, or basic computer engineering, allowing families to increase their household income.</p>
+
+            <p>In remote areas, the nearest hospital might be hours away. NGOs frequently fill this gap by: Mobile Clinics: Bringing doctors and basic medicine directly to the village square.
+
+Awareness Campaigns: Educating the community on hygiene, clean water, and maternal health, which significantly reduces infant mortality rates.</p>
+
+            <h2>The "HelpingHands" Philosophy</h2>
+            <p>The core success of an NGO lies in trust. Unlike distant agencies, successful NGOs live within the community, understand their specific cultural nuances, and provide "Helping Hands" that guide rather than dictate. By focusing on high-impact, low-cost interactive solutions, we can ensure that no child or family is left behind, regardless of their zip code.</p>
+        </div>
+
+        <div class="post-footer">
+            <a href="blog.html" class="btn-share"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+            <div>
+                <a href="#" class="btn-share"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="btn-share"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </article>
+</div>
+
+<footer style="text-align:center; padding: 40px; color: #777;">
+    &copy; 2026 HelpingHands Project
+</footer>
+
+</body>
+</html>

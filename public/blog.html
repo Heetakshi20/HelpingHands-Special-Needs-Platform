@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latest Blogs</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+
+  <style>
+    /* ===== General Page Styling ===== */
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #333;
+    }
+     .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #0D5791;
+      color: white;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 26px;
+    }
+
+    .logo span {
+      color: #7CE04A;
+    }
+
+   .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline-block;
+}
+
+.nav-links a {
+  text-decoration: none;     /* underline hatana */
+  color: inherit;            /* parent ka color use karna */
+  padding: 8px 14px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* hover effect */
+}
+
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .manage-btn {
+      background-color: white;
+      color: #0D5791;
+    }
+
+    .launch-btn {
+      background-color: #A1E231;
+      color: black;
+    }
+
+    /* ===== Page Title ===== */
+    .blog-title {
+      background: #00AEEF;
+      padding: 20px 40px;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    /* Breadcrumb navigation */
+    .breadcrumb {
+      text-align: right;
+      padding: 10px 40px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .breadcrumb a {
+      color: #00AEEF;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== Blog Container ===== */
+    .blog-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 30px 40px;
+    }
+
+    /* Blog Card */
+    .blog-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.blog-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.blog-card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+    .blog-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+
+    .blog-content {
+      padding: 15px;
+    }
+
+    .blog-meta {
+      font-size: 14px;
+      color: #00AEEF;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .blog-meta i {
+      font-size: 14px;
+    }
+
+    .blog-content h3 {
+      font-size: 18px;
+      margin: 0 0 10px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .read-more {
+      display: inline-block;
+      padding: 8px 16px;
+      border: 1px solid #00AEEF;
+      border-radius: 20px;
+      color: #00AEEF;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .read-more:hover {
+      background: #00AEEF;
+      color: #fff;
+    }
+    .footer {
+  background-color: #0a4a82;
+  color: white;
+  padding: 40px 20px 20px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-logo img {
+  height: 80px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-links h4 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-social a img {
+  height: 24px;
+  margin: 0 8px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+}
+.footer-social {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;   /* center horizontally */
+  gap: 12px;              /* space between icons */
+}
+
+.footer-social a {
+  color: white;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #178bf1;
+}
+
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .blog-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .blog-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<link rel="stylesheet" href="chatbot.css">
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+         <li><a href="index.html" class="nav-item">Home</a></li>
+     <li><a href="resources.html" class="nav-item">Resources</a></li>
+         <li><a href="#" class="nav-item">Blog</a></li>
+       <li><a href="contact.html" class="nav-item">Contact Us</a></li>
+    <li><a href="about.html" class="nav-item">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn" onclick="window.location.href='auth.html'">
+    Sign Up / Login
+</button>
+
+    </div>
+  </nav>
+  <body>
+
+
+  <!-- Blog Container -->
+<div class="blog-container">
+  
+  <!-- Blog Card 1 -->
+  <div class="blog-card">
+    <img src="https://img.freepik.com/free-photo/medium-shot-kid-carrying-plate-head_23-2148761593.jpg?semt=ais_hybrid&w=740&q=80" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 6 comments
+        <i class="fa-regular fa-calendar"></i> February 1, 2022
+      </div>
+      <h3>NGO Efforts in Rural Education</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+
+  <!-- Blog Card 2 -->
+  <div class="blog-card">
+    <img src="https://static.statichs.com/2022-uk/august-2022/woman-with-disabled-child-1661528969.jpg" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+
+  <!-- Blog Card 3 -->
+  <div class="blog-card">
+    <img src="https://static.wixstatic.com/media/b7d947a570f8431cb65f113087c4024b.jpg/v1/fill/w_568,h_378,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/b7d947a570f8431cb65f113087c4024b.jpg" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 5 comments
+        <i class="fa-regular fa-calendar"></i> January 1, 2022
+      </div>
+      <h3>Innovative Tools for Inclusive Classrooms</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+   <!-- Blog Card 4 -->
+    <div class="blog-card">
+    <img src="https://cdn.mos.cms.futurecdn.net/Z6ssge9NADw3XBCyTwCgb8-1200-80.jpg" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Needs Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+ <!-- Blog Card 5 -->
+    <div class="blog-card">
+    <img src="https://cdn.shopify.com/s/files/1/0306/6419/6141/files/1_c992d458-1b6f-48c1-9365-b46ece60b8b4_1024x1024.png?v=1715805750" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Needs Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+ <!-- Blog Card 6 -->
+    <div class="blog-card">
+    <img src="https://www.unicef.org/innocenti/sites/unicef.org.innocenti/files/styles/media_large_image/public/UNI658263.webp?itok=gNI2LNa4" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Needs Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+ <!-- Blog Card 7 -->
+    <div class="blog-card">
+    <img src="https://t4.ftcdn.net/jpg/05/19/53/47/360_F_519534701_IbCg4OZ5c10zjl0wd5j36OsqvUPyTJaf.jpg" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Needs Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+ <!-- Blog Card 8 -->
+    <div class="blog-card">
+    <img src="https://cdn.i-scmp.com/sites/default/files/styles/1020x680/public/2018/01/18/shutterstock_248596873_600.jpg?itok=VIpI31iK" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Needs Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+ <!-- Blog Card 9 -->
+    <div class="blog-card">
+    <img src="https://teachingstrategies.com/wp-content/uploads/2021/11/iStock-866452892-1024x682.jpg" alt="Blog Image">
+    <div class="blog-content">
+      <div class="blog-meta">
+        <i class="fa-regular fa-comments"></i> 4 comments
+        <i class="fa-regular fa-calendar"></i> January 15, 2022
+      </div>
+      <h3>Supporting Parents of Special Needs Children</h3>
+      <a href="blog_content.html" class="read-more">Read more</a>
+    </div>
+  </div>
+
+</div>
+
+
+      
+    </div>
+  </div>
+  <!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="img/logo.jpeg" alt="HelpingHands Logo">
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Games</a></li>
+          <li><a href="#">Activities</a></li>
+          <li><a href="#">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-social">
+      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 HelpingHands. All rights reserved.</p>
+  </div>
+</footer>
+<div id="chatbot-placeholder"></div>
+<script>
+fetch("chatbot.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("chatbot-placeholder").innerHTML = data;
+  });
+</script>
+
+<script src="chatbot.js"></script>
+
+
+
+</body>
+</html>

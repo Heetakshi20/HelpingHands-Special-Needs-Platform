@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabet Alliteration Adventure</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #ffeb3b;
+            --secondary: #4caf50;
+            --dark: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #2c3e50, #000000);
+            color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* --- Header --- */
+        .game-header {
+            background: rgba(255, 255, 255, 0.1); padding: 20px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 4px solid var(--primary);
+        }
+        .game-header h1 { font-family: 'Outfit'; font-size: 1.8rem; color: var(--primary); }
+
+        .game-area {
+            display: flex; flex: 1; padding: 20px; gap: 30px;
+            justify-content: center; align-items: center;
+        }
+
+        /* --- Letter Selector --- */
+        .alphabet-grid {
+            width: 300px; height: 75vh; overflow-y: auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+            padding: 10px; background: rgba(255,255,255,0.05); border-radius: 20px;
+        }
+
+        .letter-btn {
+            aspect-ratio: 1; border-radius: 12px; border: none;
+            font-family: 'Outfit'; font-size: 1.8rem; font-weight: 900;
+            cursor: pointer; background: white; color: var(--dark);
+            box-shadow: 0 4px 0 #bdc3c7; transition: 0.2s;
+        }
+        .letter-btn:hover { transform: scale(1.1); background: var(--secondary); color: white; }
+
+        /* --- Display Stage --- */
+        .stage {
+            flex: 1; max-width: 600px; height: 75vh;
+            background: rgba(255,255,255,0.1); border-radius: 30px;
+            border: 8px dashed rgba(255,255,255,0.2);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
+        }
+
+        .big-letter { font-size: 8rem; font-family: 'Outfit'; color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        .alliteration-text { font-size: 2.5rem; font-weight: 900; margin-top: 20px; line-height: 1.2; min-height: 100px; }
+        .emoji-display { font-size: 5rem; margin-top: 20px; }
+
+        #play-overlay {
+            position: fixed; inset: 0; background: var(--dark); z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="play-overlay">
+        <button onclick="start()" style="padding:20px 60px; font-size:2rem; border-radius:50px; background:var(--secondary); border:none; color:white; font-weight:900; cursor:pointer;">PLAY SOUNDS</button>
+        <p style="margin-top:20px;">Learn Alphabet Alliteration!</p>
+    </div>
+
+    <header class="game-header">
+        <h1>🗣️ Alphabet Alliteration</h1>
+        <a href="../autism.html" style="color:white; text-decoration:none; font-weight:bold; border:2px solid white; padding:5px 15px; border-radius:10px;">EXIT</a>
+    </header>
+
+    <div class="game-area">
+        <div class="alphabet-grid" id="grid"></div>
+
+        <div class="stage" id="stage">
+            <div class="big-letter" id="display-l">?</div>
+            <div class="alliteration-text" id="display-t">Tap a letter!</div>
+            <div class="emoji-display" id="display-e">✨</div>
+        </div>
+    </div>
+
+    <script>
+        const alliterationData = {
+            'A': { text: 'Angry Ants Ate Apples', emoji: '🐜🍎' },
+            'B': { text: 'Big Blue Bear', emoji: '🐻🟦' },
+            'C': { text: 'Cool Cats Cook Cakes', emoji: '🐱🎂' },
+            'D': { text: 'Dancing Dogs Dig', emoji: '🐕💃' },
+            'E': { text: 'Eight Elephants Eat Eggs', emoji: '🐘🥚' },
+            'F': { text: 'Five Fat Fish', emoji: '🐟🖐️' },
+            'G': { text: 'Green Goats Go Garden', emoji: '🐐🌿' },
+            'H': { text: 'Happy Hippo Hops', emoji: '🦛🎈' },
+            'I': { text: 'Icy Igloo Is Interesting', emoji: '🧊🏠' },
+            'J': { text: 'Jumpy Jellyfish Jiggles', emoji: '🪼✨' },
+            'K': { text: 'Kind Kangaroo Kicks', emoji: '🦘👟' },
+            'L': { text: 'Little Lions Like Leaves', emoji: '🦁🍃' },
+            'M': { text: 'Magic Mice Make Music', emoji: '🐭🎸' },
+            'N': { text: 'Nice New Nose', emoji: '👃🆕' },
+            'O': { text: 'Old Owls Open Oranges', emoji: '🦉🍊' },
+            'P': { text: 'Pretty Pink Pigs Play', emoji: '🐷🌸' },
+            'Q': { text: 'Quick Queen Questions', emoji: '👸❓' },
+            'R': { text: 'Red Rabbits Run', emoji: '🐰🔴' },
+            'S': { text: 'Seven Small Snakes Sleep', emoji: '🐍💤' },
+            'T': { text: 'Tall Tigers Talk', emoji: '🐯🗣️' },
+            'U': { text: 'Under Umbrellas', emoji: '☂️👇' },
+            'V': { text: 'Violet Van', emoji: '🚐💜' },
+            'W': { text: 'White Whale Walks', emoji: '🐋🌊' },
+            'X': { text: 'X-ray X-box', emoji: '🦴🎮' },
+            'Y': { text: 'Yellow Yo-yo', emoji: '🪀🟡' },
+            'Z': { text: 'Zebra Zig-Zag', emoji: '🦓⚡' }
+        };
+
+        function start() { document.getElementById('play-overlay').style.display = 'none'; }
+
+        const grid = document.getElementById('grid');
+        Object.keys(alliterationData).forEach(l => {
+            const btn = document.createElement('button');
+            btn.className = 'letter-btn';
+            btn.innerText = l;
+            btn.onclick = () => showAlliteration(l);
+            grid.appendChild(btn);
+        });
+
+        function showAlliteration(l) {
+            const data = alliterationData[l];
+            document.getElementById('display-l').innerText = l;
+            document.getElementById('display-t').innerText = data.text;
+            document.getElementById('display-e').innerText = data.emoji;
+            speak(data.text);
+        }
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 0.8;
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>

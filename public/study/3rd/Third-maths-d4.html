@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D4- Calculating Perimeter | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #8e44ad (Measurement) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f2f1 0%, #ebedee 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #8e44ad;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #8e44ad;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #8e44ad; font-weight: 600; font-size: 1.4rem; margin: 0; }
+
+        /* HINT BOX */
+        .hint {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fdf2ff;
+            border-left: 5px solid #8e44ad;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        /* VISUAL LAB */
+        .lab-box {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            position: relative;
+        }
+
+        .canvas-area {
+            width: 100%;
+            height: 320px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .perimeter-label {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            font-size: 14px;
+            fill: #8e44ad;
+            paint-order: stroke;
+            stroke: white;
+            stroke-width: 3px;
+        }
+
+        /* INPUT AREA */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .answer-input {
+            width: 150px;
+            padding: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            font-family: 'Roboto Mono', monospace;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .answer-input:focus {
+            border-color: #8e44ad;
+        }
+
+        /* ACTIONS */
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .check-btn { background: #8e44ad; color: white; }
+        .next-btn { background: #0D5791; color: white; display: none; }
+        
+        #message {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-section { display: flex; flex-direction: column; justify-content: flex-start; }
+        .footer-logo-section { min-width: 120px; align-items: center; }
+        .footer-logo { display: flex; justify-content: center; align-items: center; height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links-section { flex: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; text-transform: capitalize; }
+        .footer-links ul { padding: 0; margin: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; display: inline-block; }
+        .footer-links a:hover { color: #f39c12; transform: translateX(5px); }
+        .footer-social-section { min-width: 80px; align-items: center; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #f39c12; background: rgba(243,156,18,0.15); border-color:#f39c12; transform: translateY(-5px) scale(1.1); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { grid-template-columns: 1fr; gap: 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-ruler-combined"></i></div>
+                <h2>D4- Calculating Perimeter</h2>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-lightbulb" style="color: #8e44ad; margin-right: 8px;"></i>
+                <strong>Perimeter</strong> is the total distance around the outside of a shape. Simply <strong>add all the sides together!</strong>
+            </div>
+
+            <div class="lab-box">
+                <div id="visualInstruction" style="font-weight: bold; margin-bottom: 5px; color: #333;">What is the total perimeter of this shape? (in units)</div>
+                <div class="canvas-area" id="canvasArea">
+                    <svg id="polySvg" viewBox="0 0 400 320">
+                        <!-- Shape and Labels -->
+                    </svg>
+                </div>
+
+                <div class="input-group">
+                    <input type="number" id="answerInput" class="answer-input" placeholder="?" min="1">
+                    <button class="action-btn check-btn" id="checkBtn" onclick="checkAnswer()">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn next-btn" onclick="initLab()" id="nextBtn">Next Shape <i class="fas fa-arrow-right"></i></button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Learning Made Visual</div>
+    </footer>
+
+    <script>
+        let correctPerimeter = 0;
+        let hasAnswered = false;
+
+        function initLab() {
+            hasAnswered = false;
+            document.getElementById('message').innerText = "";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('checkBtn').style.display = "block";
+            document.getElementById('answerInput').value = "";
+            document.getElementById('answerInput').disabled = false;
+            document.getElementById('answerInput').style.borderColor = "#ddd";
+            
+            renderPerimeterShape();
+        }
+
+        function renderPerimeterShape() {
+            const svg = document.getElementById('polySvg');
+            svg.innerHTML = '';
+
+            const numSides = Math.floor(Math.random() * 3) + 3; // 3 to 5 sides
+            const centerX = 200;
+            const centerY = 160;
+            const radius = 80;
+            
+            let points = [];
+            let sideLengths = [];
+            correctPerimeter = 0;
+
+            // Generate points
+            for (let i = 0; i < numSides; i++) {
+                const angle = (i / numSides) * Math.PI * 2 - Math.PI/2;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                points.push({x, y});
+            }
+
+            // Draw Polygon
+            const polyPointsStr = points.map(p => `${p.x},${p.y}`).join(' ');
+            const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            polygon.setAttribute('points', polyPointsStr);
+            polygon.setAttribute('fill', '#fdf2ff');
+            polygon.setAttribute('stroke', '#8e44ad');
+            polygon.setAttribute('stroke-width', '4');
+            polygon.setAttribute('stroke-linejoin', 'round');
+            svg.appendChild(polygon);
+
+            // Add Labels to each side
+            for (let i = 0; i < numSides; i++) {
+                const p1 = points[i];
+                const p2 = points[(i + 1) % numSides];
+                
+                // Random side value between 2 and 12
+                const val = Math.floor(Math.random() * 11) + 2;
+                correctPerimeter += val;
+
+                // Position label at midpoint
+                const midX = (p1.x + p2.x) / 2;
+                const midY = (p1.y + p2.y) / 2;
+
+                // Push slightly outward from center
+                const offsetX = (midX - centerX) * 0.25;
+                const offsetY = (midY - centerY) * 0.25;
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute('x', midX + offsetX);
+                text.setAttribute('y', midY + offsetY);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('class', 'perimeter-label');
+                text.textContent = val;
+                svg.appendChild(text);
+            }
+        }
+
+        function checkAnswer() {
+            if (hasAnswered) return;
+
+            const input = document.getElementById('answerInput');
+            const userVal = parseInt(input.value);
+
+            if (isNaN(userVal)) {
+                showMessage("Please enter a number!", "#f39c12");
+                return;
+            }
+
+            hasAnswered = true;
+            input.disabled = true;
+
+            if (userVal === correctPerimeter) {
+                input.style.borderColor = "#27ae60";
+                showMessage(`Fantastic! The perimeter is ${correctPerimeter} units.`, "#27ae60", true);
+            } else {
+                input.style.borderColor = "#e74c3c";
+                showMessage(`Not quite. If you add them all up, the perimeter is ${correctPerimeter}.`, "#e74c3c", false);
+            }
+
+            document.getElementById('checkBtn').style.display = "none";
+            document.getElementById('nextBtn').style.display = "block";
+        }
+
+        function showMessage(text, color, isSuccess) {
+            const msg = document.getElementById('message');
+            msg.style.color = color;
+            const icon = isSuccess === true ? 'fa-check-circle' : (isSuccess === false ? 'fa-times-circle' : 'fa-exclamation-triangle');
+            msg.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
+        }
+
+        // Allow 'Enter' key to check
+        document.getElementById('answerInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkAnswer();
+        });
+
+        window.onload = initLab;
+    </script>
+</body>
+</html>

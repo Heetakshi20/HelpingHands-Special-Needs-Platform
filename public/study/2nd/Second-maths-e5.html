@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E5- Data and graphs | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1, Orange: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #7CE04A; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+        
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #6f42c1;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #6f42c1;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #6f42c1; font-weight: 600; font-size: 1.4rem; }
+        .instruction { font-size: 1.2rem; color: #444; margin-bottom: 30px; }
+
+        /* GRAPH ZONE */
+        .graph-zone {
+            background: #fdfdfd;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 300px;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            border-left: 3px solid #333;
+            border-bottom: 3px solid #333;
+            padding: 10px;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .bar {
+            flex: 1;
+            background: #6f42c1;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 10px;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .grid-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            border-top: 1px dashed #cbd5e0;
+            z-index: 0;
+        }
+
+        .axis-number {
+            position: absolute;
+            left: -30px;
+            font-size: 0.75rem;
+            color: #718096;
+            transform: translateY(-50%);
+        }
+
+        /* OPTIONS GRID */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .choice-card {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .choice-card:hover { border-color: #6f42c1; background: #f7f4ff; }
+        .choice-card.selected { border-color: #A1E231; background: #f1fde0; transform: scale(1.05); }
+
+        .check-btn { padding: 15px 40px; background: #6f42c1; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; width: 100%; margin-top: 25px; transition: 0.2s;}
+        .check-btn:hover { background: #5a32a3; }
+        
+        .next-btn { padding: 15px 40px; background: #0D5791; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; font-size: 1.1rem; width: 100%; margin-top: 10px; transition: 0.2s;}
+        .next-btn:hover { background: #0a4a82; }
+
+        #feedback { margin-top: 20px; font-weight: bold; font-size: 1.3rem; min-height: 35px; }
+
+        /* UPDATED FOOTER STYLES */
+        .footer {
+            background: #0a4a82;
+            color: white;
+            padding: 40px 20px 15px;
+            margin-top: auto;
+            width: 100%;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            max-width: 1100px;
+            margin: 0 auto;
+            gap: 50px;
+            align-items: flex-start;
+        }
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .footer-logo-section {
+            min-width: 120px;
+            align-items: center;
+        }
+        .footer-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            width: 120px;
+        }
+        .footer-logo img {
+            height: 90px;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+        }
+        .footer-links-section {
+            flex: 1;
+        }
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+        }
+        .footer-links h4 {
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            text-transform: capitalize;
+        }
+        .footer-links ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: .3s;
+            display: inline-block;
+        }
+        .footer-links a:hover {
+            color: #A1E231;
+            transform: translateX(5px);
+        }
+        .footer-social-section {
+            min-width: 80px;
+            align-items: center;
+        }
+        .footer-social {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        .footer-social a {
+            color: white;
+            font-size: 1.8rem;
+            transition: .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            text-decoration: none;
+        }
+        .footer-social a:hover {
+            color: #A1E231;
+            background: rgba(161, 226, 49, 0.15);
+            border-color: #A1E231;
+            transform: translateY(-5px) scale(1.1);
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; }
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 30px;
+            }
+            .footer-links {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .footer-social {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-chart-bar"></i></div>
+                <h2>E5- Data and graphs</h2>
+            </div>
+
+            <p class="instruction" id="questText">Reading the chart...</p>
+
+            <div class="graph-zone">
+                <div class="chart-container" id="chart">
+                    <!-- Grid lines and bars injected here -->
+                </div>
+            </div>
+
+            <div class="options-grid" id="options"></div>
+
+            <button class="check-btn" onclick="checkAnswer()">Submit Answer</button>
+            <button class="next-btn" id="nextBtn" onclick="startNewMission()">Next Dataset <i class="fas fa-arrow-right"></i></button>
+            
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo"><img src="logo.png" alt="Logo" /></div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands. All rights reserved.</div>
+    </footer>
+
+    <script>
+        const categories = ["Apples", "Bananas", "Cherries", "Grapes", "Oranges", "Melons"];
+        const colors = ["#e74c3c", "#f1c40f", "#d63031", "#6c5ce7", "#e67e22", "#2ecc71"];
+
+        let gameData = {
+            targetValue: 0,
+            targetCategory: "",
+            selection: null
+        };
+
+        function startNewMission() {
+            gameData.selection = null;
+            document.getElementById('feedback').innerText = "";
+            document.getElementById('nextBtn').style.display = "none";
+            
+            const chart = document.getElementById('chart');
+            chart.innerHTML = "";
+
+            // Create Grid Lines (0 to 10)
+            for (let i = 0; i <= 10; i++) {
+                const line = document.createElement('div');
+                line.className = 'grid-line';
+                line.style.bottom = (i * 10) + "%";
+                line.innerHTML = `<span class="axis-number">${i}</span>`;
+                chart.appendChild(line);
+            }
+
+            // Select 3 random categories
+            const shuffled = [...categories].sort(() => 0.5 - Math.random()).slice(0, 3);
+            const values = shuffled.map(() => Math.floor(Math.random() * 9) + 2); // 2 to 10
+            
+            // Pick one to be the question
+            const targetIdx = Math.floor(Math.random() * 3);
+            gameData.targetValue = values[targetIdx];
+            gameData.targetCategory = shuffled[targetIdx];
+
+            document.getElementById('questText').innerText = `How many ${gameData.targetCategory} were collected?`;
+
+            // Render Bars
+            shuffled.forEach((cat, i) => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = '0%'; // Start at 0 for animation
+                bar.style.backgroundColor = colors[categories.indexOf(cat)];
+                
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.innerText = cat;
+                
+                bar.appendChild(label);
+                chart.appendChild(bar);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    bar.style.height = (values[i] * 10) + "%";
+                }, 100);
+            });
+
+            renderOptions();
+        }
+
+        function renderOptions() {
+            const container = document.getElementById('options');
+            container.innerHTML = "";
+
+            let options = [gameData.targetValue];
+            while (options.length < 4) {
+                const rand = Math.floor(Math.random() * 9) + 2;
+                if (!options.includes(rand)) options.push(rand);
+            }
+            options.sort((a, b) => a - b);
+
+            options.forEach(val => {
+                const card = document.createElement('div');
+                card.className = 'choice-card';
+                card.innerText = val;
+                card.onclick = () => {
+                    document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    gameData.selection = val;
+                };
+                container.appendChild(card);
+            });
+        }
+
+        function checkAnswer() {
+            const feedback = document.getElementById('feedback');
+            if (gameData.selection === null) {
+                feedback.innerText = "Please pick a number! 📊";
+                feedback.style.color = "#f39c12";
+                return;
+            }
+
+            if (gameData.selection === gameData.targetValue) {
+                feedback.innerText = "✅ Correct! You read the graph perfectly.";
+                feedback.style.color = "#27ae60";
+                document.getElementById('nextBtn').style.display = "block";
+            } else {
+                feedback.innerText = "❌ Not quite. Follow the line to the left axis!";
+                feedback.style.color = "#e74c3c";
+            }
+        }
+
+        window.onload = startNewMission;
+    </script>
+</body>
+</html>

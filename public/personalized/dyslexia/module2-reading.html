@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Module 2 - Reading Skills</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      /* Dyslexia-Friendly Variables */
+      :root {
+        --bg-color: #FDFBF7; /* Soft cream to reduce glare */
+        --text-color: #2D3748; /* Dark slate, softer than pure black */
+        --card-bg: #FFFFFF;
+        --accent-color: #4A90E2; 
+        --highlight-color: #FEFCBF; /* Soft yellow for sight words */
+        --success-color: #48BB78;
+        --error-color: #F56565;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      
+      body { 
+        font-family: 'Lexend', sans-serif; 
+        background-color: var(--bg-color); 
+        color: var(--text-color);
+        min-height: 100vh; 
+        display: flex; 
+        flex-direction: column; 
+        letter-spacing: 0.8px; /* Increased letter spacing */
+        line-height: 1.8; /* Increased line height */
+      }
+      
+      /* Navbar */
+      .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: var(--accent-color); color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+      .logo { font-size: 28px; font-weight: 800; cursor: pointer; letter-spacing: 1px;}
+      .logo span { color: #FFD166; }
+      .nav-links { list-style: none; display: flex; gap: 30px; }
+      .nav-links a { text-decoration: none; color: white; font-weight: 600; padding: 10px 20px; border-radius: 8px; transition: 0.3s; font-size: 1.1rem; }
+      .nav-links a:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+      /* Main Layout */
+      .main-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+      .container { background: var(--card-bg); border-radius: 24px; padding: 40px; width: 100%; max-width: 900px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05); border: 4px solid #E2E8F0; }
+
+      /* Header */
+      .header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; border-bottom: 3px solid #E2E8F0; padding-bottom: 20px; }
+      .header-icon { width: 60px; height: 60px; background: var(--accent-color); border-radius: 16px; color: white; font-size: 2rem; display: flex; justify-content: center; align-items: center; }
+      h2 { color: var(--text-color); font-weight: 800; font-size: 2rem; }
+
+      /* Reading Area */
+      .reader-box { background: #EBF8FF; border: 3px solid #90CDF4; border-radius: 20px; padding: 40px 30px; margin-bottom: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+      
+      .sentence-text { font-size: 2.5rem; font-weight: 600; color: var(--text-color); word-wrap: break-word; }
+      
+      /* Dyslexia Aid: Highlighting sight words softly */
+      .sight-word { background-color: var(--highlight-color); padding: 4px 10px; border-radius: 8px; border-bottom: 3px solid #F6E05E; display: inline-block; }
+
+      .read-btn { background: var(--accent-color); color: white; border: none; border-radius: 50px; padding: 15px 40px; font-weight: 800; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3); }
+      .read-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(74, 144, 226, 0.4); background: #3182CE; }
+      .read-btn:active { transform: translateY(0); }
+
+      /* Comprehension Question Area */
+      .question-area { display: none; flex-direction: column; align-items: center; gap: 20px; animation: fade-in 0.8s ease; }
+      .question-area.show { display: flex; }
+      
+      .question-title { font-size: 1.6rem; font-weight: 800; color: #4A5568; display: flex; align-items: center; gap: 15px; }
+      .small-speaker { background: #EDF2F7; color: var(--accent-color); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; border: none; font-size: 1.2rem; }
+      .small-speaker:hover { background: #E2E8F0; transform: scale(1.1); }
+
+      .options-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; width: 100%; margin-top: 10px; }
+      
+      .option-btn { background: #fff; border: 4px solid #E2E8F0; border-radius: 20px; width: 200px; padding: 25px 15px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
+      .option-btn:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+      
+      .option-emoji { font-size: 4.5rem; margin-bottom: 15px; }
+      .option-text { font-size: 1.4rem; font-weight: 800; color: var(--text-color); }
+
+      /* Error-Friendly Feedback */
+      .option-btn.correct { background: #F0FFF4; border-color: var(--success-color); animation: pop-in 0.5s ease; pointer-events: none; }
+      .option-btn.incorrect { background: #FFF5F5; border-color: #FEB2B2; opacity: 0.7; pointer-events: none; transform: scale(0.98); }
+
+      .feedback { text-align: center; font-size: 1.5rem; font-weight: 800; min-height: 40px; margin-top: 20px; opacity: 0; transition: opacity 0.3s; }
+      .feedback.show { opacity: 1; }
+      .feedback.correct-text { color: var(--success-color); }
+      .feedback.incorrect-text { color: #DD6B20; /* Orange instead of harsh red */ }
+
+      /* Controls */
+      .next-btn { background: var(--success-color); color: white; border: none; border-radius: 12px; padding: 15px 40px; font-weight: 800; font-size: 1.4rem; cursor: pointer; display: block; margin: 30px auto 0; transition: all 0.3s ease; display: none; }
+      .next-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(72, 187, 120, 0.4); }
+
+      .score-box { display: none; margin-top: 30px; background: #F0FFF4; border: 4px solid #9AE6B4; border-radius: 20px; padding: 40px; text-align: center; font-weight: 800; font-size: 2.2rem; color: var(--success-color); }
+
+      /* Animations */
+      @keyframes pop-in { 0% { transform: scale(0.9); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+      @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* Footer */
+      .footer { background-color: var(--text-color); color: white; padding: 25px; text-align: center; margin-top: auto; font-size: 1rem; }
+
+      @media(max-width: 600px) {
+        .sentence-text { font-size: 1.8rem; }
+        .option-btn { width: 140px; padding: 15px; }
+        .option-emoji { font-size: 3.5rem; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="logo" onclick="window.location.href='index3.html'">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="index3.html">Back to Modules</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        
+        <div class="header">
+          <div class="header-icon">📖</div>
+          <h2>Module 2: Guided Reading</h2>
+        </div>
+
+        <div class="reader-box" id="readerBox">
+          <button class="read-btn" onclick="readSentence()">
+            <i class="fas fa-play-circle"></i> Read to me
+          </button>
+          <div class="sentence-text" id="sentenceText">
+            </div>
+        </div>
+
+        <div class="question-area" id="questionArea">
+          <div class="question-title">
+            <button class="small-speaker" onclick="speakText(currentQuestion.question)" title="Read Question">
+              <i class="fas fa-volume-up"></i>
+            </button>
+            <span id="questionLabel">Question text</span>
+          </div>
+          
+          <div class="options-grid" id="optionsGrid">
+            </div>
+          
+          <div id="feedback" class="feedback"></div>
+        </div>
+
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+          Next Story ➡️
+        </button>
+
+        <div id="scoreBox" class="score-box"></div>
+
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 HelpingHands. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Curriculum Data: Short sentences with common sight words wrapped in a span
+      const questions = [
+        {
+          htmlSentence: "<span class='sight-word'>The</span> dog <span class='sight-word'>ran</span> fast.",
+          plainText: "The dog ran fast.",
+          question: "Who ran fast?",
+          options: [
+            { text: "Dog", emoji: "🐶", isCorrect: true },
+            { text: "Cat", emoji: "🐱", isCorrect: false }
+          ]
+        },
+        {
+          htmlSentence: "<span class='sight-word'>I</span> <span class='sight-word'>see</span> <span class='sight-word'>a</span> big red apple.",
+          plainText: "I see a big red apple.",
+          question: "What color is the apple?",
+          options: [
+            { text: "Blue", emoji: "🔵", isCorrect: false },
+            { text: "Red", emoji: "🔴", isCorrect: true }
+          ]
+        },
+        {
+          htmlSentence: "<span class='sight-word'>We</span> <span class='sight-word'>like</span> <span class='sight-word'>to</span> play ball.",
+          plainText: "We like to play ball.",
+          question: "What do we like to play?",
+          options: [
+            { text: "Ball", emoji: "⚽", isCorrect: true },
+            { text: "Book", emoji: "📖", isCorrect: false }
+          ]
+        },
+        {
+          htmlSentence: "<span class='sight-word'>The</span> sun <span class='sight-word'>is</span> very hot.",
+          plainText: "The sun is very hot.",
+          question: "What is very hot?",
+          options: [
+            { text: "Moon", emoji: "🌙", isCorrect: false },
+            { text: "Sun", emoji: "☀️", isCorrect: true }
+          ]
+        }
+      ];
+
+      let currentIdx = 0;
+      let answered = false;
+      let currentQuestion = null;
+
+      // DOM Elements
+      const sentenceTextEl = document.getElementById("sentenceText");
+      const questionAreaEl = document.getElementById("questionArea");
+      const questionLabelEl = document.getElementById("questionLabel");
+      const optionsGridEl = document.getElementById("optionsGrid");
+      const feedbackEl = document.getElementById("feedback");
+      const nextBtn = document.getElementById("nextBtn");
+      const scoreBox = document.getElementById("scoreBox");
+
+      // Text to Speech Function (Clear, steady pacing)
+      function speakText(text, rate = 0.8) {
+        if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        utterance.rate = rate; 
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function shuffleArray(array) {
+        return array.slice().sort(() => Math.random() - 0.5);
+      }
+
+      function loadQuestion() {
+        currentQuestion = questions[currentIdx];
+        answered = false;
+        
+        // Reset UI
+        sentenceTextEl.innerHTML = currentQuestion.htmlSentence;
+        questionLabelEl.textContent = currentQuestion.question;
+        questionAreaEl.classList.remove("show");
+        feedbackEl.className = "feedback";
+        feedbackEl.textContent = "";
+        nextBtn.style.display = "none";
+
+        // Generate Options
+        optionsGridEl.innerHTML = "";
+        const shuffledOptions = shuffleArray(currentQuestion.options);
+        
+        shuffledOptions.forEach((option) => {
+          const btn = document.createElement("div");
+          btn.className = "option-btn";
+          btn.innerHTML = `
+            <div class="option-emoji">${option.emoji}</div>
+            <div class="option-text">${option.text}</div>
+          `;
+          btn.onclick = () => handleOptionClick(btn, option);
+          optionsGridEl.appendChild(btn);
+        });
+      }
+
+      function readSentence() {
+        speakText(currentQuestion.plainText);
+        
+        // Show the question area after they trigger the reading
+        if (!questionAreaEl.classList.contains("show")) {
+          setTimeout(() => {
+            questionAreaEl.classList.add("show");
+            speakText(currentQuestion.question); // Auto read the question next
+          }, 2500); // Wait a moment for the sentence to finish reading
+        }
+      }
+
+      function handleOptionClick(btnElement, optionData) {
+        if (answered) return;
+
+        // Speak their choice
+        speakText(optionData.text);
+
+        if (!optionData.isCorrect) {
+          // Error-friendly environment: No harsh red "X", just gentle redirection
+          btnElement.classList.add("incorrect");
+          
+          setTimeout(() => {
+             speakText("Let's look at the story again.");
+             feedbackEl.textContent = "Let's try again! 🔍";
+             feedbackEl.className = "feedback show incorrect-text";
+          }, 800); 
+          return;
+        }
+
+        // Correct!
+        answered = true;
+        
+        // Lock other buttons
+        Array.from(optionsGridEl.children).forEach(btn => btn.style.pointerEvents = "none");
+        
+        btnElement.classList.add("correct");
+        
+        setTimeout(() => {
+          feedbackEl.className = "feedback show correct-text";
+          feedbackEl.textContent = "⭐ Excellent reading!";
+          speakText("Excellent reading!");
+
+          setTimeout(() => {
+            nextBtn.style.display = "block";
+          }, 1500);
+        }, 800);
+      }
+
+      function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < questions.length) {
+          loadQuestion();
+        } else {
+          // Finish Module
+          document.getElementById("readerBox").style.display = "none";
+          questionAreaEl.style.display = "none";
+          nextBtn.style.display = "none";
+          feedbackEl.style.display = "none";
+
+          scoreBox.style.display = "block";
+          scoreBox.innerHTML = `You are a great reader!<br>You finished the stories! 📖✨`;
+          speakText(`You are a great reader! You finished the stories.`);
+        }
+      }
+
+      // Initialize
+      loadQuestion();
+    </script>
+  </body>
+</html>

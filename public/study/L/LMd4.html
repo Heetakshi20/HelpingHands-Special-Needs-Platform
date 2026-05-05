@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>D4 - Count Shapes up to 10</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box;}
+    body { font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',"Poppins",sans-serif; background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%); min-height:100vh; display:flex; flex-direction:column;}
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .manage-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.2);}
+    .launch-btn{background:#A1E231;color:black;}
+    .launch-btn:hover{background:#8fd31a;transform:translateY(-2px);}
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:40px 20px;}
+    .container{background:white;border-radius:15px;padding:30px;max-width:1000px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #17a2b8;padding-bottom:10px;}
+    .header-icon{width:50px;height:50px;background:#17a2b8;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#17a2b8;font-weight:600;font-size:1.5rem;}
+    .question-text{display:flex;align-items:center;gap:12px;margin-bottom:20px;font-weight:600;font-size:1.5rem;}
+    .speaker-icon{width:40px;height:40px;background:#87ceeb;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;}
+    .speaker-icon:hover{background:#17a2b8;}
+    .shape-container{background:#f0fbff;border-radius:15px;min-height:90px;display:flex;justify-content:center;align-items:center;margin-bottom:25px;}
+    .emoji-row{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;padding:18px 0;}
+    .emoji-item{font-size:2.7rem;line-height:1;}
+    .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:20px;margin-bottom:20px;}
+    .option-btn{background:white;border:2px solid #87ceeb;border-radius:12px;height:100px;font-size:2rem;font-weight:600;color:#333;cursor:pointer;display:flex;justify-content:space-around;align-items:center;padding:0 10px;user-select:none;transition:.25s;}
+    .option-btn:hover{background:#e0f6ff;border-color:#17a2b8;transform:translateY(-4px);}
+    .option-btn.correct{background:#28a745;border-color:#218838;color:white;}
+    .option-btn.incorrect{background:#dc3545;border-color:#c82333;color:white;}
+    .option-select{flex:1;text-align:center;}
+    .option-speaker{width:32px;height:32px;border-radius:50%;background:#17a2b8;color:white;display:flex;justify-content:center;align-items:center;cursor:pointer;font-size:1.1rem;user-select:none;flex-shrink:0;transition:background 0.2s;}
+    .option-speaker:hover{background:#138496;}
+    .submit-btn{background:linear-gradient(135deg,#28a745,#218838);color:white;border:none;border-radius:8px;padding:12px 45px;font-weight:600;font-size:1.15rem;cursor:pointer;transition:background .3s;display:block;margin:0 auto;user-select:none;}
+    .submit-btn:disabled{background:#94d3a2;cursor:not-allowed;}
+    .feedback{margin-top:20px;font-weight:600;font-size:1.2rem;text-align:center;min-height:28px;}
+    .feedback.correct{color:#155724;}
+    .feedback.incorrect{color:#721c24;}
+    .score-box{margin-top:30px;border:2px solid #87ceeb;border-radius:12px;padding:15px;text-align:center;font-weight:700;font-size:1.4rem;color:#17a2b8;user-select:none;}
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+    @media(max-width:1024px){.navbar{flex-wrap:wrap;padding:10px 15px;gap:10px;}
+      .nav-links{order:3;width:100%;justify-content:center;gap:10px;font-size:0.85rem;}
+      .nav-buttons{gap:8px;}.nav-buttons button{padding:6px 12px;font-size:0.85rem;}
+      .footer{padding:30px 20px 15px;}
+      .footer-content{grid-template-columns:1fr;gap:40px;text-align:center;}
+      .footer-logo-section{width:100%;}
+      .footer-links{grid-template-columns:repeat(3,1fr);gap:40px;}
+      .footer-links a{display:inline;}
+      .footer-links a:hover{transform:none;}
+      .footer-social-section{width:100%;align-items:center;}
+      .footer-social{flex-direction:row;justify-content:center;}}
+    @media(max-width:768px){.main-wrapper{padding:20px 10px;}.container{padding:20px;}
+      .options{grid-template-columns:1fr;}
+      .footer{padding:20px 15px 10px;}
+      .footer-content{gap:30px;}
+      .footer-logo{height:80px;width:100px;}
+      .footer-logo img{height:75px;}
+      .footer-links{grid-template-columns:repeat(3,1fr);gap:25px;}
+      .footer-links h4{font-size:0.9rem;margin-bottom:10px;}
+      .footer-links a{font-size:0.85rem;}
+      .footer-social a{width:45px;height:45px;font-size:1.5rem;}
+      .footer-bottom{font-size:0.75rem;margin-top:20px;}}
+    @media(max-width:480px){.footer-logo{height:70px;width:90px;}
+      .footer-logo img{height:65px;}
+      .footer-links{grid-template-columns:1fr;gap:20px;}
+      .footer-links h4{font-size:0.85rem;margin-bottom:8px;}
+      .footer-links a{font-size:0.8rem;}
+      .footer-social a{width:40px;height:40px;font-size:1.4rem;}
+      .footer-bottom{font-size:0.7rem;}}
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn" onclick="window.location.href='auth.html'">Sign Up / Login</button>
+    </div>
+  </nav>
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">💡</div>
+        <h2>D4 - Count Shapes up to 10</h2>
+      </div>
+      <div class="question-text" aria-live="polite">
+        <div id="questionText">Question text</div>
+        <div class="speaker-icon" role="button" tabindex="0" aria-label="Listen to question" onclick="speakText(currentQuestion.question)">
+          <i class="fas fa-volume-up"></i>
+        </div>
+      </div>
+      <div class="shape-container" id="shapeContainer" aria-live="polite" aria-label="Visual shapes"></div>
+      <div class="options" id="optionsContainer" role="list"></div>
+      <button class="submit-btn" id="nextBtn" disabled onclick="nextQuestion()">Next</button>
+      <div id="feedback" class="feedback" aria-live="assertive"></div>
+      <div id="scoreBox" class="score-box" style="display: none"></div>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo">
+          <img src="img/logo1.png" alt="HelpingHands Logo" />
+        </div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Games</a></li>
+              <li><a href="#">Activities</a></li>
+              <li><a href="#">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+  </footer>
+  <script>
+    const questions = [
+      { question: "How many triangles are there?", shapes: "🔺🔺🔺🔺🔺🔺🔺🔺🔺🔺", options: [10, 9, 8], answer: 10 },
+      { question: "Count the squares.", shapes: "◼️◼️◼️◼️◼️◼️◼️◼️◼️", options: [9, 10, 8], answer: 9 },
+      { question: "How many circles?", shapes: "⚪⚪⚪⚪⚪⚪⚪⚪", options: [8, 9, 7], answer: 8 },
+      { question: "Count the stars.", shapes: "⭐⭐⭐⭐⭐⭐⭐", options: [7, 8, 9], answer: 7 },
+      { question: "How many diamonds?", shapes: "♦️♦️♦️♦️♦️♦️♦️♦️♦️♦️", options: [9, 10, 8], answer: 10 },
+      { question: "Count the hearts.", shapes: "❤️❤️❤️❤️❤️", options: [5, 4, 6], answer: 5 },
+    ];
+    let currentIdx = 0, score = 0, answered = false, currentQuestion = null;
+    const questionTextEl = document.getElementById("questionText"),
+      shapeContainerEl = document.getElementById("shapeContainer"),
+      optionsContainer = document.getElementById("optionsContainer"),
+      feedbackEl = document.getElementById("feedback"),
+      nextBtn = document.getElementById("nextBtn"),
+      scoreBox = document.getElementById("scoreBox");
+    function speakText(text){
+      if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();}
+      const utt = new SpeechSynthesisUtterance(text); utt.lang = "en-IN"; utt.rate = 1; window.speechSynthesis.speak(utt);
+    }
+    function playOptionSound(text, event){ event.stopPropagation(); speakText(text.toString()); }
+    function renderEmojis(str){
+      let html = '<div class="emoji-row">';
+      for(let ch of str){ html += `<span class="emoji-item">${ch}</span>`; }
+      html += '</div>'; return html;
+    }
+    function loadQuestion(){
+      answered = false;
+      nextBtn.disabled = true;
+      currentQuestion = questions[currentIdx];
+      questionTextEl.textContent = currentQuestion.question;
+      shapeContainerEl.innerHTML = renderEmojis(currentQuestion.shapes);
+      feedbackEl.textContent = ""; feedbackEl.className = "feedback";
+      scoreBox.style.display = "none"; nextBtn.style.display = "block"; optionsContainer.innerHTML = "";
+      currentQuestion.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.type = "button";
+        btn.setAttribute("role", "listitem");
+        btn.innerHTML = `
+          <span class="option-select">${option}</span>
+          <span class="option-speaker" title="Listen to option" aria-label="Listen to option number ${option}">
+            <i class="fas fa-volume-up"></i>
+          </span>
+        `;
+        btn.querySelector(".option-speaker").addEventListener("click", (e) => playOptionSound(option, e));
+        btn.addEventListener("click", () => selectOption(btn, option));
+        optionsContainer.appendChild(btn);
+      });
+    }
+    function selectOption(btn, selected){
+      if(answered) return;
+      answered = true;
+      nextBtn.disabled = false;
+      Array.from(optionsContainer.children).forEach(b => b.disabled = true);
+      if(selected === currentQuestion.answer){
+        score++; btn.classList.add("correct"); feedbackEl.textContent = "Correct! Well done."; feedbackEl.classList.add("correct"); speakText("Correct! Well done.");
+      } else {
+        btn.classList.add("incorrect"); feedbackEl.textContent = "Oops, that’s not correct."; feedbackEl.classList.add("incorrect"); speakText("Oops, that’s not correct.");
+        Array.from(optionsContainer.children).forEach(b => {
+          if(parseInt(b.querySelector(".option-select").textContent) === currentQuestion.answer){b.classList.add("correct");}
+        });
+      }
+    }
+    function nextQuestion(){
+      currentIdx++;
+      if(currentIdx < questions.length) {
+        loadQuestion(); feedbackEl.style.display="block"; nextBtn.disabled=true;
+      } else {
+        questionTextEl.textContent = "Quiz Completed!"; shapeContainerEl.textContent = "";
+        optionsContainer.innerHTML = ""; nextBtn.style.display = "none"; feedbackEl.style.display = "none";
+        scoreBox.style.display = "block"; scoreBox.textContent = `Your final score is ${score} out of ${questions.length}.`;
+        speakText(`You finished the quiz. Your final score is ${score} out of ${questions.length}.`);
+      }
+    }
+    loadQuestion();
+  </script>
+</body>
+</html>

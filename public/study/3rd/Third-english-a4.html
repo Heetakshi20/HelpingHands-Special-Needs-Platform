@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A4 · Author's Purpose | 3rd Grade Reading</title>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Poppins font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #ffb5b5 0%, #ffd5d5 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background-color: #0d5791;
+        color: white;
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      .logo {
+        font-size: 26px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .logo span {
+        color: #7ce04a;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        padding: 8px 14px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .nav-buttons button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .manage-btn {
+        background-color: white;
+        color: #0d5791;
+      }
+      .manage-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .launch-btn {
+        background-color: #a1e231;
+        color: black;
+      }
+      .launch-btn:hover {
+        background-color: #8fd31a;
+        transform: translateY(-2px);
+      }
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #00d4ff;
+        padding: 40px 20px;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #e74c3c;
+        padding-bottom: 10px;
+      }
+      .header-icon {
+        width: 50px;
+        height: 50px;
+        background: #e74c3c;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      h2 {
+        color: #e74c3c;
+        font-weight: 600;
+        font-size: 1.7rem;
+      }
+      .question-text {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .speaker-icon {
+        width: 45px;
+        height: 45px;
+        background: #e74c3c;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 1.3rem;
+      }
+      .speaker-icon:hover {
+        background: #b03a2e;
+        transform: scale(1.1);
+      }
+      .reading-area {
+        background: #ffe8e8;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        border: 3px solid #e74c3c;
+      }
+      .rule-box {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .rule-title {
+        font-size: 1.3rem;
+        color: #b03a2e;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .rule-list {
+        list-style-position: inside;
+        color: #2c3e50;
+        font-size: 1.1rem;
+      }
+      .pie-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 20px 0;
+        width: 100%;
+      }
+      .pie-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .pie-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+      .pie-card.selected {
+        border: 3px solid #e74c3c;
+        background: #ffe8e8;
+      }
+      .pie-letter {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #e74c3c;
+      }
+      .pie-word {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #b03a2e;
+      }
+      .pie-meaning {
+        font-size: 0.9rem;
+        color: #2c3e50;
+      }
+      .passage-box {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        width: 100%;
+        margin: 20px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .passage-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #e74c3c;
+        margin-bottom: 15px;
+      }
+      .passage-content {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #2c3e50;
+      }
+      .question-box {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #b03a2e;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 20px 0 25px;
+      }
+      .option-btn {
+        background: white;
+        border: 3px solid #ffb0b0;
+        border-radius: 60px;
+        min-height: 80px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .option-btn:hover {
+        background: #ffe0e0;
+        border-color: #e74c3c;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px #ffc0c0;
+      }
+      .option-btn.correct {
+        background: #2ecc71;
+        border-color: #27ae60;
+        color: white;
+      }
+      .option-btn.incorrect {
+        background: #e74c3c;
+        border-color: #c0392b;
+        color: white;
+      }
+      .submit-btn {
+        background: linear-gradient(145deg, #e74c3c, #b03a2e);
+        color: white;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 50px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+        display: block;
+        margin: 0 auto 10px;
+        box-shadow: 0 6px 0 #7a2a21;
+      }
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 9px 0 #7a2a21;
+      }
+      .submit-btn:disabled {
+        background: #ffa8a8;
+        box-shadow: 0 4px 0 #7a2a21;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .feedback {
+        margin: 15px 0 5px;
+        font-weight: 600;
+        font-size: 1.4rem;
+        text-align: center;
+        min-height: 40px;
+      }
+      .feedback.correct {
+        color: #1e8449;
+      }
+      .feedback.incorrect {
+        color: #943126;
+      }
+      .score-box {
+        margin-top: 30px;
+        border: 4px solid #e74c3c;
+        border-radius: 30px;
+        padding: 30px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 2.2rem;
+        background: #ffe0e0;
+        color: #7a2a21;
+      }
+      .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+      @media (max-width: 800px) {
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .footer-logo {
+          display: flex;
+          justify-content: center;
+        }
+        .footer-links {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-social {
+          flex-direction: row;
+          justify-content: center;
+        }
+        .pie-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .navbar {
+          flex-wrap: wrap;
+        }
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="manage-btn">Manage Account</button>
+        <button class="launch-btn" onclick="window.location.href = '#'">
+          Sign Up / Login
+        </button>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        <div class="header">
+          <div class="header-icon">🎯</div>
+          <h2>A4 · Author's Purpose</h2>
+        </div>
+
+        <div class="question-text">
+          <span id="questionPhrase">"Why did the author write this?"</span>
+          <div class="speaker-icon" id="globalSpeaker">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="reading-area" id="readingArea">
+          <div class="rule-box">
+            <div class="rule-title">Author's Purpose (PIE)</div>
+            <ul class="rule-list">
+              <li>
+                👉 <strong>P</strong>ersuade: convince the reader to think or do
+                something
+              </li>
+              <li>👉 <strong>I</strong>nform: give facts or information</li>
+              <li>
+                👉 <strong>E</strong>ntertain: tell a story or make the reader
+                enjoy
+              </li>
+            </ul>
+          </div>
+
+          <div class="pie-cards">
+            <div class="pie-card" onclick="selectPurpose('persuade')">
+              <div class="pie-letter">P</div>
+              <div class="pie-word">Persuade</div>
+              <div class="pie-meaning">Convince the reader</div>
+            </div>
+            <div class="pie-card" onclick="selectPurpose('inform')">
+              <div class="pie-letter">I</div>
+              <div class="pie-word">Inform</div>
+              <div class="pie-meaning">Give information</div>
+            </div>
+            <div class="pie-card" onclick="selectPurpose('entertain')">
+              <div class="pie-letter">E</div>
+              <div class="pie-word">Entertain</div>
+              <div class="pie-meaning">Tell a story</div>
+            </div>
+          </div>
+
+          <div class="passage-box">
+            <div class="passage-title" id="passageTitle">
+              The Amazing Honeybee
+            </div>
+            <div class="passage-content" id="passageContent">
+              <p>
+                Honeybees are fascinating insects that play a vital role in our
+                world. They pollinate flowers, which helps plants grow. A single
+                honeybee can visit up to 5,000 flowers in one day! Bees make
+                honey from nectar, and a hive can produce up to 60 pounds of
+                honey in a year. There are three types of bees in a hive: the
+                queen, workers, and drones. Without bees, we would have much
+                less food to eat.
+              </p>
+            </div>
+          </div>
+
+          <div class="question-box" id="questionBox"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <button class="submit-btn" id="nextBtn" disabled onclick="handleNext()">
+          Next
+        </button>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="scoreBox" class="score-box" style="display: none"></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+    <script>
+      (function () {
+        const questions = [
+          {
+            title: "The Amazing Honeybee",
+            content:
+              "Honeybees are fascinating insects that play a vital role in our world. They pollinate flowers, which helps plants grow. A single honeybee can visit up to 5,000 flowers in one day! Bees make honey from nectar, and a hive can produce up to 60 pounds of honey in a year. There are three types of bees in a hive: the queen, workers, and drones. Without bees, we would have much less food to eat.",
+            purpose: "inform",
+            question: "What was the author's purpose for writing this?",
+          },
+          {
+            title: "Buy My Cookies!",
+            content:
+              "My homemade cookies are the best in town! They are soft, chewy, and packed with delicious chocolate chips. I use only the finest ingredients and bake them fresh every morning. You simply must try them! For just $5 a dozen, you can enjoy the most amazing cookies you've ever tasted. Come to the school bake sale on Saturday and buy some. You won't regret it!",
+            purpose: "persuade",
+            question: "What was the author's purpose for writing this?",
+          },
+          {
+            title: "The Magical Forest",
+            content:
+              "Once upon a time, in a magical forest far away, there lived a tiny fairy named Lily. She had shimmering wings that sparkled like diamonds in the sunlight. One day, Lily discovered a hidden path she had never seen before. Curious, she followed the path and found a garden of glowing flowers. The flowers whispered secrets to her, and she danced among them until the moon rose high in the sky.",
+            purpose: "entertain",
+            question: "What was the author's purpose for writing this?",
+          },
+          {
+            title: "How to Make a Paper Airplane",
+            content:
+              "To make a paper airplane, start with a rectangular piece of paper. Fold it in half lengthwise, then unfold. Next, fold the top corners down to the center line. Fold the paper in half along the center line. Finally, fold the wings down on both sides. Now you have a paper airplane that can fly across the room!",
+            purpose: "inform",
+            question: "What was the author's purpose for writing this?",
+          },
+          {
+            title: "Recycle for Our Planet",
+            content:
+              "Our planet is in danger! Every day, we throw away too much trash that ends up in landfills and oceans. But you can help! By recycling paper, plastic, and glass, you can make a difference. Please start recycling today. Our Earth needs you!",
+            purpose: "persuade",
+            question: "What was the author's purpose for writing this?",
+          },
+          {
+            title: "The Brave Little Turtle",
+            content:
+              "Tiny the turtle was very small, but he had a very big heart. When his friend Sammy the fish got caught in a net, Tiny didn't hesitate. He used his sharp little teeth to chew through the ropes until Sammy was free. All the other animals cheered for Tiny, the bravest turtle in the pond.",
+            purpose: "entertain",
+            question: "What was the author's purpose for writing this?",
+          },
+          {
+            title: "Dogs: The Best Pets",
+            content:
+              "Dogs make wonderful pets for so many reasons. They are loyal, loving, and fun to play with. Dogs can learn tricks, go for walks with you, and they always greet you with a wagging tail. If you're looking for a pet, you should definitely consider getting a dog!",
+            purpose: "persuade",
+            question: "What was the author's purpose for writing this?",
+          },
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentQuestion = questions[0];
+        let selectedPurpose = "";
+
+        const questionPhraseEl = document.getElementById("questionPhrase");
+        const globalSpeaker = document.getElementById("globalSpeaker");
+        const passageTitle = document.getElementById("passageTitle");
+        const passageContent = document.getElementById("passageContent");
+        const questionBoxEl = document.getElementById("questionBox");
+        const optionsContainer = document.getElementById("optionsContainer");
+        const feedbackEl = document.getElementById("feedback");
+        const nextBtn = document.getElementById("nextBtn");
+        const scoreBox = document.getElementById("scoreBox");
+
+        function speakText(text, rate = 1) {
+          if (!window.speechSynthesis) return;
+          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "en-US";
+          utterance.rate = rate;
+          window.speechSynthesis.speak(utterance);
+        }
+
+        window.speakText = speakText;
+
+        function loadQuestion() {
+          answered = false;
+          nextBtn.disabled = true;
+          selectedPurpose = "";
+          currentQuestion = questions[currentIndex];
+
+          questionPhraseEl.textContent = `"Why did the author write this?"`;
+
+          passageTitle.textContent = currentQuestion.title;
+          passageContent.innerHTML = `<p>${currentQuestion.content}</p>`;
+
+          // Reset PIE cards
+          document
+            .querySelectorAll(".pie-card")
+            .forEach((card) => card.classList.remove("selected"));
+
+          questionBoxEl.textContent = currentQuestion.question;
+
+          feedbackEl.textContent = "";
+          feedbackEl.className = "feedback";
+          scoreBox.style.display = "none";
+          nextBtn.style.display = "block";
+
+          optionsContainer.innerHTML = "";
+          const checkBtn = document.createElement("button");
+          checkBtn.className = "option-btn";
+          checkBtn.textContent = "Check answer";
+
+          const speakerSpan = document.createElement("span");
+          speakerSpan.className = "fas fa-volume-up";
+          speakerSpan.style.marginLeft = "8px";
+          speakerSpan.onclick = (e) => {
+            e.stopPropagation();
+            speakText("Check your answer");
+          };
+          checkBtn.appendChild(speakerSpan);
+
+          checkBtn.onclick = checkAnswer;
+          optionsContainer.appendChild(checkBtn);
+        }
+
+        window.selectPurpose = function (purpose) {
+          if (answered) return;
+
+          document
+            .querySelectorAll(".pie-card")
+            .forEach((card) => card.classList.remove("selected"));
+          event.currentTarget.classList.add("selected");
+          selectedPurpose = purpose;
+          speakText(purpose);
+        };
+
+        function checkAnswer() {
+          if (answered) return;
+
+          if (!selectedPurpose) {
+            feedbackEl.textContent = "❌ Please choose an author's purpose!";
+            feedbackEl.classList.add("incorrect");
+            speakText("Please choose an author's purpose");
+            return;
+          }
+
+          answered = true;
+          nextBtn.disabled = false;
+
+          const isCorrect = selectedPurpose === currentQuestion.purpose;
+
+          if (isCorrect) {
+            score++;
+            feedbackEl.textContent =
+              "✅ Great! You identified the author's purpose.";
+            feedbackEl.classList.add("correct");
+            speakText(
+              `Good job! The author wanted to ${currentQuestion.purpose}.`,
+            );
+          } else {
+            feedbackEl.textContent = `❌ Not quite. The author's purpose was to ${currentQuestion.purpose}.`;
+            feedbackEl.classList.add("incorrect");
+            speakText(`The author's purpose was to ${currentQuestion.purpose}`);
+
+            // Highlight correct answer
+            document.querySelectorAll(".pie-card").forEach((card) => {
+              if (
+                card.textContent.toLowerCase().includes(currentQuestion.purpose)
+              ) {
+                card.classList.add("correct");
+              }
+            });
+          }
+        }
+
+        function handleNext() {
+          if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+          } else {
+            showFinalScore();
+          }
+        }
+
+        function showFinalScore() {
+          questionPhraseEl.textContent = "🎉 Author's purpose mastered! 🎉";
+          document.querySelector(".pie-cards").style.display = "none";
+          document.querySelector(".passage-box").innerHTML =
+            '<div class="passage-title">🏆</div>';
+          questionBoxEl.textContent =
+            "You can identify PIE (Persuade, Inform, Entertain)!";
+          optionsContainer.innerHTML = "";
+          nextBtn.style.display = "none";
+          feedbackEl.textContent = "";
+          scoreBox.style.display = "block";
+          scoreBox.textContent = `You scored ${score} out of ${questions.length}!`;
+          speakText(
+            `Quiz finished. You got ${score} out of ${questions.length} correct.`,
+            0.9,
+          );
+        }
+
+        globalSpeaker.addEventListener("click", () => {
+          if (currentIndex < questions.length) {
+            speakText(`${currentQuestion.question}`);
+          } else {
+            speakText(
+              `Quiz completed. Your score is ${score} out of ${questions.length}.`,
+            );
+          }
+        });
+
+        loadQuestion();
+        window.handleNext = handleNext;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B4 - Interactive Borrowing | HelpingHands</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1 */
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Poppins', sans-serif; background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%); min-height:100vh; display:flex; flex-direction:column;}
+    
+    /* NAVBAR - CONSISTENT DESIGN */
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .launch-btn{background:#A1E231;color:black;}
+
+    /* MAIN CONTENT */
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+    .container{background:white;border-radius:15px;padding:40px;max-width:850px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12); text-align:center;}
+    
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #6f42c1;padding-bottom:10px; text-align:left;}
+    .header-icon{width:50px;height:50px;background:#6f42c1;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#6f42c1;font-weight:600;font-size:1.4rem;}
+
+    /* VISIBLE BORROWING MATH STYLING */
+    .subtraction-grid { display: grid; grid-template-columns: repeat(3, 60px); gap: 10px; justify-content: center; font-family: 'Courier New', monospace; font-size: 3.5rem; color: #0D5791; position: relative; margin: 40px auto; width: fit-content;}
+    
+    .borrow-display-row { display: grid; grid-template-columns: repeat(3, 60px); gap: 10px; height: 50px; }
+    .borrow-num { font-size: 1.5rem; color: #dc3545; font-weight: bold; border: 2px dashed #dc3545; border-radius: 5px; height: 40px; display: flex; align-items: center; justify-content: center; visibility: hidden; background: #fff5f5;}
+    .borrow-num.active { visibility: visible; }
+
+    .number-row { display: grid; grid-template-columns: repeat(3, 60px); gap: 10px; cursor: pointer;}
+    .digit { position: relative; width: 60px; }
+    .digit.slashed::after { content: ""; position: absolute; top: 10%; left: 50%; width: 3px; height: 80%; background: #dc3545; transform: rotate(25deg); }
+    
+    .operator-sign { position: absolute; left: -50px; bottom: 85px; font-size: 3rem; color: #0D5791; }
+    .math-line { grid-column: span 3; border-top: 5px solid #0D5791; margin-top: 5px; }
+
+    .instruction { color: #666; font-style: italic; margin-bottom: 20px; }
+
+    .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+    .choice-card { padding: 15px; border: 2px solid #eee; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.5rem; color: #0D5791; background: white; transition: 0.3s; }
+    .choice-card:hover { border-color: #6f42c1; background: #f8f0ff; }
+    .choice-card.selected { border-color: #A1E231; background: #f1fde0; }
+
+    .check-btn { padding: 15px 40px; background: #6f42c1; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; width: 100%; }
+    .next-btn { padding: 15px 40px; background: #0D5791; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: none; font-size: 1.1rem; width: 100%; margin-top: 10px;}
+
+    /* FOOTER - PROFESSIONAL LAYOUT (auto 1fr auto) */
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#f39c12;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#f39c12;background:rgba(243,156,18,0.15);border-color:#f39c12;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Skills</a></li><li><a href="#">Resources</a></li><li><a href="#">Blog</a></li><li><a href="#">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button><button class="launch-btn">Login</button>
+    </div>
+  </nav>
+
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon"><i class="fas fa-hand-holding-usd"></i></div>
+        <h2>B4 - Subtraction with Visible Borrowing</h2>
+      </div>
+
+      <p class="instruction">Tip: Click on the top numbers to "Borrow" if the bottom number is bigger!</p>
+
+      <div class="subtraction-grid">
+          <div id="bH" class="borrow-num"></div>
+          <div id="bT" class="borrow-num"></div>
+          <div id="bO" class="borrow-num"></div>
+
+          <div id="dH" class="digit" onclick="toggleBorrow('H')">5</div>
+          <div id="dT" class="digit" onclick="toggleBorrow('T')">2</div>
+          <div id="dO" class="digit" onclick="toggleBorrow('O')">3</div>
+
+          <span class="operator-sign">-</span>
+
+          <div id="vH">2</div>
+          <div id="vT">4</div>
+          <div id="vO">8</div>
+
+          <div class="math-line"></div>
+      </div>
+
+      <div class="options-grid" id="options"></div>
+
+      <button class="check-btn" onclick="checkAnswer()">Check Result</button>
+      <button class="next-btn" id="nextBtn" onclick="newChallenge()">Next Problem <i class="fas fa-arrow-right"></i></button>
+      <div id="feedback" style="margin-top:20px; font-weight:bold; font-size:1.4rem; min-height:35px;"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo"><img src="logo.png" alt="Logo" /></div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+          <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+          <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 HelpingHands. All rights reserved.</div>
+  </footer>
+
+  <script>
+    let n1, n2, correctAnswer, userSelection;
+
+    function newChallenge() {
+      userSelection = null;
+      document.getElementById('feedback').innerText = "";
+      document.getElementById('nextBtn').style.display = "none";
+      
+      // Reset borrowing visuals
+      ['H', 'T', 'O'].forEach(col => {
+          document.getElementById('d'+col).classList.remove('slashed');
+          document.getElementById('b'+col).classList.remove('active');
+          document.getElementById('b'+col).innerText = "";
+      });
+
+      // Generate numbers that require borrowing
+      n1 = Math.floor(Math.random() * 500) + 400;
+      // Ensure ones and tens digits in n2 are larger than in n1 to force borrowing
+      let d1O = n1 % 10;
+      let d1T = Math.floor((n1/10)%10);
+      let d2O = d1O + 2;
+      let d2T = d1T + 1;
+      n2 = 200 + (d2T * 10) + d2O;
+      
+      correctAnswer = n1 - n2;
+
+      // Update UI
+      const s1 = n1.toString();
+      const s2 = n2.toString();
+      document.getElementById('dH').innerText = s1[0];
+      document.getElementById('dT').innerText = s1[1];
+      document.getElementById('dO').innerText = s1[2];
+      document.getElementById('vH').innerText = s2[0];
+      document.getElementById('vT').innerText = s2[1];
+      document.getElementById('vO').innerText = s2[2];
+
+      const optionsArea = document.getElementById('options');
+      optionsArea.innerHTML = "";
+      let choices = [correctAnswer, correctAnswer+10, correctAnswer-10, correctAnswer+2];
+      choices.sort(() => Math.random() - 0.5);
+
+      choices.forEach(c => {
+        const btn = document.createElement('div');
+        btn.className = "choice-card";
+        btn.innerText = c;
+        btn.onclick = () => {
+          document.querySelectorAll('.choice-card').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          userSelection = c;
+        };
+        optionsArea.appendChild(btn);
+      });
+    }
+
+    function toggleBorrow(col) {
+        const digitEl = document.getElementById('d'+col);
+        const borrowEl = document.getElementById('b'+col);
+        const val = parseInt(digitEl.innerText);
+
+        if(!digitEl.classList.contains('slashed')) {
+            digitEl.classList.add('slashed');
+            borrowEl.classList.add('active');
+            if(col === 'O') borrowEl.innerText = "1" + val;
+            else borrowEl.innerText = val - 1;
+        } else {
+            digitEl.classList.remove('slashed');
+            borrowEl.classList.remove('active');
+        }
+    }
+
+    function checkAnswer() {
+      if(userSelection === null) return;
+      if(userSelection === correctAnswer) {
+        document.getElementById('feedback').innerText = "🌟 Bravo! You saw exactly where to borrow!";
+        document.getElementById('feedback').style.color = "#28a745";
+        document.getElementById('nextBtn').style.display = "block";
+      } else {
+        document.getElementById('feedback').innerText = "❌ Almost! Remember: if the top is smaller, borrow from the neighbor.";
+        document.getElementById('feedback').style.color = "#dc3545";
+      }
+    }
+
+    newChallenge();
+  </script>
+</body>
+</html>

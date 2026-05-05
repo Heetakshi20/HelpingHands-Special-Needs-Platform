@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paint Game | HelpingHands Galaxy</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#02040a;color:white;min-height:100vh;overflow-x:hidden;}
+
+/* --- Starry Background --- */
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d) infinite alternate;}
+@keyframes twinkle{0%{opacity:.1;transform:scale(.8)}100%{opacity:.8;transform:scale(1.3)}}
+
+/* --- Play Overlay --- */
+#playOverlay {
+    position: fixed; inset: 0; background: rgba(2, 4, 10, 0.95);
+    z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.play-btn {
+    background: #e040fb; color: white; border: none; padding: 20px 60px;
+    font-size: 2rem; font-family: 'Outfit'; font-weight: 900; border-radius: 50px;
+    cursor: pointer; box-shadow: 0 0 30px rgba(224, 64, 251, 0.6); transition: 0.3s;
+    margin-bottom: 20px;
+}
+.play-btn:hover { transform: scale(1.1); background: #9c27b0; }
+
+/* --- Navbar --- */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:#0D5791;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Outfit',sans-serif;font-size:24px;font-weight:900; color: white;}
+.logo span{color:#7CE04A;}
+
+/* Back Button Styling */
+.back-link {
+    background:#9c27b0; color:white; text-decoration:none; 
+    padding:8px 18px; border-radius:20px; font-weight:700; 
+    display:flex; align-items:center; gap:6px; transition: 0.2s;
+}
+.back-link:hover { background: #6a0080; }
+
+.container{position:relative;z-index:10;padding:20px;max-width:750px;margin:0 auto;}
+.game-title{font-family:'Outfit',sans-serif;font-size:2.2rem;font-weight:900;text-align:center;color:#e040fb;text-shadow:0 0 30px rgba(224, 64, 251,.4);margin-bottom:15px;}
+
+/* --- Canvas Area --- */
+.canvas-wrap {
+    background: white; border: 4px solid #e040fb; border-radius: 25px; 
+    overflow: hidden; margin-bottom: 20px; box-shadow: 0 0 30px rgba(156,39,176,0.3);
+}
+#emojiCanvas { width: 100%; height: 400px; cursor: pointer; display: block; }
+
+/* --- Toolbar --- */
+.toolbar{background:linear-gradient(145deg,#1a0930,#2e1050);border:2px solid rgba(156,39,176,.3);border-radius:18px;padding:15px;display:flex;flex-direction:column;gap:15px;}
+.tool-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.tool-label{font-size:.7rem;font-weight:700;color:#ce93d8;text-transform:uppercase;min-width:70px;}
+
+.color-swatch{width:38px;height:38px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:0.2s;}
+.color-swatch.active{border-color:white;box-shadow:0 0 10px white;transform:scale(1.1);}
+
+.cat-btn {
+    background: rgba(255,255,255,0.1); border: 1px solid #ce93d8; color: #ce93d8;
+    padding: 8px 18px; border-radius: 12px; cursor: pointer; font-weight: 700;
+}
+.cat-btn.active { background: #e040fb; color: white; border-color: white; }
+
+.action-btn{background:rgba(156,39,176,.2);border:2px solid rgba(156,39,176,.3);border-radius:12px;padding:10px 20px;cursor:pointer;color:white;font-weight:700;}
+.next-btn{background:#9c27b0; margin-left: auto;}
+</style>
+</head>
+<body>
+
+<div id="playOverlay">
+    <h1 style="font-family:'Outfit'; font-size: 3rem; margin-bottom: 30px; text-align: center;">🎨 PAINT GAME</h1>
+    <button class="play-btn" onclick="startGame()">🚀 PLAY</button>
+    <a href="../dyslexia.html" style="color: #ce93d8; text-decoration: none; font-weight: bold;">⬅️ Back to Menu</a>
+</div>
+
+<div id="stars"></div>
+
+<nav class="navbar">
+  <div class="logo">Paint <span>Game</span></div>
+  <a href="../dyslexia.html" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+</nav>
+
+<div class="container">
+  <div class="game-title">✨ Magic Color Fill</div>
+  
+  <div class="canvas-wrap">
+      <svg id="emojiCanvas" viewBox="0 0 400 400"></svg>
+  </div>
+
+  <div class="toolbar">
+    <div class="tool-row">
+      <span class="tool-label">📁 Pick</span>
+      <button class="cat-btn active" id="btnEmoji" onclick="setCategory('emoji')">😊 Emojis</button>
+      <button class="cat-btn" id="btnABC" onclick="setCategory('abc')">🔤 Alphabets</button>
+    </div>
+
+    <div class="tool-row">
+      <span class="tool-label">🎨 Color</span>
+      <div id="palette" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    </div>
+
+    <div class="tool-row">
+      <span class="tool-label">⚙️ Tools</span>
+      <button class="action-btn" onclick="resetEmoji()">🗑️ Clear</button>
+      <button class="action-btn next-btn" onclick="nextDrawing()">Next Drawing ➡️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+// Star background
+var sc=document.getElementById('stars');
+for(var i=0;i<150;i++){var s=document.createElement('div');s.className='star';var sz=Math.random()*2;s.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+(Math.random()*100)+'%;left:'+(Math.random()*100)+'%;--d:'+(Math.random()*3+1.5)+'s';sc.appendChild(s);}
+
+var COLORS=['#FF4444','#FFBB33','#00C851','#33B5E5','#AA66CC','#FF69B4','#000000','#8B4513'];
+var currentColor = '#FF4444';
+var currentCategory = 'emoji';
+var emojiIdx = 0;
+var abcIdx = 0;
+
+const emojiLibrary = [
+    // Smiley
+    `<circle cx="200" cy="200" r="160" fill="white" stroke="#333" stroke-width="10" onclick="fillPart(this)"/>
+     <circle cx="140" cy="150" r="25" fill="white" stroke="#333" stroke-width="6" onclick="fillPart(this)"/>
+     <circle cx="260" cy="150" r="25" fill="white" stroke="#333" stroke-width="6" onclick="fillPart(this)"/>
+     <path d="M120 250 Q200 340 280 250" fill="none" stroke="#333" stroke-width="10" stroke-linecap="round" onclick="fillPart(this)"/>`,
+    // Star
+    `<path d="M200 20 L260 140 L390 140 L285 220 L325 350 L200 270 L75 350 L115 220 L10 140 L140 140 Z" fill="white" stroke="#333" stroke-width="10" onclick="fillPart(this)"/>`,
+    // Sun
+    `<circle cx="200" cy="200" r="80" fill="white" stroke="#333" stroke-width="8" onclick="fillPart(this)"/>
+     <path d="M200 20 L200 80 M200 320 L200 380 M20 200 L80 200 M320 200 L380 200" stroke="#333" stroke-width="10" onclick="fillPart(this)"/>`
+];
+
+const abcLibrary = [
+    // A
+    `<path d="M80 360 L180 40 L220 40 L320 360 L270 360 L245 280 L155 280 L130 360 Z M170 230 L230 230 L200 130 Z" fill="white" stroke="#333" stroke-width="10" onclick="fillPart(this)"/>`,
+    // B
+    `<path d="M100 50 L220 50 Q300 50 300 125 Q300 190 220 200 Q310 210 310 285 Q310 360 220 360 L100 360 Z M160 110 L160 170 L210 170 Q240 170 240 140 Q240 110 210 110 Z M160 230 L160 300 L220 300 Q250 300 250 265 Q250 230 220 230 Z" fill="white" stroke="#333" stroke-width="10" onclick="fillPart(this)"/>`,
+    // C
+    `<path d="M320 120 Q320 50 200 50 Q80 50 80 200 Q80 350 200 350 Q320 350 320 280 L260 280 Q260 300 200 300 Q140 300 140 200 Q140 100 200 100 Q260 100 260 120 Z" fill="white" stroke="#333" stroke-width="10" onclick="fillPart(this)"/>`
+];
+
+window.startGame = function() {
+    document.getElementById('playOverlay').style.display = "none";
+    render();
+}
+
+var pal=document.getElementById('palette');
+COLORS.forEach((c, i) => {
+    var sw=document.createElement('div');
+    sw.className='color-swatch' + (i===0 ? ' active' : '');
+    sw.style.background=c;
+    sw.onclick=function(){
+        currentColor=c;
+        document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active');
+    };
+    pal.appendChild(sw);
+});
+
+window.setCategory = function(cat) {
+    currentCategory = cat;
+    document.getElementById('btnEmoji').classList.toggle('active', cat === 'emoji');
+    document.getElementById('btnABC').classList.toggle('active', cat === 'abc');
+    render();
+};
+
+window.fillPart = function(el) {
+    el.setAttribute('fill', currentColor);
+    el.setAttribute('stroke', currentColor);
+}
+
+window.nextDrawing = function() {
+    if(currentCategory === 'emoji') {
+        emojiIdx = (emojiIdx + 1) % emojiLibrary.length;
+    } else {
+        abcIdx = (abcIdx + 1) % abcLibrary.length;
+    }
+    render();
+}
+
+window.resetEmoji = function() { render(); }
+
+function render() {
+    const lib = currentCategory === 'emoji' ? emojiLibrary : abcLibrary;
+    const idx = currentCategory === 'emoji' ? emojiIdx : abcIdx;
+    document.getElementById('emojiCanvas').innerHTML = lib[idx];
+}
+
+})();
+</script>
+</body>
+</html>

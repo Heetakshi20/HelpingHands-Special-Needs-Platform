@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autism Heroes | HelpingHands Galaxy</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL STYLE --- */
+        * {margin:0; padding:0; box-sizing:border-box; scroll-behavior: smooth;}
+        
+        body {
+            font-family: 'Times New Roman', Times, serif; 
+            background-color: #02040a; 
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- ENHANCED STARS (500 STARS) --- */
+        #star-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle var(--duration) infinite alternate ease-in-out;
+        }
+
+        @keyframes twinkle { 
+            0% { opacity: 0.1; transform: scale(0.8); } 
+            100% { opacity: 0.9; transform: scale(1.3); } 
+        }
+
+        /* --- NAVBAR (LOCKED DESIGN) --- */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 30px; background: #0D5791; color: white; gap: 20px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #7CE04A; }
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; padding: 8px 14px; border-radius: 5px; transition: .3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+        .nav-buttons { display: flex; gap: 10px; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { position: relative; z-index: 10; background: transparent; }
+
+        .galaxy-header { padding: 80px 60px 40px; }
+        .title-prek {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: clamp(3rem, 8vw, 5rem); font-weight: 900; margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .category-nav { display: flex; gap: 15px; flex-wrap: wrap; }
+        .nav-dot {
+            padding: 12px 25px; border-radius: 50px; color: white;
+            font-weight: 900; border: none; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 4px 0px rgba(0,0,0,0.5);
+        }
+        .nav-dot:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        /* --- SECTIONS --- */
+        .game-section { padding: 60 - x 60px; padding-bottom: 20px; padding-top: 40px; margin-left: 60px; margin-right: 60px; }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .section-header h2 { font-family: 'Times New Roman', Times, serif; font-size: 2.2rem; text-transform: uppercase; }
+        .section-line { height: 3px; flex: 1; border-radius: 2px; opacity: 0.5; }
+
+        /* --- CARDS (PRE-K IMAGE STYLE) --- */
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        
+        .game-card {
+            background: #FFB300; border-radius: 15px; overflow: hidden;
+            cursor: pointer; transition: transform 0.3s ease;
+            display: flex; flex-direction: column; opacity: 0; transform: translateY(30px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        .game-card.visible { opacity: 1; transform: translateY(0); }
+        .game-card:hover { transform: translateY(-8px); }
+
+       /* New Image Style */
+        .card-image-box img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .card-details { padding: 12px; background: #FFB300; color: white; }
+        .card-details h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 4px; line-height: 1.1; }
+        .card-details p { font-size: 0.8rem; font-weight: 600; opacity: 0.9; }
+        
+        .game-icon-small {
+            position: absolute; bottom: 8px; right: 8px; background: white;
+            color: #FFB300; width: 26px; height: 26px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+            z-index: 5;
+        }
+
+        /* --- FOOTER (LOCKED NAVY BLUE DESIGN) --- */
+        .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+        @media(max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { grid-template-columns: 1fr; }
+            .game-section { margin-left: 20px; margin-right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="star-container"></div>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="dashboard1.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="galaxy-header">
+            <h1 class="title-prek"> AUTISM HEROES</h1>
+            <div class="category-nav">
+                <button class="nav-dot" style="background: #ffb300;" onclick="scrollToSection('abc-sec')">ABC LETTERS</button>
+                <button class="nav-dot" style="background: #f44336;" onclick="scrollToSection('hol-sec')">HOLIDAYS</button>
+            </div>
+        </div>
+
+        <section class="game-section" id="abc-sec">
+            <div class="section-header"><h2 style="color: #ffb300;">ABC LETTERS</h2><div class="section-line" style="background: #ffb300;"></div></div>
+            <div class="games-grid">
+        <div class="game-card" onclick="window.location.href='games/fridge_game.html'">
+            <div class="card-image-box">
+                <img src="https://assets.abcya.com/webp_4ceb7a63-c64f-4ca1-a65e-475e56ef7d11.webp" alt="Fridge ABC"> 
+                <div class="game-icon-small"><i class="fas fa-play"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Fun with Fridge ABC Magnets</h3>
+            </div>
+        </div>
+            <div class="game-card" onclick="window.location.href='games/all_about_me.html'">
+                <div class="card-image-box">
+                    <img src="https://assets.abcya.com/webp_f5ee6767-3c5a-49f3-bf42-5cd89d7f2c30.webp" alt="All About Me"> 
+                    <div class="game-icon-small"><i class="fas fa-child"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>All About Me!</h3>
+            </div>
+        </div>
+                   <div class="game-card" onclick="window.location.href='games/alphabet_alliteration.html'">
+                <div class="card-image-box">
+                    <img src="https://assets.abcya.com/webp_5c4b72ea-a8f6-4b97-be11-80f52a0cd23d.webp" alt="All About Me"> 
+                    <div class="game-icon-small"><i class="fas fa-child"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Alphabet Alliteration</h3>
+            </div>
+        </div>
+        <div class="game-card" onclick="window.location.href='games/alphabet_rhymes.html'">
+                <div class="card-image-box">
+                    <img src="https://assets.abcya.com/webp_3abf022b-4374-452d-8213-01c93e589d06.webp" alt="All About Me"> 
+                    <div class="game-icon-small"><i class="fas fa-child"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Alphabet Rhymes</h3>
+            </div>
+        </div>
+                
+        </section>
+
+
+        <section class="game-section" id="hol-sec">
+            <div class="section-header"><h2 style="color: #f44336;">HOLIDAYS</h2><div class="section-line" style="background: #f44336;"></div></div>
+            <div class="games-grid">
+        <div class="game-card" onclick="window.location.href='games/xmas_orbit.html'">
+            <div class="card-image-box">
+                <img src="https://assets.abcya.com/webp_e0c6a82d-7c6c-4877-b3fd-dcef9acf9602.webp" alt="xmas orbit"> 
+                <div class="game-icon-small"><i class="fas fa-play"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Xmas Orbit</h3>
+            </div>
+        </div>
+        <div class="game-card" onclick="window.location.href='games/make_christmas_tree.html'">
+                <div class="card-image-box">
+                    <img src="https://assets.abcya.com/webp_56b9d033-0b28-4403-b6b3-81514e1bfee8.webp" alt="Make Christmas Tree"> 
+                    <div class="game-icon-small"><i class="fas fa-child"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Make Christmas Tree</h3>
+            </div>
+        </div>
+        <div class="game-card" onclick="window.location.href='games/make_gingerbread_house.html'">
+                <div class="card-image-box">
+                    <img src="https://assets.abcya.com/webp_2635cb1c-3cd4-4984-b7e8-7f14a6f8d689.webp" alt="Make Gingerbread House"> 
+                    <div class="game-icon-small"><i class="fas fa-child"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Make Gingerbread House</h3>
+            </div>
+        </div>
+        <div class="game-card" onclick="window.location.href='games/build_pumpkin.html'">
+                <div class="card-image-box">
+                    <img src="https://assets.abcya.com/webp_9f44dba6-7148-4226-ad85-df99d85313f7.webp" alt="Build Pumpkin"> 
+                    <div class="game-icon-small"><i class="fas fa-child"></i></div>
+            </div>
+            <div class="card-details">
+                <h3>Build Pumpkin</h3>
+            </div>
+        </div>
+        </section>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // MASSIVE STARS LOGIC (500 STARS)
+        const starContainer = document.getElementById('star-container');
+        function createStars() {
+            for (let i = 0; i < 500; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3.2;
+                star.style.width = size + 'px'; star.style.height = size + 'px';
+                star.style.top = Math.random() * 100 + '%'; star.style.left = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (Math.random() * 3.5 + 1.5) + 's');
+                starContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            window.scrollTo({ top: element.offsetTop - 80, behavior: 'smooth' });
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.game-card').forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>

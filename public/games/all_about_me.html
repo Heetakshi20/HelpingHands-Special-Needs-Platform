@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All About Me! | Interactive Game</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        :root {
+            --pink: #ff4081;
+            --blue: #2196f3;
+            --yellow: #ffeb3b;
+            --bg: #0f172a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Header --- */
+        .header {
+            background: #1e293b;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--pink);
+        }
+        .header h1 { font-family: 'Outfit'; font-size: 1.5rem; }
+
+        .game-container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Left Side: Selection --- */
+        .selection-panel {
+            width: 350px;
+            height: 80vh;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .category-box {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .category-box h3 { font-size: 0.9rem; margin-bottom: 10px; color: var(--yellow); text-transform: uppercase; }
+
+        .options { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .opt-btn {
+            background: white; border: none; padding: 8px 15px; border-radius: 50px;
+            cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: 0.2s;
+        }
+        .opt-btn:hover { transform: scale(1.1); background: var(--pink); color: white; }
+
+        /* --- Right Side: The Me-Mirror --- */
+        .mirror-container {
+            flex: 1;
+            max-width: 500px;
+            height: 80vh;
+            background: linear-gradient(135deg, #334155, #0f172a);
+            border: 10px solid #94a3b8;
+            border-radius: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .avatar-box {
+            font-size: 8rem;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .avatar-details {
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 20px;
+            width: 80%;
+        }
+
+        .detail-line { font-size: 1.2rem; font-weight: 700; color: var(--blue); margin: 5px 0; }
+        .detail-line span { color: white; }
+
+        /* --- Play Overlay --- */
+        #play-screen {
+            position: fixed; inset: 0; background: var(--bg);
+            z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="play-screen">
+        <button onclick="start()" style="padding:20px 50px; border-radius:50px; background:var(--pink); border:none; color:white; font-weight:900; font-size:2rem; cursor:pointer; box-shadow:0 10px 0 #ad1457;">START GAME</button>
+        <p style="margin-top:20px; font-weight:600;">Let's talk about YOU!</p>
+    </div>
+
+    <header class="header">
+        <h1>🌟 All About Me!</h1>
+        <a href="../autism.html" style="color:white; text-decoration:none; font-weight:bold;">BACK</a>
+    </header>
+
+    <div class="game-container">
+        <div class="selection-panel">
+            <div class="category-box">
+                <h3>I am a...</h3>
+                <div class="options">
+                    <button class="opt-btn" onclick="update('gender', 'Boy', '👦')">Boy</button>
+                    <button class="opt-btn" onclick="update('gender', 'Girl', '👧')">Girl</button>
+                </div>
+            </div>
+
+            <div class="category-box">
+                <h3>My Favorite Fruit</h3>
+                <div class="options">
+                    <button class="opt-btn" onclick="update('fruit', 'Apple', '🍎')">🍎</button>
+                    <button class="opt-btn" onclick="update('fruit', 'Banana', '🍌')">🍌</button>
+                    <button class="opt-btn" onclick="update('fruit', 'Mango', '🥭')">🥭</button>
+                </div>
+            </div>
+
+            <div class="category-box">
+                <h3>How I Feel Today</h3>
+                <div class="options">
+                    <button class="opt-btn" onclick="update('mood', 'Happy', '😊')">Happy</button>
+                    <button class="opt-btn" onclick="update('mood', 'Cool', '😎')">Cool</button>
+                    <button class="opt-btn" onclick="update('mood', 'Excited', '🤩')">Excited</button>
+                </div>
+            </div>
+
+            <div class="category-box">
+                <h3>My Favorite Color</h3>
+                <div class="options">
+                    <button class="opt-btn" onclick="changeColor('#ff4081')">Pink</button>
+                    <button class="opt-btn" onclick="changeColor('#2196f3')">Blue</button>
+                    <button class="opt-btn" onclick="changeColor('#4caf50')">Green</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mirror-container" id="mirror">
+            <div class="avatar-box" id="avatar-emoji">👤</div>
+            <div class="avatar-details">
+                <div class="detail-line">I am a: <span id="lbl-gender">...</span></div>
+                <div class="detail-line">I love: <span id="lbl-fruit">...</span></div>
+                <div class="detail-line">I feel: <span id="lbl-mood">...</span></div>
+            </div>
+            <p style="margin-top:20px; font-weight:900; color:var(--pink);">THIS IS ME!</p>
+        </div>
+    </div>
+
+    <script>
+        function start() {
+            document.getElementById('play-screen').style.display = 'none';
+            speak("Welcome! Let's build your profile. Are you a boy or a girl?");
+        }
+
+        function update(type, value, emoji) {
+            document.getElementById('lbl-' + type).innerText = value;
+            if(type === 'gender' || type === 'mood') {
+                document.getElementById('avatar-emoji').innerText = emoji;
+            }
+            speak(value);
+        }
+
+        function changeColor(color) {
+            document.getElementById('mirror').style.borderColor = color;
+            speak("I like this color!");
+        }
+
+        function speak(text) {
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 0.9;
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>

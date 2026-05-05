@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Module 5 - Emotional Regulation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+      /* Base variables and styles */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Times New Roman', Times, serif; background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%); min-height: 100vh; display: flex; flex-direction: column; }
+
+      /* Navbar */
+      .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #0D5791; color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+      .logo { font-size: 26px; font-weight: bold; cursor: pointer;}
+      .logo span { color: #7CE04A; }
+      .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+      .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+      .nav-links a:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+      /* Main Layout */
+      .main-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+      .container { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 900px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); }
+
+      /* Header & TTS */
+      .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 3px solid #17a2b8; padding-bottom: 15px; }
+      .header-icon { width: 55px; height: 55px; background: #17a2b8; border-radius: 50%; color: white; font-size: 1.8rem; display: flex; justify-content: center; align-items: center; }
+      h2 { color: #17a2b8; font-weight: 700; font-size: 1.8rem; }
+
+      .question-bar { display: flex; justify-content: space-between; align-items: center; background: #f0fbff; padding: 20px 30px; border-radius: 15px; margin-bottom: 30px; border: 2px solid #87ceeb; }
+      .question-text { font-size: 1.5rem; font-weight: 600; color: #333; }
+      
+      .speaker-icon { width: 50px; height: 50px; background: #87ceeb; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(135,206,235,0.4); flex-shrink: 0; }
+      .speaker-icon:hover { background: #17a2b8; transform: scale(1.1); }
+
+      /* Dynamic Content Area */
+      .activity-area { min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 30px; }
+
+      /* --- Breathing UI Styles --- */
+      .breathe-container { display: none; flex-direction: column; align-items: center; gap: 40px; width: 100%; padding: 20px 0; }
+      .breathe-circle { width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, #38BDF8, #818CF8); display: flex; justify-content: center; align-items: center; color: white; font-size: 1.5rem; font-weight: bold; text-align: center; padding: 20px; transition: transform 4s ease-in-out, background 1s ease; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4); }
+      .breathe-circle.inhale { transform: scale(1.8); background: linear-gradient(135deg, #4ADE80, #22C55E); box-shadow: 0 10px 40px rgba(74, 222, 128, 0.5); }
+      .breathe-circle.exhale { transform: scale(1); background: linear-gradient(135deg, #38BDF8, #818CF8); }
+      .breathe-instruction { font-size: 1.8rem; font-weight: 700; color: #0D5791; min-height: 40px; }
+
+      /* --- Strategy Options Styles --- */
+      .options-grid { display: none; justify-content: center; gap: 25px; flex-wrap: wrap; width: 100%; }
+      .option-btn { background: #fff; border: 3px solid #e0e0e0; border-radius: 20px; padding: 20px; width: 200px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.2s ease; box-shadow: 0 6px 12px rgba(0,0,0,0.08); text-align: center; }
+      .option-btn:hover { border-color: #17a2b8; transform: translateY(-6px); box-shadow: 0 12px 20px rgba(23,162,184,0.15); }
+      .option-btn.correct { background: #d4edda; border-color: #28a745; animation: pulse-green 0.5s ease; }
+      .option-btn.incorrect { background: #f8d7da; border-color: #dc3545; opacity: 0.6; animation: shake-red 0.4s ease; }
+      .option-emoji { font-size: 4rem; margin-bottom: 10px; }
+      .option-text { font-size: 1.2rem; font-weight: 600; color: #333; }
+
+      /* Controls & Feedback */
+      .feedback { text-align: center; font-size: 1.4rem; font-weight: 700; min-height: 40px; margin-bottom: 20px; opacity: 0; transition: opacity 0.3s; }
+      .feedback.show { opacity: 1; }
+      .feedback.correct-text { color: #28a745; }
+      .feedback.incorrect-text { color: #dc3545; }
+
+      .action-btn { background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; border-radius: 12px; padding: 15px 40px; font-weight: 700; font-size: 1.2rem; cursor: pointer; display: block; margin: 0 auto; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3); }
+      .action-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4); }
+      .action-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; transform: none; display: none; }
+
+      .score-box { display: none; margin-top: 30px; background: #f0f9ff; border: 3px solid #87ceeb; border-radius: 15px; padding: 30px; text-align: center; font-weight: 700; font-size: 2rem; color: #0D5791; animation: pulse-green 1s ease; }
+
+      /* Animations */
+      @keyframes pulse-green {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+      @keyframes shake-red {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+      }
+
+      /* Footer */
+      .footer { background-color: #0a4a82; color: white; padding: 20px; text-align: center; margin-top: auto; }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="logo" onclick="window.location.href='index.html'">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Back to Modules</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        
+        <div class="header">
+          <div class="header-icon">🧘‍♀️</div>
+          <h2>Module 5: Emotional Regulation</h2>
+        </div>
+
+        <div class="question-bar">
+          <div class="question-text" id="questionText">Loading activity...</div>
+          <div class="speaker-icon" onclick="speakText(currentQuestion.instruction)" title="Read Aloud">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="activity-area">
+          
+          <div class="breathe-container" id="breatheUI">
+            <div class="breathe-instruction" id="breatheText">Ready?</div>
+            <div class="breathe-circle" id="breatheCircle">Breathe</div>
+          </div>
+
+          <div class="options-grid" id="optionsGrid">
+            </div>
+
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button class="action-btn" id="actionBtn" onclick="handleActionClick()">
+          Start Breathing
+        </button>
+
+        <div id="scoreBox" class="score-box"></div>
+
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 HelpingHands. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Curriculum Data for Emotional Regulation
+      const questions = [
+        {
+          type: "breathing",
+          instruction: "Let's calm our bodies. We will take 3 slow, deep breaths together.",
+          cycles: 3
+        },
+        {
+          type: "strategy",
+          instruction: "You are feeling very angry. What is a safe way to calm down?",
+          options: [
+            { text: "Take deep breaths", emoji: "😮‍💨" },
+            { text: "Run around fast", emoji: "🏃" }
+          ],
+          answer: "Take deep breaths"
+        },
+        {
+          type: "strategy",
+          instruction: "You are feeling sad. What can make you feel better?",
+          options: [
+            { text: "Sit in the dark", emoji: "🌑" },
+            { text: "Listen to music", emoji: "🎵" }
+          ],
+          answer: "Listen to music"
+        },
+        {
+          type: "strategy",
+          instruction: "The room is too loud. What should you do to feel safe?",
+          options: [
+            { text: "Put on headphones", emoji: "🎧" },
+            { text: "Close your eyes", emoji: "🙈" }
+          ],
+          answer: "Put on headphones"
+        }
+      ];
+
+      let currentIdx = 0;
+      let score = 0;
+      let answered = false;
+      let currentQuestion = null;
+      let isBreathing = false;
+
+      // DOM Elements
+      const questionTextEl = document.getElementById("questionText");
+      const breatheUI = document.getElementById("breatheUI");
+      const breatheText = document.getElementById("breatheText");
+      const breatheCircle = document.getElementById("breatheCircle");
+      const optionsGridEl = document.getElementById("optionsGrid");
+      const feedbackEl = document.getElementById("feedback");
+      const actionBtn = document.getElementById("actionBtn");
+      const scoreBox = document.getElementById("scoreBox");
+
+      // Text to Speech Function
+      function speakText(text) {
+        if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-IN";
+        utterance.rate = 0.9; 
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function loadQuestion() {
+        answered = false;
+        currentQuestion = questions[currentIdx];
+        questionTextEl.textContent = currentQuestion.instruction;
+        
+        feedbackEl.className = "feedback";
+        feedbackEl.textContent = "";
+
+        // Hide both UIs initially
+        breatheUI.style.display = "none";
+        optionsGridEl.style.display = "none";
+
+        if (currentQuestion.type === "breathing") {
+          // Setup Breathing UI
+          breatheUI.style.display = "flex";
+          actionBtn.textContent = "Start Breathing 🌬️";
+          actionBtn.style.display = "block";
+          actionBtn.disabled = false;
+          breatheText.textContent = "Ready?";
+          breatheCircle.className = "breathe-circle";
+          breatheCircle.textContent = "Relax";
+        } 
+        else if (currentQuestion.type === "strategy") {
+          // Setup Strategy UI
+          optionsGridEl.style.display = "flex";
+          actionBtn.textContent = "Next Scenario ➡️";
+          actionBtn.style.display = "none"; // Hidden until they answer correctly
+
+          // Generate the clickable options
+          optionsGridEl.innerHTML = "";
+          currentQuestion.options.forEach((item) => {
+            const btn = document.createElement("div");
+            btn.className = "option-btn";
+            btn.innerHTML = `
+              <div class="option-emoji">${item.emoji}</div>
+              <div class="option-text">${item.text}</div>
+            `;
+            btn.onclick = () => selectStrategy(btn, item.text);
+            optionsGridEl.appendChild(btn);
+          });
+        }
+
+        setTimeout(() => speakText(currentQuestion.instruction), 500);
+      }
+
+      // --- Breathing Logic ---
+      function handleActionClick() {
+        if (currentQuestion.type === "breathing") {
+          if (!isBreathing) {
+            startBreathingCycle(currentQuestion.cycles);
+          }
+        } else {
+          nextQuestion();
+        }
+      }
+
+      function startBreathingCycle(totalCycles) {
+        isBreathing = true;
+        actionBtn.style.display = "none"; // Hide button while breathing
+        let currentCycle = 0;
+
+        function breathePhase() {
+          if (currentCycle >= totalCycles) {
+            // Finished
+            isBreathing = false;
+            breatheText.textContent = "Great job! You are calm.";
+            breatheCircle.className = "breathe-circle";
+            breatheCircle.textContent = "Calm";
+            speakText("Great job! Your body is calm.");
+            
+            setTimeout(() => {
+              actionBtn.textContent = "Next Activity ➡️";
+              actionBtn.style.display = "block";
+              currentQuestion.type = "completed"; // So the button moves to next question
+            }, 2000);
+            return;
+          }
+
+          // Inhale Phase
+          breatheText.textContent = "Breathe In...";
+          breatheCircle.classList.remove("exhale");
+          breatheCircle.classList.add("inhale");
+          speakText("Breathe in");
+
+          setTimeout(() => {
+            // Exhale Phase
+            breatheText.textContent = "Breathe Out...";
+            breatheCircle.classList.remove("inhale");
+            breatheCircle.classList.add("exhale");
+            speakText("Breathe out");
+
+            setTimeout(() => {
+              currentCycle++;
+              breathePhase(); // Loop
+            }, 4000); // Exhale duration
+
+          }, 4000); // Inhale duration
+        }
+
+        breathePhase(); // Start the first cycle
+      }
+
+      // --- Strategy Logic ---
+      function selectStrategy(btnElement, selectedText) {
+        if (answered) return;
+        answered = true;
+
+        Array.from(optionsGridEl.children).forEach(b => b.style.pointerEvents = 'none');
+
+        if (selectedText === currentQuestion.answer) {
+          score++;
+          btnElement.classList.add("correct");
+          feedbackEl.textContent = "✓ Yes! That is a great choice.";
+          feedbackEl.className = "feedback show correct-text";
+          speakText("Yes! That is a great choice.");
+          
+          actionBtn.style.display = "block";
+          actionBtn.disabled = false;
+        } else {
+          btnElement.classList.add("incorrect");
+          feedbackEl.textContent = "✗ Let's find a safer way. Look at the other option.";
+          feedbackEl.className = "feedback show incorrect-text";
+          speakText("Let's find a safer way. Look at the correct choice.");
+          
+          // Show the correct answer automatically
+          setTimeout(() => {
+            Array.from(optionsGridEl.children).forEach(b => {
+              if (b.querySelector('.option-text').textContent === currentQuestion.answer) {
+                b.classList.add("correct");
+              }
+            });
+            actionBtn.style.display = "block";
+            actionBtn.disabled = false;
+          }, 2000);
+        }
+      }
+
+      function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < questions.length) {
+          loadQuestion();
+        } else {
+          // Finish Quiz
+          questionTextEl.textContent = "Module Completed! 🎉";
+          document.querySelector(".speaker-icon").style.display = "none";
+          breatheUI.style.display = "none";
+          optionsGridEl.style.display = "none";
+          actionBtn.style.display = "none";
+          feedbackEl.style.display = "none";
+
+          scoreBox.style.display = "block";
+          scoreBox.innerHTML = `Wonderful!<br>You know how to keep your body calm and safe! 🌟`;
+          speakText(`Wonderful! You completed the Emotional Regulation module.`);
+        }
+      }
+
+      // Start the module
+      loadQuestion();
+    </script>
+  </body>
+</html>

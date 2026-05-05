@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B3- Long Division Lab | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1, Orange: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #7CE04A; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #f39c12;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #f39c12; font-weight: 600; font-size: 1.4rem; margin: 0; }
+
+        /* STEPS GUIDE */
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .step-badge {
+            padding: 8px 15px;
+            background: #eee;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #777;
+            transition: 0.3s;
+        }
+
+        .step-badge.active {
+            background: #6f42c1;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* DIVISION AREA - FIXING OVERLAP */
+        .division-area {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            padding: 30px 50px;
+            background: #fafafa;
+            border: 2px dashed #ddd;
+            border-radius: 15px;
+            font-family: 'Roboto Mono', monospace;
+            min-width: 300px;
+        }
+
+        .quotient-row {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            padding-right: 10px;
+            margin-bottom: 5px;
+        }
+
+        .long-div-table {
+            border-collapse: collapse;
+            font-size: 2.8rem;
+            line-height: 1;
+        }
+
+        .divisor {
+            padding-right: 15px;
+            color: #0D5791;
+            vertical-align: middle;
+        }
+
+        .dividend-box {
+            border-left: 4px solid #333;
+            border-top: 4px solid #333;
+            padding: 10px 25px;
+            vertical-align: middle;
+        }
+
+        .work-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 2.5rem;
+            color: #555;
+            padding-right: 10px;
+        }
+
+        .subtraction-line {
+            border-bottom: 3px solid #333;
+            width: 120px;
+            margin: 5px 0;
+        }
+
+        input.math-input {
+            width: 65px;
+            height: 65px;
+            font-size: 2.2rem;
+            text-align: center;
+            border: 2px solid #6f42c1;
+            border-radius: 8px;
+            font-family: inherit;
+            outline: none;
+            background: #fff8ff;
+            transition: border-color 0.2s;
+        }
+
+        input.math-input:focus {
+            border-color: #f39c12;
+            background: white;
+        }
+
+        input.math-input:disabled {
+            background: #e9ecef;
+            border-color: #ccc;
+            color: #333;
+        }
+
+        /* BUTTONS */
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .check-btn { background: #f39c12; color: white; }
+        .check-btn:hover { background: #e67e22; transform: translateY(-2px); }
+        .next-btn { background: #0D5791; color: white; display: none; }
+        
+        #message {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+        }
+
+        .hint {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 20px;
+            min-height: 3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* FOOTER */
+        .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#f39c12;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#f39c12;background:rgba(243,156,18,0.15);border-color:#f39c12;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-stairs"></i></div>
+                <h2>B3- Long Division Lab Explorer</h2>
+            </div>
+
+            <div class="steps-container">
+                <div class="step-badge" id="badge-0">1. Divide</div>
+                <div class="step-badge" id="badge-1">2. Multiply</div>
+                <div class="step-badge" id="badge-2">3. Subtract</div>
+                <div class="step-badge" id="badge-3">4. Remainder</div>
+            </div>
+
+            <div id="instruction" class="hint">Divide: How many whole times does the divisor go into the dividend?</div>
+
+            <div class="division-area">
+                <div class="quotient-row">
+                    <input type="number" id="input-q" class="math-input" placeholder="?">
+                </div>
+                <table class="long-div-table">
+                    <tr>
+                        <td class="divisor" id="display-divisor">6</td>
+                        <td class="dividend-box" id="display-dividend">44</td>
+                    </tr>
+                </table>
+                
+                <div class="work-area" id="workArea" style="visibility: hidden;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>-</span>
+                        <input type="number" id="input-m" class="math-input" placeholder="?">
+                    </div>
+                    <div class="subtraction-line"></div>
+                    <input type="number" id="input-r" class="math-input" placeholder="?">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn check-btn" onclick="handleCheck()" id="mainBtn">Check Step</button>
+                <button class="action-btn next-btn" onclick="resetGame()" id="nextBtn">Next Problem <i class="fas fa-rocket"></i></button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo"><img src="logo.png" alt="Logo" /></div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Learning Made Visual</div>
+    </footer>
+
+    <script>
+        let currentState = 0; 
+        let currentDivisor, currentDividend, currentQuotient, currentProduct, currentRemainder;
+
+        function resetGame() {
+            currentState = 0;
+            // Generate numbers that result in a single digit quotient for clarity
+            currentDivisor = Math.floor(Math.random() * 7) + 3; // 3 to 9
+            currentDividend = Math.floor(Math.random() * 50) + 11; // 11 to 60
+            
+            currentQuotient = Math.floor(currentDividend / currentDivisor);
+            currentProduct = currentQuotient * currentDivisor;
+            currentRemainder = currentDividend % currentDivisor;
+
+            document.getElementById('display-divisor').innerText = currentDivisor;
+            document.getElementById('display-dividend').innerText = currentDividend;
+            document.getElementById('workArea').style.visibility = "hidden";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('mainBtn').style.display = "block";
+            document.getElementById('message').innerText = "";
+            
+            const inQ = document.getElementById('input-q');
+            const inM = document.getElementById('input-m');
+            const inR = document.getElementById('input-r');
+            
+            [inQ, inM, inR].forEach(el => {
+                el.value = "";
+                el.disabled = false;
+            });
+            inM.disabled = true;
+            inR.disabled = true;
+
+            updateBadges();
+            updateInstruction();
+        }
+
+        function updateBadges() {
+            for(let i=0; i<4; i++) {
+                document.getElementById(`badge-${i}`).classList.toggle('active', i === currentState);
+            }
+        }
+
+        function updateInstruction() {
+            const hints = [
+                `Divide: How many whole times does ${currentDivisor} go into ${currentDividend}?`,
+                `Multiply: What is ${currentDivisor} × ${currentQuotient}?`,
+                `Subtract: What is ${currentDividend} minus ${currentProduct}?`,
+                `Great job! The final answer is ${currentQuotient} with a remainder of ${currentRemainder}.`
+            ];
+            document.getElementById('instruction').innerText = hints[currentState];
+        }
+
+        function handleCheck() {
+            const inQ = document.getElementById('input-q');
+            const inM = document.getElementById('input-m');
+            const inR = document.getElementById('input-r');
+
+            if (currentState === 0) {
+                if (parseInt(inQ.value) === currentQuotient) {
+                    success("Correct! Now multiply the quotient by the divisor.");
+                    currentState = 1;
+                    inQ.disabled = true;
+                    inM.disabled = false;
+                    document.getElementById('workArea').style.visibility = "visible";
+                    inM.focus();
+                } else {
+                    fail(`Think: How many groups of ${currentDivisor} can fit?`);
+                }
+            } 
+            else if (currentState === 1) {
+                if (parseInt(inM.value) === currentProduct) {
+                    success("Right! Now subtract to find the remainder.");
+                    currentState = 2;
+                    inM.disabled = true;
+                    inR.disabled = false;
+                    inR.focus();
+                } else {
+                    fail(`Multiply ${currentDivisor} by ${currentQuotient}.`);
+                }
+            }
+            else if (currentState === 2) {
+                if (parseInt(inR.value) === currentRemainder) {
+                    success("Excellent! You've completed the problem.");
+                    currentState = 3;
+                    inR.disabled = true;
+                    document.getElementById('mainBtn').style.display = "none";
+                    document.getElementById('nextBtn').style.display = "block";
+                } else {
+                    fail(`Subtract ${currentProduct} from ${currentDividend}.`);
+                }
+            }
+            
+            updateBadges();
+            updateInstruction();
+        }
+
+        function success(text) {
+            const msg = document.getElementById('message');
+            msg.innerHTML = `<span style="color: #27ae60"><i class="fas fa-check-circle"></i> ${text}</span>`;
+        }
+
+        function fail(text) {
+            const msg = document.getElementById('message');
+            msg.innerHTML = `<span style="color: #e74c3c"><i class="fas fa-times-circle"></i> ${text}</span>`;
+        }
+
+        window.onload = resetGame;
+    </script>
+</body>
+</html>

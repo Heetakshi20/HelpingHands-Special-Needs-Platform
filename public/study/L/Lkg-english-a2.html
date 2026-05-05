@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A2 - Find Lowercase Letters</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',"Poppins",sans-serif;background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%);min-height:100vh;display:flex;flex-direction:column;}
+    
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .manage-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.2);}
+    .launch-btn{background:#A1E231;color:black;}
+    .launch-btn:hover{background:#8fd31a;transform:translateY(-2px);}
+    
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+    .container{background:white;border-radius:15px;padding:30px;max-width:950px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+    
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #17a2b8;padding-bottom:10px;}
+    .header-icon{width:50px;height:50px;background:#17a2b8;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#17a2b8;font-weight:600;font-size:1.5rem;}
+    
+    .question-section{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding:20px;border-radius:12px;background:#f8f9fa;}
+    .question-text{font-weight:600;font-size:2rem;flex:1;text-align:center;}
+    .target-letter{font-size:4.5rem;font-weight:400;color:#28a745;background:linear-gradient(135deg,#c3e6cb,#a8e6cf);padding:15px;border-radius:20px;box-shadow:0 8px 25px rgba(168,230,207,0.4);display:inline-block;width:120px;height:120px;display:flex;align-items:center;justify-content:center;margin:0 10px;}
+    .speaker-icon{width:45px;height:45px;background:#87ceeb;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;font-size:1.2rem;}
+    .speaker-icon:hover{background:#17a2b8;}
+    
+    /* ✅ A2 PERFECT LOWERCASE KEYBOARD LAYOUT */
+    .keyboard-container{
+      background:#f0f8ff;border-radius:20px;padding:35px 25px;margin-bottom:25px;
+      border:3px solid #28a745;box-shadow:0 10px 35px rgba(0,0,0,0.15);
+      max-height:350px;overflow-y:auto;
+    }
+    .keyboard{
+      display:grid;grid-template-columns:repeat(10,1fr);gap:12px;max-width:750px;margin:0 auto;
+      font-family:monospace;font-weight:400;
+    }
+    .key{
+      aspect-ratio:1;background:linear-gradient(135deg,#f8f9fa,#e2e8f0);
+      border:3px solid #cbd5e1;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:2.2rem;cursor:pointer;user-select:none;transition:all 0.2s ease;
+      box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    }
+    .key:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.15);background:#d1fae5;}
+    .key:active{transform:translateY(0);box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .key.selected{background:linear-gradient(135deg,#48dbfb,#0abde3);border-color:#0abde3;color:white;box-shadow:0 8px 30px rgba(72,219,251,0.5);transform:scale(1.05);}
+    .key.correct{background:linear-gradient(135deg,#28a745,#20c997);border-color:#218838;color:white;box-shadow:0 10px 35px rgba(40,167,69,0.5);}
+    .key.incorrect{background:linear-gradient(135deg,#dc3545,#fd7e14);border-color:#c82333;color:white;box-shadow:0 8px 25px rgba(220,53,69,0.5);}
+    
+    .submit-section{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+    .submit-btn{background:linear-gradient(135deg,#28a745,#218838);color:white;border:none;border-radius:12px;padding:14px 35px;font-weight:600;font-size:1.2rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:10px;user-select:none;box-shadow:0 4px 15px rgba(40,167,69,0.3);}
+    .submit-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(40,167,69,0.4);}
+    .submit-btn:disabled{background:#94d3a2;cursor:not-allowed;transform:none;box-shadow:none;}
+    
+    .feedback{margin-top:20px;font-weight:600;font-size:1.3rem;text-align:center;min-height:35px;}
+    .feedback.correct{color:#155724;}
+    .feedback.incorrect{color:#721c24;}
+    .score-box{margin-top:30px;border:2px solid #87ceeb;border-radius:12px;padding:20px;text-align:center;font-weight:700;font-size:1.5rem;color:#17a2b8;user-select:none;background:#f0f9ff;}
+    
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+    @media(max-width:1024px){
+      .navbar{flex-wrap:wrap;padding:10px 15px;gap:10px;}
+      .nav-links{order:3;width:100%;justify-content:center;gap:10px;font-size:0.85rem;}
+      .nav-buttons{gap:8px;}.nav-buttons button{padding:6px 12px;font-size:0.85rem;}
+      .footer{padding:30px 20px 15px;}
+      .footer-content{grid-template-columns:1fr;gap:40px;text-align:center;}
+      .footer-logo-section{width:100%;}
+      .footer-links{grid-template-columns:repeat(3,1fr);gap:40px;}
+      .footer-links a{display:inline;}
+      .footer-links a:hover{transform:none;}
+      .footer-social-section{width:100%;align-items:center;}
+      .footer-social{flex-direction:row;justify-content:center;}
+    }
+    @media(max-width:768px){
+      .main-wrapper{padding:20px 10px;}.container{padding:20px;}
+      .question-text{font-size:1.5rem;}
+      .target-letter{font-size:3.5rem;width:100px;height:100px;}
+      .keyboard-container{padding:25px 20px;max-height:300px;}
+      .keyboard{grid-template-columns:repeat(8,1fr);gap:10px;font-size:1.8rem;}
+      .key{font-size:1.8rem;}
+      .footer{padding:20px 15px 10px;}
+      .footer-content{gap:30px;}
+      .footer-logo{height:80px;width:100px;}
+      .footer-logo img{height:75px;}
+      .footer-links{grid-template-columns:repeat(3,1fr);gap:25px;}
+      .footer-links h4{font-size:0.9rem;margin-bottom:10px;}
+      .footer-links a{font-size:0.85rem;}
+      .footer-social a{width:45px;height:45px;font-size:1.5rem;}
+      .footer-bottom{font-size:0.75rem;margin-top:20px;}
+    }
+    @media(max-width:480px){
+      .question-text{font-size:1.3rem;}
+      .target-letter{font-size:2.8rem;width:85px;height:85px;}
+      .keyboard-container{padding:20px 15px;max-height:280px;}
+      .keyboard{grid-template-columns:repeat(6,1fr);gap:8px;font-size:1.6rem;}
+      .key{font-size:1.6rem;}
+      .footer-logo{height:70px;width:90px;}
+      .footer-logo img{height:65px;}
+      .footer-links{grid-template-columns:1fr;gap:20px;}
+      .footer-links h4{font-size:0.85rem;margin-bottom:8px;}
+      .footer-links a{font-size:0.8rem;}
+      .footer-social a{width:40px;height:40px;font-size:1.4rem;}
+      .footer-bottom{font-size:0.7rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn" onclick="window.location.href='auth.html'">Sign Up / Login</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">💡</div>
+        <h2>A2 - Find Lowercase Letters</h2>
+      </div>
+
+      <div class="question-section" aria-live="polite">
+        <div class="question-text" id="questionText">Click the correct lowercase letter</div>
+        <div class="target-letter" id="targetLetter">a</div>
+        <div class="speaker-icon" role="button" tabindex="0" aria-label="Listen to question" onclick="speakText(currentQuestion?.letter || '')">
+          <i class="fas fa-volume-up"></i>
+        </div>
+      </div>
+
+      <div class="keyboard-container" id="keyboardContainer">
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+      
+      <div class="submit-section">
+        <button class="submit-btn" id="nextBtn" disabled onclick="nextQuestion()">
+          <i class="fas fa-arrow-right"></i> Next
+        </button>
+      </div>
+      
+      <div id="feedback" class="feedback" aria-live="assertive"></div>
+      <div id="scoreBox" class="score-box" style="display: none"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo">
+          <img src="logo.png" alt="HelpingHands Logo" />
+        </div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Games</a></li>
+              <li><a href="#">Activities</a></li>
+              <li><a href="#">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const questions = [
+      { letter: "a", sound: "a" },
+      { letter: "b", sound: "b" },
+      { letter: "c", sound: "c" },
+      { letter: "d", sound: "d" },
+      { letter: "e", sound: "e" },
+      { letter: "f", sound: "f" },
+      { letter: "g", sound: "g" },
+      { letter: "h", sound: "h" },
+      { letter: "i", sound: "i" },
+      { letter: "j", sound: "j" },
+      { letter: "k", sound: "k" },
+      { letter: "l", sound: "l" },
+      { letter: "m", sound: "m" },
+      { letter: "n", sound: "n" },
+      { letter: "o", sound: "o" },
+      { letter: "p", sound: "p" },
+      { letter: "q", sound: "q" },
+      { letter: "r", sound: "r" },
+      { letter: "s", sound: "s" },
+      { letter: "t", sound: "t" },
+      { letter: "u", sound: "u" },
+      { letter: "v", sound: "v" },
+      { letter: "w", sound: "w" },
+      { letter: "x", sound: "x" },
+      { letter: "y", sound: "y" },
+      { letter: "z", sound: "z" }
+    ];
+
+    let currentIdx = 0, score = 0, answered = false, currentQuestion = null, selectedKey = null;
+    const questionTextEl = document.getElementById("questionText"),
+      targetLetterEl = document.getElementById("targetLetter"),
+      keyboardEl = document.getElementById("keyboard"),
+      feedbackEl = document.getElementById("feedback"),
+      nextBtn = document.getElementById("nextBtn"),
+      scoreBox = document.getElementById("scoreBox");
+
+    function speakText(text){
+      if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text); 
+      utterance.lang = "en-IN"; 
+      utterance.rate = 0.8; 
+      window.speechSynthesis.speak(utterance);
+    }
+    
+    function createKeyboard(){
+      const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+      keyboardEl.innerHTML = letters.map(letter => 
+        `<div class="key" data-letter="${letter}">${letter}</div>`
+      ).join('');
+      
+      // Add click listeners to all keys
+      document.querySelectorAll('.key').forEach(key => {
+        key.addEventListener('click', function(){
+          if(answered) return;
+          
+          // Reset previous selection
+          document.querySelectorAll('.key').forEach(k => {
+            k.classList.remove('selected', 'correct', 'incorrect');
+          });
+          
+          selectedKey = this;
+          this.classList.add('selected');
+          checkAnswer(this.dataset.letter);
+        });
+      });
+    }
+    
+    function checkAnswer(selectedLetter){
+      if(answered) return;
+      answered = true;
+      nextBtn.disabled = false;
+      
+      if(selectedLetter === currentQuestion.letter){
+        score++;
+        selectedKey.classList.add('correct');
+        selectedKey.classList.remove('selected');
+        feedbackEl.textContent = "Correct! Well done."; 
+        feedbackEl.classList.add("correct");
+        speakText(`Correct! ${currentQuestion.letter}`);
+      } else {
+        selectedKey.classList.add('incorrect');
+        selectedKey.classList.remove('selected');
+        feedbackEl.textContent = "Oops, that's not correct."; 
+        feedbackEl.classList.add("incorrect");
+        speakText("Oops, that's not correct.");
+        
+        // Show correct answer
+        document.querySelector(`[data-letter="${currentQuestion.letter}"]`).classList.add('correct');
+      }
+    }
+    
+    function loadQuestion(){
+      answered = false; nextBtn.disabled = true;
+      currentQuestion = questions[currentIdx];
+      questionTextEl.textContent = `Click the letter ${currentQuestion.letter}`;
+      targetLetterEl.textContent = currentQuestion.letter;
+      
+      // Reset keyboard
+      document.querySelectorAll('.key').forEach(key => {
+        key.classList.remove('selected', 'correct', 'incorrect');
+      });
+      selectedKey = null;
+      
+      feedbackEl.textContent = ""; feedbackEl.classList.remove("correct", "incorrect");
+      scoreBox.style.display = "none";
+      
+      speakText(currentQuestion.letter);
+    }
+    
+    function nextQuestion(){
+      currentIdx++;
+      if(currentIdx < questions.length){
+        loadQuestion();
+      } else {
+        questionTextEl.textContent = "Quiz Completed! 🎉";
+        targetLetterEl.textContent = "🏆";
+        keyboardEl.parentElement.innerHTML = '<div style="text-align:center;font-size:2rem;">Great Job!</div>';
+        nextBtn.style.display = "none";
+        feedbackEl.style.display = "none";
+        scoreBox.style.display = "block"; 
+        scoreBox.innerHTML = `Your final score is <strong>${score} out of ${questions.length}</strong>`;
+        speakText(`You finished the quiz. Your final score is ${score} out of ${questions.length}.`);
+      }
+    }
+    
+    // Initialize
+    createKeyboard();
+    loadQuestion();
+  </script>
+</body>
+</html>

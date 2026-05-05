@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>Count the Fish | Sea Adventure</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;touch-action:none;}
+body{font-family:'Nunito',sans-serif;background:#004e92;background:linear-gradient(to bottom, #000428, #004e92);color:white;min-height:100vh;overflow:hidden;}
+
+/* Animated Bubbles Background */
+#bubbles {position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.bubble {position:absolute;background:rgba(255,255,255,0.2);border-radius:50%;bottom:-50px;animation:rise var(--d) infinite linear;}
+@keyframes rise { to { transform: translateY(-110vh) translateX(20px); opacity: 0; } }
+
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:#0D5791;position:relative;z-index:100;border-bottom:3px solid #00d2ff;}
+.logo{font-family:'Outfit',sans-serif;font-size:22px;font-weight:900;}
+.logo span{color:#00d2ff;}
+.back-btn{background:#00bcd4;color:white;text-decoration:none;padding:8px 18px;border-radius:20px;font-weight:700;display:flex;align-items:center;gap:8px;}
+
+.container{position:relative;z-index:10;padding:20px;max-width:680px;margin:0 auto;text-align:center;}
+.instr{background:rgba(0,100,150,.6);padding:12px 20px;border-radius:30px;color:#80deea;font-weight:900;margin-bottom:15px;border:1px solid #00bcd4;}
+
+.score-bar{display:flex;justify-content:center;gap:30px;background:rgba(0,0,0,.3);border-radius:14px;padding:12px 20px;margin-bottom:16px;}
+.score-val{font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:900;color:#00e5ff;}
+.score-lbl{font-size:.7rem;color:#80deea;font-weight:700;text-transform:uppercase;}
+
+/* Coral Reef Track */
+.track-label{font-size:.8rem;font-weight:700;color:#80deea;margin-bottom:10px;text-transform:uppercase;}
+.track{display:flex;align-items:center;gap:8px;background:rgba(0,40,60,.5);border:2px dashed #00d2ff;border-radius:18px;padding:14px;min-height:90px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;}
+.track-slot{width:60px;height:65px;border-radius:12px;border:2px dashed rgba(0,210,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-size:1.5rem;font-weight:900;background:rgba(0,60,80,.4);transition:all .2s;}
+.track-slot.filled{background:linear-gradient(135deg,#005f73,#0a9396);border-color:#94d2bd;color:#e9d8a6;box-shadow:0 0 12px rgba(148,210,189,0.5);}
+
+/* Fish Selection Area */
+.fish-area{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;min-height:85px;align-items:center;margin-bottom:20px;}
+.fish-card{
+    width:65px;height:70px;background:linear-gradient(145deg,#0077b6,#00b4d8);border:2.5px solid #90e0ef;border-radius:15px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;
+}
+.fish-card:hover{transform:translateY(-5px); box-shadow:0 5px 15px rgba(0,229,255,0.4);}
+.fish-card.used{opacity:0;pointer-events:none;transform:scale(0.5);}
+.fish-emoji{font-size:1.5rem;margin-bottom:2px;}
+.fish-num{font-family:'Outfit';font-weight:900;font-size:1.2rem;color:#fff;}
+
+.feedback{font-family:'Outfit';font-size:1.4rem;font-weight:900;min-height:40px;color:#69f0ae;margin-bottom:10px;}
+
+.next-btn{width:100%;background:#00bcd4;color:white;border:none;padding:14px;border-radius:18px;font-size:1.1rem;font-weight:900;cursor:pointer;display:none;}
+.next-btn.show{display:block;}
+
+.win-banner{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;background:#004e92;border:3px solid #00e5ff;border-radius:28px;padding:30px;text-align:center;box-shadow:0 0 60px rgba(0,229,255,.5);width:80%;}
+.win-banner.show{display:block;}
+</style>
+</head>
+<body>
+
+<div id="bubbles"></div>
+
+<nav class="navbar">
+    <div class="logo">Count<span>TheFish</span></div>
+    <a href="../down_syndrome.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+</nav>
+
+<div class="container">
+    <div class="instr" id="instr">Tap the fish from 1 to 100!</div>
+    
+    <div class="score-bar">
+        <div class="score-item"><div class="score-val" id="score">0</div><div class="score-lbl">Score ⭐</div></div>
+        <div class="score-item"><div class="score-val" id="round">1</div><div class="score-lbl">Round</div></div>
+    </div>
+
+    <div class="track-label">🌊 Your Coral Reef (Smallest to Biggest)</div>
+    <div class="track" id="track"></div>
+
+    <div class="track-label">🐠 Tap a Fish!</div>
+    <div class="fish-area" id="fishArea"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextRound()">Next Round 🌊</button>
+</div>
+
+<div id="winBanner" class="win-banner">
+    <h1 style="color:#00e5ff; font-family:'Outfit';">SPLASH! 💦</h1>
+    <p>You are a Sea Number Expert!</p>
+    <button style="background:#7CE04A; border:none; padding:10px 20px; border-radius:20px; font-weight:900; margin-top:15px; cursor:pointer;" onclick="location.reload()">PLAY AGAIN</button>
+</div>
+
+<script>
+let round = 0, score = 0, targetNums = [], placed = [];
+const fishTypes = ['🐠', '🐟', '🐡', '🐬', '🐙', '🦐'];
+
+function initBubbles() {
+    const container = document.getElementById('bubbles');
+    for(let i=0; i<30; i++) {
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const sz = Math.random()*15 + 5;
+        b.style.width = sz+'px'; b.style.height = sz+'px';
+        b.style.left = Math.random()*100+'%';
+        b.style.setProperty('--d', (Math.random()*5 + 3)+'s');
+        b.style.animationDelay = Math.random()*5+'s';
+        container.appendChild(b);
+    }
+}
+
+function buildRound() {
+    const size = 5;
+    // Progressively higher numbers toward 100
+    const start = Math.floor(Math.random() * (10 + round * 10)) + (round * 5) + 1;
+    targetNums = Array.from({length: size}, (_, i) => Math.min(100, start + i));
+    const shuffled = [...targetNums].sort(() => Math.random() - 0.5);
+    placed = [];
+
+    document.getElementById('round').innerText = round + 1;
+    document.getElementById('feedback').innerText = "";
+    document.getElementById('nextBtn').style.display = 'none';
+    
+    renderTrack();
+    renderFish(shuffled);
+}
+
+function renderTrack() {
+    const track = document.getElementById('track');
+    track.innerHTML = '';
+    targetNums.forEach((n, i) => {
+        const slot = document.createElement('div');
+        slot.className = 'track-slot' + (i < placed.length ? ' filled' : '');
+        slot.innerText = i < placed.length ? placed[i] : '?';
+        track.appendChild(slot);
+    });
+}
+
+function renderFish(arr) {
+    const area = document.getElementById('fishArea');
+    area.innerHTML = '';
+    arr.forEach(n => {
+        const card = document.createElement('div');
+        card.className = 'fish-card';
+        card.innerHTML = `<span class="fish-emoji">${fishTypes[n % fishTypes.length]}</span><span class="fish-num">${n}</span>`;
+        card.onclick = () => tapFish(n, card);
+        area.appendChild(card);
+    });
+}
+
+function tapFish(n, el) {
+    const nextIdx = placed.length;
+    if (n === targetNums[nextIdx]) {
+        placed.push(n);
+        score += 10;
+        document.getElementById('score').innerText = score;
+        el.classList.add('used');
+        renderTrack();
+        speak(n);
+        if (placed.length === targetNums.length) {
+            document.getElementById('feedback').innerText = "Perfect! 🌟";
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+    } else {
+        speak("Try " + targetNums[nextIdx]);
+        el.style.borderColor = "red";
+        setTimeout(() => el.style.borderColor = "#90e0ef", 500);
+    }
+}
+
+function nextRound() {
+    round++;
+    if (round >= 8) {
+        document.getElementById('winBanner').classList.add('show');
+    } else {
+        buildRound();
+    }
+}
+
+function speak(t) {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+}
+
+initBubbles();
+buildRound();
+</script>
+</body>
+</html>

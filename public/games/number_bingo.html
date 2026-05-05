@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Number Bingo | UFO Puzzle</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;touch-action:none;}
+body{font-family:'Nunito',sans-serif;background:#050a18;color:white;min-height:100vh;overflow-x:hidden;}
+
+/* Snow Background */
+#snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+/* NAV */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:#0D5791;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.5); border-bottom: 3px solid #7CE04A;}
+.logo{font-family:'Outfit',sans-serif;font-size:24px;font-weight:900; color: #fff;}
+.logo span{color:#7CE04A;}
+.exit-btn { background: #f44336; color: white; text-decoration: none; padding: 10px 25px; border-radius: 30px; font-weight: 900; cursor: pointer; border: 2px solid white; transition: .2s; }
+.exit-btn:hover { background: #d32f2f; transform: scale(1.05); }
+
+/* MAIN */
+.container{position:relative;z-index:10;padding:30px 20px;max-width:750px;margin:0 auto;}
+.game-title{font-family:'Outfit',sans-serif;font-size:2.8rem;font-weight:900;text-align:center;color:#fff;text-shadow:0 0 20px rgba(124, 224, 74, 0.6);margin-bottom:10px;}
+
+/* SNOW CAPPING EFFECT */
+.snow-cap {
+    position: relative;
+    background: rgba(13, 87, 145, 0.4);
+    border-radius: 20px;
+    border: 4px solid #fff;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
+}
+.snow-cap::before {
+    content: '';
+    position: absolute;
+    top: -14px; left: -2%; width: 104%; height: 28px;
+    background: white;
+    border-radius: 50% 50% 0 0;
+    clip-path: polygon(0% 100%, 0% 20%, 8% 0%, 18% 40%, 28% 0%, 42% 55%, 58% 0%, 72% 45%, 82% 0%, 95% 25%, 100% 100%);
+    filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
+}
+
+/* CALL BOX */
+.call-box{ padding: 45px 22px 25px; text-align:center; margin-bottom: 40px; }
+.call-number {
+    width: 130px; height: 130px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #ceddf0);
+    color: #0D5791; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 15px auto; font-size: 4.5rem; font-weight: 900;
+    box-shadow: 0 0 35px rgba(255,255,255,0.9), inset -6px -6px 15px rgba(0,0,0,0.1);
+    animation: float 3s infinite ease-in-out;
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+.call-btn{background:#7CE04A; color:#050a18; border:none; padding:15px 45px; border-radius:40px; font-size:1.3rem; font-weight:900; cursor:pointer; margin-top:15px; box-shadow: 0 6px 0 #58a033; transition: .1s;}
+.call-btn:active { transform: translateY(4px); box-shadow: none; }
+
+/* BINGO GRID */
+.bingo-card{ padding: 40px 20px 25px; margin-bottom: 30px; }
+.bingo-grid{ display:grid; grid-template-columns: repeat(5,1fr); gap:12px; }
+.bingo-cell{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    border-radius:50%; font-family:'Outfit',sans-serif; font-size:1.6rem; font-weight:900;
+    background: #fff; color: #0D5791; cursor:pointer; transition: .2s;
+    box-shadow: inset -4px -4px 10px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.3);
+    -webkit-tap-highlight-color: transparent;
+}
+.bingo-cell.marked{
+    background: radial-gradient(circle at 30% 30%, #7CE04A, #4CAF50);
+    color: white; transform: scale(0.92);
+    box-shadow: 0 0 25px rgba(124, 224, 74, 0.7);
+}
+.bingo-cell.free{ background: #ffeb3b; color: #000; font-size: 0.9rem; border: 2px dashed #fbc02d; }
+.bingo-cell.win-line{ animation: winSnowball 0.4s infinite alternate; }
+@keyframes winSnowball { 0% { transform: scale(0.9) rotate(-5deg); filter: brightness(1.1); } 100% { transform: scale(1.1) rotate(5deg); filter: brightness(1.4); } }
+
+/* SCOREBAR */
+.score-bar { background: rgba(13, 87, 145, 0.9); border: 3px solid #fff; border-radius: 50px; padding: 12px 30px; margin-bottom: 30px; display: flex; justify-content: space-around; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.score-val { color: #ffeb3b; font-size: 2rem; font-weight: 900; }
+.score-lbl { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #a5d6a7; letter-spacing: 1px; }
+
+/* CALLED LIST */
+.called-list { padding: 40px 15px 20px; }
+.called-nums{display:flex; flex-wrap:wrap; gap:8px; padding: 10px; justify-content: center;}
+.called-chip{background:#fff; color:#0D5791; border-radius:50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size:1rem; box-shadow: 0 3px 6px rgba(0,0,0,0.2);}
+
+/* WIN MODAL */
+.win-banner{ position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:200; background:white; color:#0D5791; padding:50px; border-radius:40px; text-align:center; border: 8px solid #7CE04A; box-shadow: 0 0 100px rgba(0,0,0,0.8); }
+</style>
+</head>
+<body>
+<canvas id="snow-canvas"></canvas>
+
+<nav class="navbar">
+    <div class="logo">❄️ NUMBER <span>BINGO</span></div>
+    <a href="../down_syndrome.html" class="exit-btn">EXIT</a>
+</nav>
+
+<div class="container">
+    <h1 class="game-title">Snowball Bingo!</h1>
+    
+    <div class="score-bar">
+        <div style="text-align:center"><div class="score-lbl">Marked</div><div class="score-val" id="markedCount">1</div></div>
+        <div style="text-align:center"><div class="score-lbl">Called</div><div class="score-val" id="callCount">0</div></div>
+        <div style="text-align:center"><div class="score-lbl">Bingos</div><div class="score-val" id="bingoCount">0</div></div>
+    </div>
+
+    <div class="call-box snow-cap">
+        <div class="call-label" style="font-weight:900; color:#fff; letter-spacing:2px;">✨ CALLING... ✨</div>
+        <div class="call-number" id="callNum">?</div>
+        <button class="call-btn" id="callBtn" onclick="callNext()">Roll Snowball! 🎲</button>
+    </div>
+
+    <div class="bingo-card snow-cap">
+        <div class="bingo-grid" id="bingoGrid"></div>
+    </div>
+
+    <div class="called-list snow-cap">
+        <div style="text-align:center; font-weight:900; color:#fff; margin-bottom:10px;">📋 CALLED SNOWBALLS</div>
+        <div class="called-nums" id="calledNums"></div>
+    </div>
+</div>
+
+<div class="win-banner" id="winBanner" style="display:none;">
+    <h1 style="font-size:3.5rem; margin-bottom:10px;">BINGO! ⛄</h1>
+    <p style="font-size:1.2rem; font-weight:700;">You are a Bingo Star!</p>
+    <button class="call-btn" onclick="newGame()">New Game 🔄</button>
+</div>
+
+<script>
+// --- BACKGROUND SNOW ---
+const canvas = document.getElementById('snow-canvas');
+const ctx = canvas.getContext('2d');
+let flakes = [];
+function initSnow() {
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    flakes = [];
+    for(let i=0; i<100; i++) flakes.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, d: Math.random()*1});
+}
+function drawSnow() {
+    ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="white"; ctx.beginPath();
+    for(let f of flakes) {
+        ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+        f.y += 1 + f.r/2; f.x += Math.sin(f.d);
+        if(f.y > canvas.height) { f.y = -10; f.x = Math.random()*canvas.width; }
+    }
+    ctx.fill(); requestAnimationFrame(drawSnow);
+}
+initSnow(); drawSnow();
+
+// --- GAME LOGIC ---
+const RANGES = [[1,15],[16,30],[31,45],[46,60],[61,75]];
+let card = [], marked = [], called = [], allNums = [], bingoCount = 0;
+
+function generateCard(){
+    card = [];
+    for(let c=0;c<5;c++){
+        const col=[], [mn,mx]=RANGES[c];
+        while(col.length<5){const n=Math.floor(Math.random()*(mx-mn+1))+mn; if(!col.includes(n))col.push(n);}
+        card.push(col);
+    }
+    card[2][2] = 'FREE';
+    marked = Array.from({length:5},()=>Array(5).fill(false));
+    marked[2][2] = true;
+    allNums = [];
+    for(let i=1; i<=75; i++) allNums.push(i);
+    for(let i=allNums.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[allNums[i],allNums[j]]=[allNums[j],allNums[i]];}
+}
+
+function renderGrid(){
+    const grid = document.getElementById('bingoGrid');
+    grid.innerHTML = '';
+    for(let r=0;r<5;r++){
+        for(let c=0;c<5;c++){
+            const cell = document.createElement('div');
+            cell.className = 'bingo-cell' + (marked[c][r]?' marked':'') + (card[c][r]==='FREE'?' free':'');
+            cell.textContent = card[c][r];
+            cell.onclick = () => tapCell(c, r);
+            grid.appendChild(cell);
+        }
+    }
+}
+
+function tapCell(c,r){
+    if(called.includes(card[c][r]) && !marked[c][r]){
+        marked[c][r] = true;
+        updateScores();
+        speak("Splat!");
+        renderGrid();
+        checkWin();
+    }
+}
+
+function callNext(){
+    if(allNums.length === 0) return;
+    const n = allNums.pop();
+    called.push(n);
+    document.getElementById('callNum').textContent = n;
+    document.getElementById('callCount').textContent = called.length;
+    
+    const chip = document.createElement('div');
+    chip.className='called-chip'; chip.textContent=n;
+    document.getElementById('calledNums').prepend(chip);
+    speak("Number " + n);
+}
+
+function checkWin(){
+    let winLine = false;
+    // Check rows/cols
+    for(let i=0; i<5; i++){
+        let row=0, col=0;
+        for(let j=0; j<5; j++) { if(marked[j][i]) row++; if(marked[i][j]) col++; }
+        if(row===5 || col===5) winLine = true;
+    }
+    // Check Diagonals
+    let d1=0, d2=0;
+    for(let i=0; i<5; i++){ if(marked[i][i]) d1++; if(marked[i][4-i]) d2++; }
+    if(d1===5 || d2===5) winLine = true;
+
+    if(winLine) {
+        document.getElementById('winBanner').style.display = 'block';
+        bingoCount++;
+        document.getElementById('bingoCount').textContent = bingoCount;
+        speak("Bingo! You won!");
+    }
+}
+
+function updateScores() {
+    document.getElementById('markedCount').textContent = marked.flat().filter(Boolean).length;
+}
+
+function speak(t) {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+}
+
+function newGame() {
+    document.getElementById('winBanner').style.display = 'none';
+    generateCard();
+    renderGrid();
+    document.getElementById('calledNums').innerHTML = '';
+    document.getElementById('callCount').textContent = '0';
+    updateScores();
+    called = [];
+    speak("New game! Let's play Number Bingo.");
+}
+
+newGame();
+</script>
+</body>
+</html>

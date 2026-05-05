@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B2 - Add with Pictures (Sums to 10) | HelpingHands</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',"Poppins",sans-serif;background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%);min-height:100vh;display:flex;flex-direction:column;}
+    
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .manage-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.2);}
+    .launch-btn{background:#A1E231;color:black;}
+    .launch-btn:hover{background:#8fd31a;transform:translateY(-2px);}
+    
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+    .container{background:white;border-radius:15px;padding:30px;max-width:950px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+    
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #28a745;padding-bottom:10px;}
+    .header-icon{width:50px;height:50px;background:#28a745;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#28a745;font-weight:600;font-size:1.5rem;}
+    
+    .question-section{display:flex;flex-direction:column;gap:20px;margin-bottom:25px;padding:25px;border-radius:15px;background:#f8f9fa;border:3px dashed #28a745;}
+    .speaker-btn{width:60px;height:60px;background:linear-gradient(135deg,#28a745,#20c997);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:white;transition:all .3s ease;box-shadow:0 6px 20px rgba(40,167,69,0.4);align-self:center;}
+    .speaker-btn:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 10px 30px rgba(40,167,69,0.6);}
+    
+    .addition-display{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;}
+    .group-container{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .group-title{font-size:1.6rem;font-weight:600;color:#28a745;}
+    .objects-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:20px;background:#fff;border-radius:20px;border:3px solid #d4edda;box-shadow:0 8px 25px rgba(0,0,0,0.1);}
+    .emoji-object{font-size:3.2rem;}
+    
+    .equation-display{margin-top:20px;text-align:center;}
+    .equation{font-size:2.5rem;font-weight:700;color:#28a745;margin-bottom:15px;}
+    .instruction-text{font-weight:600;font-size:1.8rem;color:#28a745;text-align:center;}
+    
+    .options-container{background:#d4edda;border-radius:20px;padding:35px 25px;margin-bottom:25px;border:3px solid #28a745;box-shadow:0 10px 35px rgba(0,0,0,0.15);}
+    .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:22px;max-width:600px;margin:0 auto;}
+    .option-btn{background:linear-gradient(135deg,white,#f8fff8);border:4px solid #c3e6cb;border-radius:18px;height:130px;font-size:4.5rem;font-weight:700;color:#155724;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:15px;user-select:none;transition:all .3s ease;box-shadow:0 8px 25px rgba(0,0,0,0.12);}
+    .option-btn:hover{background:#d4edda;border-color:#28a745;transform:translateY(-8px) scale(1.05);box-shadow:0 15px 40px rgba(40,167,69,0.4);}
+    .option-btn.correct{background:linear-gradient(135deg,#28a745,#20c997);border-color:#218838;color:white;box-shadow:0 15px 40px rgba(40,167,69,0.5);}
+    .option-btn.incorrect{background:linear-gradient(135deg,#dc3545,#fd7e14);border-color:#c82333;color:white;box-shadow:0 12px 35px rgba(220,53,69,0.4);}
+    
+    .submit-section{display:flex;justify-content:center;}
+    .submit-btn{background:linear-gradient(135deg,#28a745,#218838);color:white;border:none;border-radius:12px;padding:14px 40px;font-weight:600;font-size:1.2rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:10px;box-shadow:0 4px 15px rgba(40,167,69,0.3);}
+    .submit-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(40,167,69,0.4);}
+    .submit-btn:disabled{background:#94d3a2;cursor:not-allowed;transform:none;box-shadow:none;}
+    
+    .feedback{margin-top:20px;font-weight:600;font-size:1.4rem;text-align:center;min-height:40px;}
+    .feedback.correct{color:#155724;}
+    .feedback.incorrect{color:#721c24;}
+    .score-box{margin-top:30px;border:3px solid #28a745;border-radius:15px;padding:25px;text-align:center;font-weight:700;font-size:1.6rem;color:#28a745;background:linear-gradient(135deg,#d4edda,#c3e6cb);}
+    
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+    @media(max-width:768px){
+      .main-wrapper{padding:20px 10px;}.container{padding:20px;}
+      .addition-display{gap:20px;}.objects-grid{font-size:2.8rem;padding:15px;}
+      .instruction-text{font-size:1.5rem;}
+      .options{grid-template-columns:repeat(2,1fr);gap:18px;}
+      .option-btn{height:110px;font-size:3.5rem;}
+    }
+    @media(max-width:480px){
+      .addition-display{flex-direction:column;gap:15px;}
+      .objects-grid{font-size:2.2rem;padding:10px;}
+      .instruction-text{font-size:1.3rem;}
+      .options{grid-template-columns:1fr;gap:15px;}
+      .option-btn{height:100px;font-size:3rem;}
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn">Sign Up / Login</button>
+    </div>
+  </nav>
+
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">➕</div>
+        <h2>B2 - Add with Pictures (Sums to 10)</h2>
+      </div>
+
+      <div class="question-section">
+        <button class="speaker-btn" id="speakerBtn" title="Hear question">
+          <i class="fas fa-volume-up"></i>
+        </button>
+        
+        <div class="addition-display" id="additionDisplay"></div>
+        <div class="equation-display" id="equationDisplay"></div>
+        <div class="instruction-text" id="instructionText">How many altogether?</div>
+      </div>
+
+      <div class="options-container">
+        <div class="options" id="optionsContainer"></div>
+      </div>
+      
+      <div class="submit-section">
+        <button class="submit-btn" id="nextBtn" disabled><i class="fas fa-arrow-right"></i> Next</button>
+      </div>
+      
+      <div id="feedback" class="feedback"></div>
+      <div id="scoreBox" class="score-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo">
+          <img src="logo.png" alt="HelpingHands Logo" />
+        </div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Games</a></li>
+              <li><a href="#">Activities</a></li>
+              <li><a href="#">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const synth = window.speechSynthesis;
+    
+    // ✅ All combinations that = 10: 1+9, 2+8, 3+7, 4+6, 5+5, 6+4, 7+3, 8+2, 9+1, 0+10, 10+0
+    const questions = [
+      {a: 1, b: 9, obj1: '🍎', obj2: '🍌', spoken: 'apples and bananas'},
+      {a: 2, b: 8, obj1: '⭐', obj2: '🎈', spoken: 'stars and balloons'},
+      {a: 3, b: 7, obj1: '🐟', obj2: '🦋', spoken: 'fish and butterflies'},
+      {a: 4, b: 6, obj1: '🌻', obj2: '🍊', spoken: 'sunflowers and oranges'},
+      {a: 5, b: 5, obj1: '🍇', obj2: '🐢', spoken: 'grapes and turtles'},
+      {a: 6, b: 4, obj1: '🍉', obj2: '🌟', spoken: 'watermelons and stars'},
+      {a: 7, b: 3, obj1: '🍓', obj2: '🍋', spoken: 'strawberries and lemons'},
+      {a: 8, b: 2, obj1: '🐢', obj2: '🎁', spoken: 'turtles and gifts'},
+      {a: 9, b: 1, obj1: '🍌', obj2: '🍎', spoken: 'bananas and apples'},
+      {a: 0, b: 10, obj1: '🎈', obj2: '🌻', spoken: 'balloons and sunflowers'}
+    ];
+    
+    let currentIdx = 0;
+    let score = 0;
+    let answered = false;
+    let gameCompleted = false;
+    
+    const elements = {
+      speakerBtn: document.getElementById('speakerBtn'),
+      additionDisplay: document.getElementById('additionDisplay'),
+      equationDisplay: document.getElementById('equationDisplay'),
+      instructionText: document.getElementById('instructionText'),
+      optionsContainer: document.getElementById('optionsContainer'),
+      feedback: document.getElementById('feedback'),
+      nextBtn: document.getElementById('nextBtn'),
+      scoreBox: document.getElementById('scoreBox')
+    };
+
+    function speak(text) {
+      synth.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.pitch = 1.1;
+      utterance.rate = 0.8;
+      synth.speak(utterance);
+    }
+
+    elements.speakerBtn.onclick = () => {
+      const q = questions[currentIdx];
+      speak(`How many ${q.spoken} are there altogether?`);
+    };
+
+    function shuffle(array) {
+      const shuffled = [...array];
+      for(let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function loadPictures() {
+      const q = questions[currentIdx];
+      elements.additionDisplay.innerHTML = `
+        <div class="group-container">
+          <div class="group-title">${q.a}</div>
+          <div class="objects-grid">${q.obj1.repeat(q.a)}</div>
+        </div>
+        <div style="font-size:3rem;color:#28a745;font-weight:700;">+</div>
+        <div class="group-container">
+          <div class="group-title">${q.b}</div>
+          <div class="objects-grid">${q.obj2.repeat(q.b)}</div>
+        </div>
+      `;
+      
+      elements.equationDisplay.innerHTML = `
+        <div class="equation">${q.a} + ${q.b} = ?</div>
+      `;
+    }
+
+    function loadOptions() {
+      const q = questions[currentIdx];
+      const correct = (q.a + q.b).toString();
+      const options = [correct, '5', '6', '7', '8', '9', '11', '12'];
+      const shuffledOptions = shuffle(options);
+      
+      elements.optionsContainer.innerHTML = '';
+      shuffledOptions.forEach(num => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.dataset.num = num;
+        btn.innerHTML = `<div style="font-size:4.5rem;font-weight:700;">${num}</div>`;
+        btn.onclick = () => selectOption(btn, num);
+        elements.optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(btn, selectedNum) {
+      if(answered || gameCompleted) return;
+      answered = true;
+      elements.nextBtn.disabled = false;
+      
+      document.querySelectorAll('.option-btn').forEach(b => {
+        b.classList.remove('correct', 'incorrect');
+        b.onclick = null;
+      });
+      
+      const q = questions[currentIdx];
+      const correctAnswer = (q.a + q.b).toString();
+      
+      if(selectedNum === correctAnswer) {
+        btn.classList.add('correct');
+        score++;
+        elements.feedback.innerHTML = `✅ Perfect! ${q.a} + ${q.b} = ${selectedNum}! 🎉`;
+        elements.feedback.className = 'feedback correct';
+        speak(`Correct! ${q.a} plus ${q.b} equals ${selectedNum}`);
+      } else {
+        btn.classList.add('incorrect');
+        elements.feedback.innerHTML = `❌ No! ${q.a} + ${q.b} = ${correctAnswer}`;
+        elements.feedback.className = 'feedback incorrect';
+      }
+    }
+
+    function loadQuestion() {
+      if(gameCompleted) return;
+      
+      answered = false;
+      elements.nextBtn.disabled = true;
+      const q = questions[currentIdx];
+      
+      loadPictures();
+      loadOptions();
+      elements.instructionText.textContent = 'How many altogether?';
+      elements.feedback.textContent = '';
+      elements.feedback.className = 'feedback';
+      
+      setTimeout(() => {
+        speak(`Count ${q.a} ${q.obj1}s and ${q.b} ${q.obj2}s. How many altogether?`);
+      }, 500);
+    }
+
+    function nextQuestion() {
+      currentIdx++;
+      
+      if(currentIdx >= questions.length) {
+        gameCompleted = true;
+        elements.instructionText.textContent = '🎉 Addition Master!';
+        elements.additionDisplay.innerHTML = `
+          <div style="font-size:5rem;color:#28a745;margin:20px;">🏆</div>
+          <div style="font-size:2.5rem;color:#28a745;font-weight:700;">Addition Sums to 10 Complete!</div>
+        `;
+        elements.equationDisplay.innerHTML = '';
+        elements.optionsContainer.innerHTML = '<div style="text-align:center;font-size:2.5rem;color:#28a745;">Perfect Addition Skills! ⭐⭐⭐</div>';
+        elements.nextBtn.style.display = 'none';
+        elements.feedback.style.display = 'none';
+        elements.scoreBox.style.display = 'block';
+        elements.scoreBox.innerHTML = `Final Score: <strong>${score}/${questions.length}</strong>`;
+        speak(`Amazing job! You scored ${score} out of ${questions.length}!`);
+        return;
+      }
+      
+      loadQuestion();
+    }
+
+    elements.nextBtn.onclick = nextQuestion;
+    
+    loadQuestion();
+  </script>
+</body>
+</html>

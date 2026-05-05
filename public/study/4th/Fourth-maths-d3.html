@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D3 - Volume & 3D Geometry Lab | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .manage-btn { background: white; color: #0D5791; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .launch-btn { background: #A1E231; color: black; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1100px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0D5791;
+            padding-bottom: 10px;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            background: #0D5791;
+            border-radius: 50%;
+            color: #A1E231;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #0D5791; font-weight: 600; font-size: 1.3rem; margin: 0; }
+
+        .hint {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 25px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            border-radius: 4px;
+        }
+
+        /* LAYOUT GRID */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .lab-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CONTROLS CARD */
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; color: #666; margin-bottom: 8px; }
+        input[type="range"] { width: 100%; margin-bottom: 5px; accent-color: #0D5791; }
+        .val-display { font-family: 'Roboto Mono', monospace; font-weight: bold; color: #0D5791; float: right; }
+
+        /* VISUALIZER */
+        #canvas-container {
+            background: #000;
+            border-radius: 12px;
+            width: 100%;
+            height: 400px;
+            position: relative;
+            cursor: move;
+        }
+
+        .canvas-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.8);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            pointer-events: none;
+        }
+
+        /* RESULTS AREA */
+        .results-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .result-box {
+            background: #0D5791;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result-box.surface { background: #673ab7; }
+
+        .result-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .result-value { font-family: 'Roboto Mono', monospace; font-size: 2rem; font-weight: bold; margin: 5px 0; color: #A1E231; }
+        .result-formula { font-size: 0.85rem; font-style: italic; color: #e0f7fa; }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-logo { height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; }
+        .footer-links ul { padding: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.5rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 45px; height: 45px; background: rgba(255,255,255,0.12); border-radius: 50%; text-decoration: none; }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-left">
+                    <div class="header-icon"><i class="fas fa-cube"></i></div>
+                    <h2>D3 - Volume & 3D Geometry Measurement Lab</h2>
+                </div>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-info-circle" style="color: #4caf50; margin-right: 8px;"></i>
+                <strong>Concept:</strong> Volume measures <strong>capacity</strong> (how much space is inside). Imagine filling this box with unit cubes.
+            </div>
+
+            <div class="lab-grid">
+                <!-- Controls -->
+                <div class="card">
+                    <div class="input-group">
+                        <label>Length (L) <span class="val-display" id="len-val">5 m</span></label>
+                        <input type="range" id="length" min="1" max="10" step="0.5" value="5" oninput="updateValues()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Width (W) <span class="val-display" id="wid-val">4 m</span></label>
+                        <input type="range" id="width" min="1" max="10" step="0.5" value="4" oninput="updateValues()">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Height (H) <span class="val-display" id="hei-val">3 m</span></label>
+                        <input type="range" id="height" min="1" max="10" step="0.5" value="3" oninput="updateValues()">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Unit</label>
+                        <select id="unit" onchange="updateValues()">
+                            <option value="m">Meters (m)</option>
+                            <option value="cm">Centimeters (cm)</option>
+                            <option value="in">Inches (in)</option>
+                        </select>
+                    </div>
+
+                    <div class="hint" style="background: #fff3e0; border-color: #ff9800; margin-top: 20px;">
+                        <small><strong>Formula:</strong></small><br>
+                        <small>Volume = L × W × H</small><br>
+                        <small>SA = 2(LW + LH + WH)</small>
+                    </div>
+                </div>
+
+                <!-- Visualizer -->
+                <div id="canvas-container">
+                    <div class="canvas-hint">Drag to rotate view</div>
+                </div>
+            </div>
+
+            <div class="results-bar">
+                <div class="result-box">
+                    <div class="result-title">Total Volume</div>
+                    <div class="result-value" id="res-volume">60 m³</div>
+                    <div class="result-formula" id="for-volume">5 × 4 × 3 = 60</div>
+                </div>
+                <div class="result-box surface">
+                    <div class="result-title">Surface Area</div>
+                    <div class="result-value" id="res-sa">94 m²</div>
+                    <div class="result-formula" id="for-sa">2(20 + 15 + 12) = 94</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">3D Academy</a></li><li><a href="#">Math VR</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Teachers</a></li><li><a href="#">Glossary</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Safety</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | 3D Simulation Tools</div>
+    </footer>
+
+    <script>
+        let scene, camera, renderer, cube, edges;
+        let mouseX = 0, mouseY = 0;
+        let isMouseDown = false;
+
+        function initThree() {
+            const container = document.getElementById('canvas-container');
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x111111);
+
+            camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+            camera.position.z = 15;
+            camera.position.y = 5;
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(w, h);
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(10, 10, 10);
+            scene.add(pointLight);
+
+            // Initial Cube
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0xA1E231, 
+                transparent: true, 
+                opacity: 0.7,
+                shininess: 100 
+            });
+            cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+
+            // Wireframe
+            const edgeGeo = new THREE.EdgesGeometry(geometry);
+            const edgeMat = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 2 });
+            edges = new THREE.LineSegments(edgeGeo, edgeMat);
+            scene.add(edges);
+
+            // Mouse interaction
+            container.addEventListener('mousedown', () => isMouseDown = true);
+            window.addEventListener('mouseup', () => isMouseDown = false);
+            container.addEventListener('mousemove', (e) => {
+                if (isMouseDown) {
+                    cube.rotation.y += e.movementX * 0.01;
+                    cube.rotation.x += e.movementY * 0.01;
+                    edges.rotation.y = cube.rotation.y;
+                    edges.rotation.x = cube.rotation.x;
+                }
+            });
+
+            animate();
+            updateValues();
+        }
+
+        function updateValues() {
+            const L = parseFloat(document.getElementById('length').value);
+            const W = parseFloat(document.getElementById('width').value);
+            const H = parseFloat(document.getElementById('height').value);
+            const unit = document.getElementById('unit').value;
+
+            // Update UI Labels
+            document.getElementById('len-val').innerText = `${L} ${unit}`;
+            document.getElementById('wid-val').innerText = `${W} ${unit}`;
+            document.getElementById('hei-val').innerText = `${H} ${unit}`;
+
+            // Update 3D Geometry
+            cube.scale.set(L, H, W); // Y is Height in 3D coordinate space
+            edges.scale.set(L, H, W);
+
+            // Calculations
+            const volume = L * W * H;
+            const sa = 2 * (L * W + L * H + W * H);
+
+            // Update Result Boxes
+            document.getElementById('res-volume').innerText = `${volume.toFixed(1)} ${unit}³`;
+            document.getElementById('res-sa').innerText = `${sa.toFixed(1)} ${unit}²`;
+
+            // Formulas
+            document.getElementById('for-volume').innerText = `${L} × ${W} × ${H} = ${volume.toFixed(1)}`;
+            document.getElementById('for-sa').innerText = `2(${L*W} + ${L*H} + ${W*H}) = ${sa.toFixed(1)}`;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Gentle idle rotation if mouse not down
+            if (!isMouseDown) {
+                cube.rotation.y += 0.005;
+                edges.rotation.y = cube.rotation.y;
+            }
+            renderer.render(scene, camera);
+        }
+
+        window.onload = initThree;
+        window.onresize = () => {
+            const container = document.getElementById('canvas-container');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        };
+    </script>
+</body>
+</html>

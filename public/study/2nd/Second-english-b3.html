@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B3 · Prefixes and Suffixes | 2nd Grade Vocabulary</title>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Poppins font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #c0e0c0 0%, #e0f0e0 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background-color: #0d5791;
+        color: white;
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      .logo {
+        font-size: 26px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .logo span {
+        color: #7ce04a;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        padding: 8px 14px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .nav-buttons button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .manage-btn {
+        background-color: white;
+        color: #0d5791;
+      }
+      .manage-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .launch-btn {
+        background-color: #a1e231;
+        color: black;
+      }
+      .launch-btn:hover {
+        background-color: #8fd31a;
+        transform: translateY(-2px);
+      }
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #00d4ff;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #27ae60;
+        padding-bottom: 10px;
+      }
+      .header-icon {
+        width: 50px;
+        height: 50px;
+        background: #27ae60;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      h2 {
+        color: #27ae60;
+        font-weight: 600;
+        font-size: 1.7rem;
+      }
+      .question-text {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .speaker-icon {
+        width: 45px;
+        height: 45px;
+        background: #27ae60;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 1.3rem;
+      }
+      .speaker-icon:hover {
+        background: #1e8449;
+        transform: scale(1.1);
+      }
+      .vocab-area {
+        background: #e8f5e9;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        border: 3px solid #27ae60;
+      }
+      .rule-box {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .rule-title {
+        font-size: 1.3rem;
+        color: #1e8449;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .rule-list {
+        list-style-position: inside;
+        color: #2c3e50;
+        font-size: 1.1rem;
+      }
+      .prefix-suffix-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 20px 0;
+        width: 100%;
+      }
+      .prefix-box,
+      .suffix-box {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .prefix-box {
+        border-top: 5px solid #3498db;
+      }
+      .suffix-box {
+        border-top: 5px solid #e67e22;
+      }
+      .box-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .prefix-box .box-title {
+        color: #3498db;
+      }
+      .suffix-box .box-title {
+        color: #e67e22;
+      }
+      .example-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .example-row:hover {
+        transform: translateX(5px);
+        background: #e8f4fc;
+      }
+      .affix {
+        font-weight: 700;
+        min-width: 80px;
+      }
+      .example-word {
+        flex: 1;
+      }
+      .meaning {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+      .word-builder {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        width: 100%;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .base-word {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 20px 0;
+      }
+      .affix-choices {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+      .affix-choice {
+        background: white;
+        border: 3px solid #27ae60;
+        border-radius: 40px;
+        padding: 15px 30px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .affix-choice:hover {
+        background: #27ae60;
+        color: white;
+        transform: scale(1.1);
+      }
+      .affix-choice.selected {
+        background: #27ae60;
+        color: white;
+      }
+      .new-word {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #e67e22;
+        margin: 20px 0;
+      }
+      .question-box {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #1e8449;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 20px 0 25px;
+      }
+      .option-btn {
+        background: white;
+        border: 3px solid #a3d9a3;
+        border-radius: 60px;
+        min-height: 80px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .option-btn:hover {
+        background: #d4f0d4;
+        border-color: #27ae60;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px #b8e0b8;
+      }
+      .option-btn.correct {
+        background: #2ecc71;
+        border-color: #27ae60;
+        color: white;
+      }
+      .option-btn.incorrect {
+        background: #e74c3c;
+        border-color: #c0392b;
+        color: white;
+      }
+      .submit-btn {
+        background: linear-gradient(145deg, #27ae60, #1e8449);
+        color: white;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 50px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+        display: block;
+        margin: 0 auto 10px;
+        box-shadow: 0 6px 0 #0f5c33;
+      }
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 9px 0 #0f5c33;
+      }
+      .submit-btn:disabled {
+        background: #a3d9a3;
+        box-shadow: 0 4px 0 #0f5c33;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .feedback {
+        margin: 15px 0 5px;
+        font-weight: 600;
+        font-size: 1.4rem;
+        text-align: center;
+        min-height: 40px;
+      }
+      .feedback.correct {
+        color: #1e8449;
+      }
+      .feedback.incorrect {
+        color: #943126;
+      }
+      .score-box {
+        margin-top: 30px;
+        border: 4px solid #27ae60;
+        border-radius: 30px;
+        padding: 30px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 2.2rem;
+        background: #d4f0d4;
+        color: #0f5c33;
+      }
+     .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+      @media (max-width: 800px) {
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .footer-logo {
+          display: flex;
+          justify-content: center;
+        }
+        .footer-links {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-social {
+          flex-direction: row;
+          justify-content: center;
+        }
+        .prefix-suffix-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .navbar {
+          flex-wrap: wrap;
+        }
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="manage-btn">Manage Account</button>
+        <button class="launch-btn" onclick="window.location.href = '#'">
+          Sign Up / Login
+        </button>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        <div class="header">
+          <div class="header-icon">➕</div>
+          <h2>B3 · Prefixes and Suffixes</h2>
+        </div>
+
+        <div class="question-text">
+          <span id="questionPhrase"
+            >"Add prefixes and suffixes to make new words."</span
+          >
+          <div class="speaker-icon" id="globalSpeaker">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="vocab-area" id="vocabArea">
+          <div class="rule-box">
+            <div class="rule-title">What are prefixes and suffixes?</div>
+            <ul class="rule-list">
+              <li>
+                👉 <strong>Prefix</strong>: letters added to the beginning of a
+                word that change its meaning
+              </li>
+              <li>
+                👉 <strong>Suffix</strong>: letters added to the end of a word
+                that change its meaning
+              </li>
+            </ul>
+          </div>
+
+          <div class="prefix-suffix-grid">
+            <div class="prefix-box">
+              <div class="box-title">Prefixes</div>
+              <div
+                class="example-row"
+                onclick="speakText('un means not or opposite')"
+              >
+                <span class="affix">un-</span>
+                <span class="example-word">unhappy, unlock</span>
+                <span class="meaning">(not happy, open lock)</span>
+              </div>
+              <div class="example-row" onclick="speakText('re means again')">
+                <span class="affix">re-</span>
+                <span class="example-word">redo, replay</span>
+                <span class="meaning">(do again, play again)</span>
+              </div>
+              <div class="example-row" onclick="speakText('pre means before')">
+                <span class="affix">pre-</span>
+                <span class="example-word">preview, preheat</span>
+                <span class="meaning">(view before, heat before)</span>
+              </div>
+              <div class="example-row" onclick="speakText('mis means wrong')">
+                <span class="affix">mis-</span>
+                <span class="example-word">mistake, misplace</span>
+                <span class="meaning">(wrong take, wrong place)</span>
+              </div>
+            </div>
+
+            <div class="suffix-box">
+              <div class="box-title">Suffixes</div>
+              <div class="example-row" onclick="speakText('ful means full of')">
+                <span class="affix">-ful</span>
+                <span class="example-word">helpful, playful</span>
+                <span class="meaning">(full of help, full of play)</span>
+              </div>
+              <div
+                class="example-row"
+                onclick="speakText('less means without')"
+              >
+                <span class="affix">-less</span>
+                <span class="example-word">fearless, hopeless</span>
+                <span class="meaning">(without fear, without hope)</span>
+              </div>
+              <div class="example-row" onclick="speakText('er means one who')">
+                <span class="affix">-er</span>
+                <span class="example-word">teacher, player</span>
+                <span class="meaning">(one who teaches, one who plays)</span>
+              </div>
+              <div
+                class="example-row"
+                onclick="speakText('ly means in a certain way')"
+              >
+                <span class="affix">-ly</span>
+                <span class="example-word">quickly, slowly</span>
+                <span class="meaning">(in a quick way, in a slow way)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="word-builder">
+            <div
+              class="base-word"
+              id="baseWord"
+              onclick="speakText('base word: happy')"
+            >
+              happy
+            </div>
+            <div class="affix-choices" id="affixChoices"></div>
+            <div class="new-word" id="newWord">→ new word will appear here</div>
+          </div>
+
+          <div class="question-box" id="questionBox"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <button class="submit-btn" id="nextBtn" disabled onclick="handleNext()">
+          Next
+        </button>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="scoreBox" class="score-box" style="display: none"></div>
+      </div>
+    </div>
+
+        <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+
+
+    <script>
+      (function () {
+        const questions = [
+          {
+            baseWord: "happy",
+            affixes: [
+              {
+                affix: "un-",
+                type: "prefix",
+                meaning: "not",
+                result: "unhappy",
+              },
+              {
+                affix: "-ness",
+                type: "suffix",
+                meaning: "state of",
+                result: "happiness",
+              },
+            ],
+            correctAffix: "un-",
+            question: 'Which affix makes "happy" mean "not happy"?',
+          },
+          {
+            baseWord: "play",
+            affixes: [
+              {
+                affix: "re-",
+                type: "prefix",
+                meaning: "again",
+                result: "replay",
+              },
+              {
+                affix: "-ful",
+                type: "suffix",
+                meaning: "full of",
+                result: "playful",
+              },
+            ],
+            correctAffix: "re-",
+            question: 'Which affix makes "play" mean "play again"?',
+          },
+          {
+            baseWord: "help",
+            affixes: [
+              {
+                affix: "-ful",
+                type: "suffix",
+                meaning: "full of",
+                result: "helpful",
+              },
+              {
+                affix: "-less",
+                type: "suffix",
+                meaning: "without",
+                result: "helpless",
+              },
+            ],
+            correctAffix: "-ful",
+            question: 'Which suffix makes "help" mean "full of help"?',
+          },
+          {
+            baseWord: "quick",
+            affixes: [
+              {
+                affix: "-ly",
+                type: "suffix",
+                meaning: "in a certain way",
+                result: "quickly",
+              },
+              {
+                affix: "-er",
+                type: "suffix",
+                meaning: "one who",
+                result: "quicker",
+              },
+            ],
+            correctAffix: "-ly",
+            question: 'Which suffix makes "quick" mean "in a quick way"?',
+          },
+          {
+            baseWord: "tie",
+            affixes: [
+              {
+                affix: "un-",
+                type: "prefix",
+                meaning: "opposite",
+                result: "untie",
+              },
+              {
+                affix: "re-",
+                type: "prefix",
+                meaning: "again",
+                result: "retie",
+              },
+            ],
+            correctAffix: "un-",
+            question: 'Which prefix makes "tie" mean "opposite of tie"?',
+          },
+          {
+            baseWord: "fear",
+            affixes: [
+              {
+                affix: "-less",
+                type: "suffix",
+                meaning: "without",
+                result: "fearless",
+              },
+              {
+                affix: "-ful",
+                type: "suffix",
+                meaning: "full of",
+                result: "fearful",
+              },
+            ],
+            correctAffix: "-less",
+            question: 'Which suffix makes "fear" mean "without fear"?',
+          },
+          {
+            baseWord: "build",
+            affixes: [
+              {
+                affix: "re-",
+                type: "prefix",
+                meaning: "again",
+                result: "rebuild",
+              },
+              {
+                affix: "-er",
+                type: "suffix",
+                meaning: "one who",
+                result: "builder",
+              },
+            ],
+            correctAffix: "re-",
+            question: 'Which affix makes "build" mean "build again"?',
+          },
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentQuestion = questions[0];
+        let selectedAffix = null;
+
+        const questionPhraseEl = document.getElementById("questionPhrase");
+        const globalSpeaker = document.getElementById("globalSpeaker");
+        const baseWordEl = document.getElementById("baseWord");
+        const affixChoicesEl = document.getElementById("affixChoices");
+        const newWordEl = document.getElementById("newWord");
+        const questionBoxEl = document.getElementById("questionBox");
+        const optionsContainer = document.getElementById("optionsContainer");
+        const feedbackEl = document.getElementById("feedback");
+        const nextBtn = document.getElementById("nextBtn");
+        const scoreBox = document.getElementById("scoreBox");
+
+        function speakText(text, rate = 1) {
+          if (!window.speechSynthesis) return;
+          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "en-US";
+          utterance.rate = rate;
+          window.speechSynthesis.speak(utterance);
+        }
+
+        window.speakText = speakText;
+
+        function loadQuestion() {
+          answered = false;
+          nextBtn.disabled = true;
+          selectedAffix = null;
+          currentQuestion = questions[currentIndex];
+
+          questionPhraseEl.textContent = `"Add prefixes and suffixes to make new words."`;
+
+          baseWordEl.textContent = currentQuestion.baseWord;
+          baseWordEl.onclick = () =>
+            speakText(`base word: ${currentQuestion.baseWord}`);
+
+          // Create affix choices
+          affixChoicesEl.innerHTML = "";
+          currentQuestion.affixes.forEach((item) => {
+            const choice = document.createElement("div");
+            choice.className = "affix-choice";
+            choice.textContent = item.affix;
+            choice.onclick = () => selectAffix(choice, item);
+            affixChoicesEl.appendChild(choice);
+          });
+
+          newWordEl.innerHTML = "→ click an affix to build a new word";
+          questionBoxEl.textContent = currentQuestion.question;
+
+          feedbackEl.textContent = "";
+          feedbackEl.className = "feedback";
+          scoreBox.style.display = "none";
+          nextBtn.style.display = "block";
+
+          optionsContainer.innerHTML = "";
+          const checkBtn = document.createElement("button");
+          checkBtn.className = "option-btn";
+          checkBtn.textContent = "Check Answer";
+
+          const speakerSpan = document.createElement("span");
+          speakerSpan.className = "fas fa-volume-up";
+          speakerSpan.style.marginLeft = "8px";
+          speakerSpan.onclick = (e) => {
+            e.stopPropagation();
+            speakText("Check your answer");
+          };
+          checkBtn.appendChild(speakerSpan);
+
+          checkBtn.onclick = checkAnswer;
+          optionsContainer.appendChild(checkBtn);
+        }
+
+        function selectAffix(element, item) {
+          if (answered) return;
+
+          document.querySelectorAll(".affix-choice").forEach((el) => {
+            el.classList.remove("selected");
+          });
+
+          element.classList.add("selected");
+          selectedAffix = item.affix;
+          newWordEl.innerHTML = `→ ${item.result} (${item.meaning})`;
+          newWordEl.onclick = () => speakText(item.result);
+          speakText(`You selected ${item.affix} to make ${item.result}`);
+        }
+
+        function checkAnswer() {
+          if (answered) return;
+
+          if (!selectedAffix) {
+            feedbackEl.textContent = "❌ Please select an affix first!";
+            feedbackEl.classList.add("incorrect");
+            speakText("Please select an affix");
+            return;
+          }
+
+          answered = true;
+          nextBtn.disabled = false;
+
+          const isCorrect = selectedAffix === currentQuestion.correctAffix;
+
+          if (isCorrect) {
+            score++;
+            feedbackEl.textContent = "✅ Great! You chose the correct affix.";
+            feedbackEl.classList.add("correct");
+            speakText(
+              `Good job! ${selectedAffix}${currentQuestion.baseWord} makes the right meaning.`,
+            );
+          } else {
+            feedbackEl.textContent = `❌ Not quite. The correct affix is ${currentQuestion.correctAffix}.`;
+            feedbackEl.classList.add("incorrect");
+            speakText(`The correct affix is ${currentQuestion.correctAffix}`);
+
+            // Highlight correct affix
+            document.querySelectorAll(".affix-choice").forEach((el) => {
+              if (el.textContent === currentQuestion.correctAffix) {
+                el.classList.add("correct");
+              }
+            });
+          }
+        }
+
+        function handleNext() {
+          if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+          } else {
+            showFinalScore();
+          }
+        }
+
+        function showFinalScore() {
+          questionPhraseEl.textContent =
+            "🎉 Prefixes and suffixes mastered! 🎉";
+          document.querySelector(".prefix-suffix-grid").style.display = "none";
+          document.querySelector(".word-builder").innerHTML =
+            '<div class="base-word">🏆</div><div class="new-word">Great job!</div>';
+          questionBoxEl.textContent = "You can build words with affixes!";
+          optionsContainer.innerHTML = "";
+          nextBtn.style.display = "none";
+          feedbackEl.textContent = "";
+          scoreBox.style.display = "block";
+          scoreBox.textContent = `You scored ${score} out of ${questions.length}!`;
+          speakText(
+            `Quiz finished. You got ${score} out of ${questions.length} correct.`,
+            0.9,
+          );
+        }
+
+        globalSpeaker.addEventListener("click", () => {
+          if (currentIndex < questions.length) {
+            speakText(`${currentQuestion.question}`);
+          } else {
+            speakText(
+              `Quiz completed. Your score is ${score} out of ${questions.length}.`,
+            );
+          }
+        });
+
+        loadQuestion();
+        window.handleNext = handleNext;
+      })();
+    </script>
+  </body>
+</html>

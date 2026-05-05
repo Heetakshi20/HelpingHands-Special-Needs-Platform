@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>🌈 Bright-Minds Exam</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link rel="stylesheet" href="style1.css">
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>Bright-Minds Fun Exam 🌈</h1>
+
+<div id="studentName"></div>
+
+</div>
+
+<!-- CLASS SELECTION -->
+<div id="classSelection">
+
+<h2>Select Your Class 📚</h2>
+
+<div class="card-container">
+
+<div class="card" onclick="startExam('LKG')">🧸 LKG</div>
+<div class="card" onclick="startExam('UKG')">🎈 UKG</div>
+<div class="card" onclick="startExam('Class1')">1️⃣ Class 1</div>
+<div class="card" onclick="startExam('Class2')">2️⃣ Class 2</div>
+<div class="card" onclick="startExam('Class3')">3️⃣ Class 3</div>
+<div class="card" onclick="startExam('Class4')">4️⃣ Class 4</div>
+
+</div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="quiz-container" style="display:none">
+
+<h2 id="question"></h2>
+
+<div id="options"></div>
+
+</div>
+
+<!-- RESULT -->
+<div id="result" style="display:none">
+
+<h2 id="scoreText"></h2>
+
+</div>
+
+<script src="exam.js"></script>
+
+</body>
+</html>

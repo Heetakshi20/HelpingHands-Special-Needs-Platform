@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sling Toss | Festive Lights Edition</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --red: #d42426; --green: #165b33; --gold: #f8b229; --navy: #020617; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #0f172a, var(--navy));
+            height: 100vh; overflow: hidden; color: white;
+            display: flex; flex-direction: column;
+        }
+
+        /* --- Christmas Lights String --- */
+        .light-string {
+            width: 100%; height: 20px;
+            display: flex; justify-content: space-around;
+            position: absolute; top: 65px; left: 0; z-index: 90;
+        }
+        .light-bulb {
+            width: 12px; height: 18px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: blink 1s infinite alternate;
+        }
+        @keyframes blink {
+            from { opacity: 0.3; filter: brightness(0.5) blur(1px); }
+            to { opacity: 1; filter: brightness(1.5) blur(0px); box-shadow: 0 0 10px currentColor; }
+        }
+
+        /* --- Snow Layer --- */
+        #snow-container { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        .flake { position: absolute; background: white; border-radius: 50%; animation: fall var(--duration) linear infinite; opacity: 0.8; }
+        @keyframes fall { from { transform: translateY(-10px); } to { transform: translateY(100vh); } }
+
+        /* --- Header --- */
+        .header {
+            background: var(--red); padding: 10px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 4px solid var(--gold); z-index: 100;
+        }
+        .exit-btn { color: white; text-decoration: none; font-weight: bold; border: 2px solid white; padding: 5px 15px; border-radius: 50px; }
+
+        #game-canvas { flex: 1; position: relative; cursor: crosshair; z-index: 5; }
+
+        /* --- Aiming & Launcher --- */
+        .launcher-base { position: absolute; bottom: 40px; left: 60px; font-size: 4rem; z-index: 20; }
+        #aim-arrow { 
+            position: absolute; bottom: 80px; left: 100px; width: 100px; height: 10px; 
+            background: var(--gold); transform-origin: left center; border-radius: 10px; 
+            display: none; pointer-events: none; z-index: 15; 
+            box-shadow: 0 0 20px var(--gold); /* Added Glow */
+        }
+        #aim-arrow::after { content: ''; position: absolute; right: -10px; top: -10px; border-left: 20px solid var(--gold); border-top: 15px solid transparent; border-bottom: 15px solid transparent; }
+
+        .chimney { position: absolute; bottom: 0; right: 10%; width: 150px; height: 200px; background: #800000; border-top: 15px solid white; border-left: 8px solid #5a0000; }
+        .gift { position: absolute; font-size: 3.5rem; z-index: 30; pointer-events: none; }
+        .score-box { position: absolute; top: 100px; left: 20px; font-size: 1.5rem; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 15px; border: 2px solid var(--gold); z-index: 50; }
+
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center; }
+        .start-btn { padding: 15px 40px; font-size: 1.8rem; border-radius: 50px; background: var(--green); color: white; border: none; cursor: pointer; box-shadow: 0 5px 0 #0d3b21; }
+    </style>
+</head>
+<body onmousemove="updateAim(event)" onclick="tossGift(event)">
+
+    <div id="snow-container"></div>
+
+    <div class="light-string" id="light-string"></div>
+
+    <div id="overlay">
+        <h1 style="font-family:'Outfit'; font-size: 3.5rem; color: gold; margin-bottom: 10px;">XMAS SLING</h1>
+        <button class="start-btn" onclick="startGame(event)">START ADVENTURE</button>
+        <p style="margin-top:20px; color: white;">Look at the lights and throw the gifts!</p>
+    </div>
+
+    <header class="header">
+        <h1 style="font-family:'Outfit';">🎄 Santa's Snow Night</h1>
+        <a href="../autism.html" class="exit-btn">EXIT</a>
+    </header>
+
+    <div id="game-canvas">
+        <div class="score-box">GIFTS: <span id="score">0</span></div>
+        <div id="aim-arrow"></div>
+        <div class="launcher-base">🛷</div>
+        <div class="chimney" id="chimney-target"></div>
+    </div>
+
+    <script>
+        let score = 0;
+        let canThrow = true;
+        const arrow = document.getElementById('aim-arrow');
+        const emojis = ['🎁', '🧸', '🍭', '⭐', '⛄', '🔔'];
+
+        function startGame(e) {
+            e.stopPropagation();
+            document.getElementById('overlay').style.display = 'none';
+            arrow.style.display = 'block';
+            speak("Merry Christmas! Toss the gifts into the chimney!");
+            createSnowflakes();
+            createLights(); // Add lights on start
+        }
+
+        // --- Create Blinking Lights ---
+        function createLights() {
+            const string = document.getElementById('light-string');
+            const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff', '#ffffff'];
+            for (let i = 0; i < 25; i++) {
+                const light = document.createElement('div');
+                light.className = 'light-bulb';
+                light.style.backgroundColor = colors[i % colors.length];
+                light.style.color = colors[i % colors.length];
+                light.style.animationDelay = (Math.random() * 2) + 's';
+                string.appendChild(light);
+            }
+        }
+
+        function createSnowflakes() {
+            const container = document.getElementById('snow-container');
+            for (let i = 0; i < 40; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'flake';
+                flake.style.left = Math.random() * 100 + '%';
+                const size = Math.random() * 6 + 2;
+                flake.style.width = size + 'px';
+                flake.style.height = size + 'px';
+                flake.style.setProperty('--duration', (Math.random() * 5 + 5) + 's');
+                container.appendChild(flake);
+            }
+        }
+
+        function updateAim(e) {
+            if (document.getElementById('overlay').style.display !== 'none') return;
+            const dx = e.clientX - 100;
+            const dy = e.clientY - (window.innerHeight - 100);
+            const angle = Math.atan2(dy, dx);
+            arrow.style.transform = `rotate(${angle}rad)`;
+        }
+
+        function tossGift(e) {
+            if (!canThrow || document.getElementById('overlay').style.display !== 'none') return;
+            canThrow = false;
+            const gift = document.createElement('div');
+            gift.className = 'gift';
+            gift.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            document.getElementById('game-canvas').appendChild(gift);
+
+            let startX = 100, startY = window.innerHeight - 120;
+            let targetX = e.clientX, targetY = e.clientY;
+            let t = 0;
+
+            function fly() {
+                t += 0.03;
+                let currX = startX + (targetX - startX) * t;
+                let currY = startY + (targetY - startY) * t - (Math.sin(t * Math.PI) * 300);
+                gift.style.left = currX + 'px';
+                gift.style.top = currY + 'px';
+                gift.style.transform = `rotate(${t * 720}deg)`;
+                if (t < 1) requestAnimationFrame(fly);
+                else checkLanding(currX, currY, gift);
+            }
+            fly();
+        }
+
+        function checkLanding(x, y, gift) {
+            const target = document.getElementById('chimney-target').getBoundingClientRect();
+            if (x > target.left && x < target.right && y > target.top - 50 && y < target.bottom) {
+                score++;
+                document.getElementById('score').innerText = score;
+                speak("Great throw!");
+            } else {
+                speak("Try again!");
+            }
+            gift.remove();
+            setTimeout(() => { canThrow = true; }, 400);
+        }
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 1.1;
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>

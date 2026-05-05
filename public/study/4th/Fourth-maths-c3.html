@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C3 - Fraction Multiplication | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Gold: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f2f1 0%, #c3cfe2 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1100px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #A1E231;
+            padding-bottom: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            background: #A1E231;
+            border-radius: 50%;
+            color: #0D5791;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #0D5791; font-weight: 600; font-size: 1.3rem; margin: 0; }
+
+        /* HINT BOX */
+        .hint {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f4ffdf;
+            border-left: 5px solid #A1E231;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        /* ARITHMETIC AREA */
+        .arithmetic-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .fraction-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2.5rem;
+            min-width: 60px;
+        }
+
+        .fraction-line {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            margin: 4px 0;
+        }
+
+        .operator { font-size: 2rem; color: #0D5791; font-weight: bold; }
+        .equals-sign { font-size: 2.5rem; color: #999; }
+
+        /* INPUTS */
+        .result-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #0D5791;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .res-input {
+            width: 90px;
+            padding: 10px;
+            font-size: 1.8rem;
+            font-family: 'Roboto Mono', monospace;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+        }
+
+        .res-input:focus { border-color: #A1E231; }
+
+        /* VISUAL AID: AREA MODEL */
+        .visual-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            min-width: 320px;
+        }
+
+        .area-model {
+            width: 200px;
+            height: 200px;
+            border: 3px solid #333;
+            position: relative;
+            background: white;
+            display: grid;
+        }
+
+        .cell {
+            border: 1px solid #ccc;
+            transition: 0.3s;
+        }
+
+        /* ACTIONS */
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .check-btn { background: #0D5791; color: white; }
+        .next-btn { background: #A1E231; color: black; display: none; }
+        
+        #message {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-logo { height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; }
+        .footer-links ul { padding: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; }
+        .footer-links a:hover { color: #A1E231; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #A1E231; transform: translateY(-5px); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .arithmetic-area { gap: 15px; }
+            .fraction-display { font-size: 1.8rem; }
+            .res-input { width: 70px; font-size: 1.4rem; }
+            .area-model { width: 150px; height: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-left">
+                    <div class="header-icon"><i class="fas fa-times"></i></div>
+                    <h2 id="lab-title">C3 - Fraction Lab: Multiplication</h2>
+                </div>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-lightbulb" style="color: #f39c12; margin-right: 8px;"></i>
+                <strong>Pro Tip:</strong> Multiply the <strong>Numerators</strong> (tops) and multiply the <strong>Denominators</strong> (bottoms). The area model shows the "overlap"!
+            </div>
+
+            <div class="arithmetic-area">
+                <!-- Fraction 1 -->
+                <div class="fraction-display">
+                    <div id="f1-num" style="color: #0D5791;">1</div>
+                    <div class="fraction-line"></div>
+                    <div id="f1-den">2</div>
+                </div>
+
+                <div class="operator">×</div>
+
+                <!-- Fraction 2 -->
+                <div class="fraction-display">
+                    <div id="f2-num" style="color: #f39c12;">2</div>
+                    <div class="fraction-line"></div>
+                    <div id="f2-den">3</div>
+                </div>
+
+                <div class="equals-sign">=</div>
+
+                <!-- Result Input -->
+                <div class="result-inputs">
+                    <div class="input-group">
+                        <input type="number" id="ans-num" class="res-input" placeholder="?">
+                        <div class="fraction-line" style="background: #0D5791;"></div>
+                        <input type="number" id="ans-den" class="res-input" placeholder="?">
+                    </div>
+                </div>
+
+                <!-- Visual Area Model -->
+                <div class="visual-container">
+                    <h4 style="font-size: 0.85rem; margin-bottom: 5px;">Area Model (Overlap)</h4>
+                    <div class="area-model" id="area-grid">
+                        <!-- Cells generated by JS -->
+                    </div>
+                    <div style="display: flex; gap: 15px; font-size: 0.75rem; margin-top: 5px;">
+                        <span style="color: rgba(13, 87, 145, 0.5);"><i class="fas fa-square"></i> Fraction 1</span>
+                        <span style="color: rgba(243, 156, 18, 0.5);"><i class="fas fa-square"></i> Fraction 2</span>
+                        <span style="color: #6a9e1d;"><i class="fas fa-square"></i> Result</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn check-btn" id="checkBtn" onclick="checkAnswer()">Check Answer</button>
+                <button class="action-btn next-btn" onclick="initLab()" id="nextBtn">Next Problem <i class="fas fa-arrow-right"></i></button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Math Experts</div>
+    </footer>
+
+    <script>
+        let n1, d1, n2, d2, correctN, correctD;
+
+        function initLab() {
+            document.getElementById('message').innerHTML = "";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('checkBtn').style.display = "block";
+            document.getElementById('ans-num').value = "";
+            document.getElementById('ans-den').value = "";
+            document.getElementById('ans-num').style.borderColor = "#ddd";
+            document.getElementById('ans-den').style.borderColor = "#ddd";
+            
+            generateProblem();
+        }
+
+        function generateProblem() {
+            // Keep denominators small for the visual grid (max 5x5)
+            const possibleDens = [2, 3, 4, 5];
+            d1 = possibleDens[Math.floor(Math.random() * possibleDens.length)];
+            d2 = possibleDens[Math.floor(Math.random() * possibleDens.length)];
+            
+            n1 = Math.floor(Math.random() * (d1 - 1)) + 1;
+            n2 = Math.floor(Math.random() * (d2 - 1)) + 1;
+
+            correctN = n1 * n2;
+            correctD = d1 * d2;
+
+            document.getElementById('f1-num').innerText = n1;
+            document.getElementById('f1-den').innerText = d1;
+            document.getElementById('f2-num').innerText = n2;
+            document.getElementById('f2-den').innerText = d2;
+
+            renderAreaModel();
+        }
+
+        function renderAreaModel() {
+            const grid = document.getElementById('area-grid');
+            grid.innerHTML = "";
+            grid.style.gridTemplateColumns = `repeat(${d2}, 1fr)`;
+            grid.style.gridTemplateRows = `repeat(${d1}, 1fr)`;
+
+            for (let r = 0; r < d1; r++) {
+                for (let c = 0; c < d2; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    
+                    const isF1Row = r < n1;
+                    const isF2Col = c < n2;
+
+                    if (isF1Row && isF2Col) {
+                        // Overlap (Result)
+                        cell.style.background = "#A1E231"; 
+                    } else if (isF1Row) {
+                        // Just F1 (Blue)
+                        cell.style.background = "rgba(13, 87, 145, 0.2)";
+                    } else if (isF2Col) {
+                        // Just F2 (Gold)
+                        cell.style.background = "rgba(243, 156, 18, 0.2)";
+                    }
+
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function checkAnswer() {
+            const uN = parseInt(document.getElementById('ans-num').value);
+            const uD = parseInt(document.getElementById('ans-den').value);
+            const msgEl = document.getElementById('message');
+
+            if (isNaN(uN) || isNaN(uD)) {
+                msgEl.style.color = "#f39c12";
+                msgEl.innerText = "Enter the numerator and denominator.";
+                return;
+            }
+
+            // check numerical equality (handles simplification automatically)
+            const isCorrect = (uN / uD === correctN / correctD);
+
+            if (isCorrect) {
+                msgEl.style.color = "#27ae60";
+                msgEl.innerHTML = `<i class="fas fa-check-circle"></i> Great job! ${n1}×${n2}=${uN} and ${d1}×${d2}=${uD}.`;
+                document.getElementById('ans-num').style.borderColor = "#2ecc71";
+                document.getElementById('ans-den').style.borderColor = "#2ecc71";
+                document.getElementById('checkBtn').style.display = "none";
+                document.getElementById('nextBtn').style.display = "block";
+            } else {
+                msgEl.style.color = "#e74c3c";
+                msgEl.innerHTML = `<i class="fas fa-times-circle"></i> Not quite. Multiply the top numbers for the numerator and bottom for the denominator!`;
+                document.getElementById('ans-num').style.borderColor = "#e74c3c";
+                document.getElementById('ans-den').style.borderColor = "#e74c3c";
+            }
+        }
+
+        window.onload = initLab;
+    </script>
+</body>
+</html>

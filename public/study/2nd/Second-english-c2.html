@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C2 · Informative Writing | 2nd Grade Writing</title>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Poppins font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #ffd0b0 0%, #ffe0c0 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background-color: #0d5791;
+        color: white;
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      .logo {
+        font-size: 26px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .logo span {
+        color: #7ce04a;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        padding: 8px 14px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .nav-buttons button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .manage-btn {
+        background-color: white;
+        color: #0d5791;
+      }
+      .manage-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .launch-btn {
+        background-color: #a1e231;
+        color: black;
+      }
+      .launch-btn:hover {
+        background-color: #8fd31a;
+        transform: translateY(-2px);
+      }
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #00d4ff;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #e67e22;
+        padding-bottom: 10px;
+      }
+      .header-icon {
+        width: 50px;
+        height: 50px;
+        background: #e67e22;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      h2 {
+        color: #e67e22;
+        font-weight: 600;
+        font-size: 1.7rem;
+      }
+      .question-text {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .speaker-icon {
+        width: 45px;
+        height: 45px;
+        background: #e67e22;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 1.3rem;
+      }
+      .speaker-icon:hover {
+        background: #b85e0f;
+        transform: scale(1.1);
+      }
+      .writing-area {
+        background: #fff0e0;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        border: 3px solid #e67e22;
+      }
+      .rule-box {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .rule-title {
+        font-size: 1.3rem;
+        color: #b85e0f;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .rule-list {
+        list-style-position: inside;
+        color: #2c3e50;
+        font-size: 1.1rem;
+      }
+      .topic-box {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        width: 100%;
+        margin: 20px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .topic-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #e67e22;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .fact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 20px 0;
+        width: 100%;
+      }
+      .fact-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .fact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+      .fact-card.selected {
+        border: 3px solid #e67e22;
+        background: #fff0e0;
+      }
+      .fact-emoji {
+        font-size: 3rem;
+        margin-bottom: 10px;
+      }
+      .fact-text {
+        font-size: 1rem;
+        color: #2c3e50;
+      }
+      .organizer-box {
+        background: #fff9f0;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        margin: 20px 0;
+      }
+      .organizer-row {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 10px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+      }
+      .organizer-label {
+        font-weight: 600;
+        color: #e67e22;
+        min-width: 80px;
+      }
+      .organizer-content {
+        flex: 1;
+        padding: 8px;
+        border: 2px dashed #f5b183;
+        border-radius: 5px;
+        color: #2c3e50;
+      }
+      .writing-space {
+        width: 100%;
+        margin: 20px 0;
+      }
+      .info-input {
+        width: 100%;
+        min-height: 150px;
+        padding: 20px;
+        font-size: 1.2rem;
+        border: 3px solid #f5b183;
+        border-radius: 15px;
+        font-family: "Poppins", sans-serif;
+        resize: vertical;
+      }
+      .info-input:focus {
+        outline: none;
+        border-color: #e67e22;
+      }
+      .question-box {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #b85e0f;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 20px 0 25px;
+      }
+      .option-btn {
+        background: white;
+        border: 3px solid #f5b183;
+        border-radius: 60px;
+        min-height: 80px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .option-btn:hover {
+        background: #ffeadb;
+        border-color: #e67e22;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px #fcd5b5;
+      }
+      .option-btn.correct {
+        background: #2ecc71;
+        border-color: #27ae60;
+        color: white;
+      }
+      .option-btn.incorrect {
+        background: #e74c3c;
+        border-color: #c0392b;
+        color: white;
+      }
+      .submit-btn {
+        background: linear-gradient(145deg, #e67e22, #b85e0f);
+        color: white;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 50px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+        display: block;
+        margin: 0 auto 10px;
+        box-shadow: 0 6px 0 #8a4a0b;
+      }
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 9px 0 #8a4a0b;
+      }
+      .submit-btn:disabled {
+        background: #f0b58b;
+        box-shadow: 0 4px 0 #8a4a0b;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .feedback {
+        margin: 15px 0 5px;
+        font-weight: 600;
+        font-size: 1.4rem;
+        text-align: center;
+        min-height: 40px;
+      }
+      .feedback.correct {
+        color: #1e8449;
+      }
+      .feedback.incorrect {
+        color: #943126;
+      }
+      .score-box {
+        margin-top: 30px;
+        border: 4px solid #e67e22;
+        border-radius: 30px;
+        padding: 30px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 2.2rem;
+        background: #ffe1c6;
+        color: #8a4a0b;
+      }
+      .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+      @media (max-width: 800px) {
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .footer-logo {
+          display: flex;
+          justify-content: center;
+        }
+        .footer-links {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-social {
+          flex-direction: row;
+          justify-content: center;
+        }
+        .fact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        .navbar {
+          flex-wrap: wrap;
+        }
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="manage-btn">Manage Account</button>
+        <button class="launch-btn" onclick="window.location.href = '#'">
+          Sign Up / Login
+        </button>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        <div class="header">
+          <div class="header-icon">📚</div>
+          <h2>C2 · Informative Writing</h2>
+        </div>
+
+        <div class="question-text">
+          <span id="questionPhrase"
+            >"Share facts and information about a topic."</span
+          >
+          <div class="speaker-icon" id="globalSpeaker">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="writing-area" id="writingArea">
+          <div class="rule-box">
+            <div class="rule-title">How to Write Informatively</div>
+            <ul class="rule-list">
+              <li>👉 Choose a topic and introduce it</li>
+              <li>👉 Share facts and details about the topic</li>
+              <li>👉 Use headings or organize information</li>
+            </ul>
+          </div>
+
+          <div class="topic-box">
+            <div class="topic-title" onclick="speakText('All About Dolphins')">
+              All About Dolphins 🐬
+            </div>
+
+            <div class="fact-grid" id="factGrid"></div>
+
+            <div class="organizer-box">
+              <div class="organizer-row">
+                <span class="organizer-label">Topic:</span>
+                <span class="organizer-content" id="topicDisplay"
+                  >Dolphins</span
+                >
+              </div>
+              <div class="organizer-row">
+                <span class="organizer-label">Fact 1:</span>
+                <span class="organizer-content" id="fact1Display"
+                  >Click a fact to add it</span
+                >
+              </div>
+              <div class="organizer-row">
+                <span class="organizer-label">Fact 2:</span>
+                <span class="organizer-content" id="fact2Display"
+                  >Click a fact to add it</span
+                >
+              </div>
+              <div class="organizer-row">
+                <span class="organizer-label">Fact 3:</span>
+                <span class="organizer-content" id="fact3Display"
+                  >Click a fact to add it</span
+                >
+              </div>
+            </div>
+
+            <div class="writing-space">
+              <textarea
+                class="info-input"
+                id="infoInput"
+                rows="4"
+                placeholder="Write your informative paragraph here..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="question-box" id="questionBox"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <button class="submit-btn" id="nextBtn" disabled onclick="handleNext()">
+          Next
+        </button>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="scoreBox" class="score-box" style="display: none"></div>
+      </div>
+    </div>
+
+       <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+
+    <script>
+      (function () {
+        const questions = [
+          {
+            topic: "Dolphins",
+            facts: [
+              { emoji: "🐬", text: "Dolphins are mammals, not fish" },
+              { emoji: "💨", text: "They breathe air through blowholes" },
+              { emoji: "👂", text: "Dolphins use echolocation to find food" },
+              { emoji: "👥", text: "They live in groups called pods" },
+              { emoji: "🎯", text: "Dolphins can jump up to 20 feet high" },
+              { emoji: "💙", text: "They are very smart animals" },
+            ],
+            question: "Write an informative paragraph about dolphins.",
+          },
+          {
+            topic: "Butterflies",
+            facts: [
+              { emoji: "🦋", text: "Butterflies start as caterpillars" },
+              { emoji: "🌺", text: "They drink nectar from flowers" },
+              { emoji: "👅", text: "They taste with their feet" },
+              { emoji: "🎨", text: "Their wings have colorful scales" },
+              { emoji: "✈️", text: "Some butterflies migrate long distances" },
+              { emoji: "⏳", text: "They live for 2-4 weeks on average" },
+            ],
+            question: "Write an informative paragraph about butterflies.",
+          },
+          {
+            topic: "Elephants",
+            facts: [
+              { emoji: "🐘", text: "Elephants are the largest land animals" },
+              { emoji: "👃", text: "They use their trunks to eat and drink" },
+              { emoji: "🦷", text: "Their tusks are actually long teeth" },
+              { emoji: "👂", text: "Big ears help them stay cool" },
+              {
+                emoji: "👪",
+                text: "Elephant families are led by the oldest female",
+              },
+              {
+                emoji: "💧",
+                text: "They can drink up to 50 gallons of water daily",
+              },
+            ],
+            question: "Write an informative paragraph about elephants.",
+          },
+          {
+            topic: "Penguins",
+            facts: [
+              { emoji: "🐧", text: "Penguins are birds that cannot fly" },
+              { emoji: "🏊", text: "They are excellent swimmers" },
+              { emoji: "❄️", text: "Emperor penguins live in Antarctica" },
+              {
+                emoji: "🥚",
+                text: "Male penguins keep eggs warm on their feet",
+              },
+              { emoji: "👔", text: "They have black and white feathers" },
+              { emoji: "🐟", text: "Penguins eat fish and krill" },
+            ],
+            question: "Write an informative paragraph about penguins.",
+          },
+          {
+            topic: "Rainforests",
+            facts: [
+              { emoji: "🌳", text: "Rainforests have many layers of plants" },
+              {
+                emoji: "🐒",
+                text: "They are home to half of all animal species",
+              },
+              { emoji: "☔", text: "It rains a lot in rainforests" },
+              {
+                emoji: "🌿",
+                text: "Many medicines come from rainforest plants",
+              },
+              { emoji: "🦜", text: "Colorful birds live in the canopy" },
+              { emoji: "🌎", text: "Rainforests help clean our air" },
+            ],
+            question: "Write an informative paragraph about rainforests.",
+          },
+          {
+            topic: "Solar System",
+            facts: [
+              { emoji: "☀️", text: "The sun is a star at the center" },
+              { emoji: "🌍", text: "Earth is the third planet from the sun" },
+              { emoji: "🌙", text: "The moon orbits around Earth" },
+              { emoji: "🪐", text: "Saturn has beautiful rings around it" },
+              {
+                emoji: "🚀",
+                text: "It takes 365 days for Earth to orbit the sun",
+              },
+              {
+                emoji: "🌌",
+                text: "There are eight planets in our solar system",
+              },
+            ],
+            question: "Write an informative paragraph about the solar system.",
+          },
+          {
+            topic: "Bees",
+            facts: [
+              { emoji: "🐝", text: "Bees make honey from flower nectar" },
+              { emoji: "🏠", text: "They live in colonies with one queen" },
+              {
+                emoji: "💃",
+                text: "Bees dance to tell others where flowers are",
+              },
+              { emoji: "🌸", text: "They help flowers grow by pollinating" },
+              {
+                emoji: "🪡",
+                text: "Worker bees have stingers to protect the hive",
+              },
+              {
+                emoji: "🍯",
+                text: "A hive can make 60 pounds of honey per year",
+              },
+            ],
+            question: "Write an informative paragraph about bees.",
+          },
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentQuestion = questions[0];
+        let selectedFacts = [];
+
+        const questionPhraseEl = document.getElementById("questionPhrase");
+        const globalSpeaker = document.getElementById("globalSpeaker");
+        const topicTitleEl = document.querySelector(".topic-title");
+        const factGridEl = document.getElementById("factGrid");
+        const fact1Display = document.getElementById("fact1Display");
+        const fact2Display = document.getElementById("fact2Display");
+        const fact3Display = document.getElementById("fact3Display");
+        const topicDisplay = document.getElementById("topicDisplay");
+        const infoInput = document.getElementById("infoInput");
+        const questionBoxEl = document.getElementById("questionBox");
+        const optionsContainer = document.getElementById("optionsContainer");
+        const feedbackEl = document.getElementById("feedback");
+        const nextBtn = document.getElementById("nextBtn");
+        const scoreBox = document.getElementById("scoreBox");
+
+        function speakText(text, rate = 1) {
+          if (!window.speechSynthesis) return;
+          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "en-US";
+          utterance.rate = rate;
+          window.speechSynthesis.speak(utterance);
+        }
+
+        window.speakText = speakText;
+
+        function loadQuestion() {
+          answered = false;
+          nextBtn.disabled = true;
+          selectedFacts = [];
+          currentQuestion = questions[currentIndex];
+
+          questionPhraseEl.textContent = `"Share facts and information about a topic."`;
+
+          topicTitleEl.innerHTML = `All About ${currentQuestion.topic} <span onclick="speakText('All about ${currentQuestion.topic}')" style="cursor:pointer;">🔊</span>`;
+          topicTitleEl.onclick = () =>
+            speakText(`All about ${currentQuestion.topic}`);
+
+          topicDisplay.textContent = currentQuestion.topic;
+          fact1Display.textContent = "Click a fact to add it";
+          fact2Display.textContent = "Click a fact to add it";
+          fact3Display.textContent = "Click a fact to add it";
+
+          // Create fact grid
+          factGridEl.innerHTML = "";
+          currentQuestion.facts.forEach((fact) => {
+            const card = document.createElement("div");
+            card.className = "fact-card";
+            card.onclick = () => selectFact(card, fact.text);
+            card.innerHTML = `
+            <span class="fact-emoji" onclick="event.stopPropagation(); speakText('${fact.emoji}')">${fact.emoji}</span>
+            <span class="fact-text" onclick="event.stopPropagation(); speakText('${fact.text}')">${fact.text}</span>
+          `;
+            factGridEl.appendChild(card);
+          });
+
+          infoInput.value = "";
+          questionBoxEl.textContent = currentQuestion.question;
+
+          feedbackEl.textContent = "";
+          feedbackEl.className = "feedback";
+          scoreBox.style.display = "none";
+          nextBtn.style.display = "block";
+
+          optionsContainer.innerHTML = "";
+          const checkBtn = document.createElement("button");
+          checkBtn.className = "option-btn";
+          checkBtn.textContent = "Check my writing";
+
+          const speakerSpan = document.createElement("span");
+          speakerSpan.className = "fas fa-volume-up";
+          speakerSpan.style.marginLeft = "8px";
+          speakerSpan.onclick = (e) => {
+            e.stopPropagation();
+            speakText("Check your writing");
+          };
+          checkBtn.appendChild(speakerSpan);
+
+          checkBtn.onclick = checkWriting;
+          optionsContainer.appendChild(checkBtn);
+        }
+
+        function selectFact(card, fact) {
+          if (answered) return;
+
+          if (card.classList.contains("selected")) {
+            card.classList.remove("selected");
+            selectedFacts = selectedFacts.filter((f) => f !== fact);
+          } else {
+            if (selectedFacts.length >= 3) {
+              speakText("You can only select up to 3 facts");
+              return;
+            }
+            card.classList.add("selected");
+            selectedFacts.push(fact);
+          }
+
+          // Update displays
+          const displays = [fact1Display, fact2Display, fact3Display];
+          for (let i = 0; i < displays.length; i++) {
+            displays[i].textContent =
+              selectedFacts[i] || "Click a fact to add it";
+          }
+
+          speakText(fact);
+        }
+
+        function checkWriting() {
+          if (answered) return;
+
+          const writing = infoInput.value.trim();
+
+          if (!writing) {
+            feedbackEl.textContent =
+              "❌ Please write your informative paragraph!";
+            feedbackEl.classList.add("incorrect");
+            speakText("Please write your paragraph");
+            return;
+          }
+
+          if (selectedFacts.length < 2) {
+            feedbackEl.textContent = "❌ Select at least 2 facts to include!";
+            feedbackEl.classList.add("incorrect");
+            speakText("Select at least 2 facts");
+            return;
+          }
+
+          answered = true;
+          nextBtn.disabled = false;
+
+          // Check if writing includes the topic and selected facts
+          const includesTopic = writing
+            .toLowerCase()
+            .includes(currentQuestion.topic.toLowerCase());
+          const factsIncluded = selectedFacts.filter((fact) =>
+            writing.toLowerCase().includes(fact.toLowerCase().substring(0, 15)),
+          ).length;
+
+          if (includesTopic && factsIncluded >= 2) {
+            score++;
+            feedbackEl.textContent =
+              "✅ Great informative writing! You included facts about the topic.";
+            feedbackEl.classList.add("correct");
+            speakText("Great informative writing!");
+          } else {
+            feedbackEl.textContent =
+              "❌ Make sure to include your topic and at least 2 facts.";
+            feedbackEl.classList.add("incorrect");
+            speakText("Include your topic and at least 2 facts");
+          }
+        }
+
+        function handleNext() {
+          if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+          } else {
+            showFinalScore();
+          }
+        }
+
+        function showFinalScore() {
+          questionPhraseEl.textContent = "🎉 Informative writing mastered! 🎉";
+          document.querySelector(".topic-box").innerHTML =
+            '<div class="topic-title">🏆</div><div class="writing-space">Great job sharing facts and information!</div>';
+          questionBoxEl.textContent = "You can write to inform others!";
+          optionsContainer.innerHTML = "";
+          nextBtn.style.display = "none";
+          feedbackEl.textContent = "";
+          scoreBox.style.display = "block";
+          scoreBox.textContent = `You scored ${score} out of ${questions.length}!`;
+          speakText(
+            `Quiz finished. You got ${score} out of ${questions.length} correct.`,
+            0.9,
+          );
+        }
+
+        globalSpeaker.addEventListener("click", () => {
+          if (currentIndex < questions.length) {
+            speakText(`${currentQuestion.question}`);
+          } else {
+            speakText(
+              `Quiz completed. Your score is ${score} out of ${questions.length}.`,
+            );
+          }
+        });
+
+        loadQuestion();
+        window.handleNext = handleNext;
+      })();
+    </script>
+  </body>
+</html>

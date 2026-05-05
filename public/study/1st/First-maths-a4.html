@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A4 - Comparing Numbers | HelpingHands</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Purple: #6f42c1 */
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {font-family:'Poppins', sans-serif; background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%); min-height:100vh; display:flex; flex-direction:column;}
+    
+    /* NAVBAR */
+    .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+    .logo span{color:#7CE04A;}
+    .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+    .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+    .nav-links a:hover{background:rgba(255,255,255,0.2);}
+    .nav-buttons{display:flex;gap:10px;}
+    .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+    .manage-btn{background:white;color:#0D5791;}
+    .launch-btn{background:#A1E231;color:black;}
+
+    /* MAIN CONTENT */
+    .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+    .container{background:white;border-radius:15px;padding:30px;max-width:900px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12); text-align:center;}
+    
+    .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #6f42c1;padding-bottom:10px; text-align:left;}
+    .header-icon{width:50px;height:50px;background:#6f42c1;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+    h2{color:#6f42c1;font-weight:600;font-size:1.5rem;}
+    
+    .instruction-text{font-weight:600;font-size:1.8rem;color:#0D5791; margin-bottom:30px;}
+
+    /* COMPARISON DISPLAY */
+    .comparison-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .num-card {
+      width: 120px;
+      height: 150px;
+      background: #f3e8ff;
+      border: 4px solid #6f42c1;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      font-weight: 800;
+      color: #4c1d95;
+      box-shadow: 0 8px 0 #d6bcfa;
+    }
+    .symbol-box {
+      width: 100px;
+      height: 100px;
+      background: #f8f9fa;
+      border: 3px dashed #ced4da;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: #6f42c1;
+    }
+
+    /* OPTIONS */
+    .symbol-options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .sym-btn {
+      width: 80px;
+      height: 80px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: white;
+      border: 3px solid #0D5791;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #0D5791;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sym-btn:hover { background: #A1E231; transform: translateY(-5px); border-color: #0D5791; }
+    .sym-btn.correct { background: #A1E231; border-color: #0D5791; }
+    .sym-btn.wrong { background: #ff8787; border-color: #c92a2a; color: white; }
+
+    .next-btn {
+      margin-top: 30px;
+      padding: 15px 40px;
+      background: #6f42c1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+      font-size: 1.1rem;
+    }
+
+    /* FOOTER - EXACTLY SAME AS COUNT TO 100 */
+    .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+    .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+    .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+    .footer-logo-section{min-width:120px;align-items:center;}
+    .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+    .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+    .footer-links-section{flex:1;}
+    .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+    .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+    .footer-links ul{padding:0;margin:0;list-style:none;}
+    .footer-links li{margin-bottom:10px;}
+    .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+    .footer-links a:hover{color:#f39c12;transform:translateX(5px);}
+    .footer-social-section{min-width:80px;align-items:center;}
+    .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+    .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+    .footer-social a:hover{color:#f39c12;background:rgba(243,156,18,0.15);border-color:#f39c12;transform:translateY(-5px) scale(1.1);}
+    .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+    @media(max-width:768px){
+      .footer-content{grid-template-columns:1fr; text-align:center;}
+      .footer-links{grid-template-columns:1fr; gap:20px;}
+      .comparison-area { gap: 15px; }
+      .num-card { width: 80px; height: 100px; font-size: 2.5rem; }
+      .symbol-box { width: 70px; height: 70px; font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Skills</a></li>
+      <li><a href="#">Resources</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn">Manage Account</button>
+      <button class="launch-btn">Login</button>
+    </div>
+  </nav>
+
+  <div class="main-wrapper">
+    <div class="container" id="gameBox">
+      <div class="header">
+        <div class="header-icon"><i class="fas fa-greater-than-equal"></i></div>
+        <h2>A4 - Comparing Numbers</h2>
+      </div>
+
+      <div class="instruction-text">Choose the correct symbol!</div>
+
+      <div class="comparison-area">
+        <div class="num-card" id="numLeft">15</div>
+        <div class="symbol-box" id="resultBox">?</div>
+        <div class="num-card" id="numRight">10</div>
+      </div>
+
+      <div class="symbol-options">
+        <button class="sym-btn" onclick="checkAnswer('>')">></button>
+        <button class="sym-btn" onclick="checkAnswer('=')">=</button>
+        <button class="sym-btn" onclick="checkAnswer('<')"><</button>
+      </div>
+
+      <button class="next-btn" id="nextBtn" onclick="loadQuestion()">Next Challenge <i class="fas fa-arrow-right"></i></button>
+      <div id="feedback" style="margin-top:20px; font-weight:bold; font-size:1.6rem; min-height:40px;"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-logo-section">
+        <div class="footer-logo">
+          <img src="logo.png" alt="HelpingHands Logo" />
+        </div>
+      </div>
+      <div class="footer-section footer-links-section">
+        <div class="footer-links">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Games</a></li>
+              <li><a href="#">Activities</a></li>
+              <li><a href="#">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-section footer-social-section">
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+  </footer>
+
+  <script>
+    let currentLeft, currentRight, correctAnswer;
+    let answered = false;
+
+    function loadQuestion() {
+      answered = false;
+      currentLeft = Math.floor(Math.random() * 50) + 1;
+      currentRight = Math.floor(Math.random() * 50) + 1;
+      
+      // Occasionally make them equal for variety
+      if(Math.random() > 0.8) currentRight = currentLeft;
+
+      if(currentLeft > currentRight) correctAnswer = '>';
+      else if(currentLeft < currentRight) correctAnswer = '<';
+      else correctAnswer = '=';
+
+      document.getElementById('numLeft').innerText = currentLeft;
+      document.getElementById('numRight').innerText = currentRight;
+      document.getElementById('resultBox').innerText = "?";
+      document.getElementById('resultBox').style.borderStyle = "dashed";
+      document.getElementById('feedback').innerText = "";
+      document.getElementById('nextBtn').style.display = "none";
+      
+      const btns = document.querySelectorAll('.sym-btn');
+      btns.forEach(b => {
+          b.className = "sym-btn";
+          b.disabled = false;
+      });
+    }
+
+    function checkAnswer(choice) {
+      if(answered) return;
+      answered = true;
+      const resultBox = document.getElementById('resultBox');
+      const btns = document.querySelectorAll('.sym-btn');
+
+      resultBox.innerText = correctAnswer;
+      resultBox.style.borderStyle = "solid";
+
+      if(choice === correctAnswer) {
+        document.getElementById('feedback').innerText = "🌟 Amazing! You got it!";
+        document.getElementById('feedback').style.color = "#28a745";
+      } else {
+        document.getElementById('feedback').innerText = "Oops! Remember, the alligator eats the bigger number!";
+        document.getElementById('feedback').style.color = "#dc3545";
+      }
+
+      btns.forEach(b => {
+          b.disabled = true;
+          if(b.innerText === correctAnswer) b.classList.add('correct');
+          else if(b.innerText === choice) b.classList.add('wrong');
+      });
+
+      document.getElementById('nextBtn').style.display = "inline-block";
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

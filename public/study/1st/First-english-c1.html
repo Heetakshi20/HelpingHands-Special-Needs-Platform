@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C1 · Sentence Structure | Writing</title>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Poppins font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #b8e1fc 0%, #d0f0fd 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background-color: #0d5791;
+        color: white;
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+      .logo {
+        font-size: 26px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .logo span {
+        color: #7ce04a;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        padding: 8px 14px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .nav-buttons button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .manage-btn {
+        background-color: white;
+        color: #0d5791;
+      }
+      .manage-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .launch-btn {
+        background-color: #a1e231;
+        color: black;
+      }
+      .launch-btn:hover {
+        background-color: #8fd31a;
+        transform: translateY(-2px);
+      }
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #00d4ff;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+      }
+      .header-icon {
+        width: 50px;
+        height: 50px;
+        background: #3498db;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      h2 {
+        color: #3498db;
+        font-weight: 600;
+        font-size: 1.7rem;
+      }
+      .question-text {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .speaker-icon {
+        width: 45px;
+        height: 45px;
+        background: #3498db;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 1.3rem;
+      }
+      .speaker-icon:hover {
+        background: #1f6a9a;
+        transform: scale(1.1);
+      }
+      .writing-area {
+        background: #e8f4fc;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        border: 3px solid #3498db;
+      }
+      .example-box {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .example-title {
+        font-size: 1.2rem;
+        color: #1f6a9a;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .example-sentence {
+        font-size: 1.6rem;
+        color: #2c3e50;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 10px;
+      }
+      .word-cards {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+      .word-card {
+        background: white;
+        border: 3px solid #3498db;
+        border-radius: 15px;
+        padding: 15px 25px;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2c3e50;
+        cursor: pointer;
+        user-select: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s;
+      }
+      .word-card:hover {
+        background: #d4e6fa;
+        transform: scale(1.05);
+      }
+      .word-card.selected {
+        background: #3498db;
+        color: white;
+      }
+      .sentence-builder {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        min-height: 80px;
+        margin: 20px 0;
+        border: 3px dashed #3498db;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 1.8rem;
+      }
+      .question-box {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #1f6a9a;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 20px 0 25px;
+      }
+      .option-btn {
+        background: white;
+        border: 3px solid #a0c4e5;
+        border-radius: 60px;
+        min-height: 80px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .option-btn:hover {
+        background: #d4e6fa;
+        border-color: #3498db;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px #b8d9f0;
+      }
+      .option-btn.correct {
+        background: #2ecc71;
+        border-color: #27ae60;
+        color: white;
+      }
+      .option-btn.incorrect {
+        background: #e74c3c;
+        border-color: #c0392b;
+        color: white;
+      }
+      .submit-btn {
+        background: linear-gradient(145deg, #3498db, #1f6a9a);
+        color: white;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 50px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+        display: block;
+        margin: 0 auto 10px;
+        box-shadow: 0 6px 0 #154a6e;
+      }
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 9px 0 #154a6e;
+      }
+      .submit-btn:disabled {
+        background: #9bc2df;
+        box-shadow: 0 4px 0 #154a6e;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .feedback {
+        margin: 15px 0 5px;
+        font-weight: 600;
+        font-size: 1.4rem;
+        text-align: center;
+        min-height: 40px;
+      }
+      .feedback.correct {
+        color: #1e8449;
+      }
+      .feedback.incorrect {
+        color: #943126;
+      }
+      .score-box {
+        margin-top: 30px;
+        border: 4px solid #3498db;
+        border-radius: 30px;
+        padding: 30px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 2.2rem;
+        background: #d4eafc;
+        color: #0b3b5c;
+      }
+      .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+      @media (max-width: 800px) {
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .footer-logo {
+          display: flex;
+          justify-content: center;
+        }
+        .footer-links {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .footer-social {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+      @media (max-width: 700px) {
+        .navbar {
+          flex-wrap: wrap;
+        }
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Helping<span>Hands</span></div>
+      <ul class="nav-links">
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="manage-btn">Manage Account</button>
+        <button class="launch-btn" onclick="window.location.href = '#'">
+          Sign Up / Login
+        </button>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <div class="container">
+        <div class="header">
+          <div class="header-icon">📝</div>
+          <h2>C1 · Sentence Structure</h2>
+        </div>
+
+        <div class="question-text">
+          <span id="questionPhrase">"Put the words in the correct order."</span>
+          <div class="speaker-icon" id="globalSpeaker">
+            <i class="fas fa-volume-up"></i>
+          </div>
+        </div>
+
+        <div class="writing-area" id="writingArea">
+          <div class="example-box">
+            <div class="example-title">Example:</div>
+            <div class="example-sentence">The cat is sleeping.</div>
+          </div>
+
+          <div class="word-cards" id="wordCards"></div>
+
+          <div class="sentence-builder" id="sentenceBuilder">
+            Click words to build sentence
+          </div>
+
+          <div class="question-box" id="questionBox"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <button class="submit-btn" id="nextBtn" disabled onclick="handleNext()">
+          Next
+        </button>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="scoreBox" class="score-box" style="display: none"></div>
+      </div>
+    </div>
+
+        <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+
+
+    <script>
+      (function () {
+        const questions = [
+          {
+            words: ["the", "cat", "is", "sleeping"],
+            correctOrder: ["the", "cat", "is", "sleeping"],
+            question: "Build the sentence: The cat is sleeping.",
+          },
+          {
+            words: ["I", "like", "pizza"],
+            correctOrder: ["I", "like", "pizza"],
+            question: "Build the sentence: I like pizza.",
+          },
+          {
+            words: ["We", "play", "outside"],
+            correctOrder: ["We", "play", "outside"],
+            question: "Build the sentence: We play outside.",
+          },
+          {
+            words: ["She", "reads", "books"],
+            correctOrder: ["She", "reads", "books"],
+            question: "Build the sentence: She reads books.",
+          },
+          {
+            words: ["Dogs", "bark", "loudly"],
+            correctOrder: ["Dogs", "bark", "loudly"],
+            question: "Build the sentence: Dogs bark loudly.",
+          },
+          {
+            words: ["The", "sun", "is", "hot"],
+            correctOrder: ["The", "sun", "is", "hot"],
+            question: "Build the sentence: The sun is hot.",
+          },
+          {
+            words: ["Birds", "fly", "high"],
+            correctOrder: ["Birds", "fly", "high"],
+            question: "Build the sentence: Birds fly high.",
+          },
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentQuestion = questions[0];
+        let selectedWords = [];
+
+        const questionPhraseEl = document.getElementById("questionPhrase");
+        const globalSpeaker = document.getElementById("globalSpeaker");
+        const wordCardsEl = document.getElementById("wordCards");
+        const sentenceBuilderEl = document.getElementById("sentenceBuilder");
+        const questionBoxEl = document.getElementById("questionBox");
+        const optionsContainer = document.getElementById("optionsContainer");
+        const feedbackEl = document.getElementById("feedback");
+        const nextBtn = document.getElementById("nextBtn");
+        const scoreBox = document.getElementById("scoreBox");
+
+        function speakText(text, rate = 1) {
+          if (!window.speechSynthesis) return;
+          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = "en-US";
+          utterance.rate = rate;
+          window.speechSynthesis.speak(utterance);
+        }
+
+        function loadQuestion() {
+          answered = false;
+          nextBtn.disabled = true;
+          selectedWords = [];
+          currentQuestion = questions[currentIndex];
+
+          questionPhraseEl.textContent = `"Put the words in the correct order."`;
+          questionBoxEl.textContent = currentQuestion.question;
+
+          wordCardsEl.innerHTML = "";
+          currentQuestion.words.forEach((word) => {
+            const div = document.createElement("div");
+            div.className = "word-card";
+            div.textContent = word;
+            div.addEventListener("click", () => selectWord(word, div));
+            wordCardsEl.appendChild(div);
+          });
+
+          sentenceBuilderEl.innerHTML = "Click words to build sentence";
+          sentenceBuilderEl.style.color = "#999";
+
+          feedbackEl.textContent = "";
+          feedbackEl.className = "feedback";
+          scoreBox.style.display = "none";
+          nextBtn.style.display = "block";
+
+          optionsContainer.innerHTML = "";
+          const checkBtn = document.createElement("button");
+          checkBtn.className = "option-btn";
+          checkBtn.textContent = "Check my sentence";
+          checkBtn.addEventListener("click", checkSentence);
+          optionsContainer.appendChild(checkBtn);
+        }
+
+        function selectWord(word, element) {
+          if (answered) return;
+
+          if (element.classList.contains("selected")) {
+            // Remove word
+            element.classList.remove("selected");
+            selectedWords = selectedWords.filter((w) => w !== word);
+          } else {
+            // Add word
+            element.classList.add("selected");
+            selectedWords.push(word);
+          }
+
+          // Update sentence builder
+          if (selectedWords.length > 0) {
+            sentenceBuilderEl.innerHTML = selectedWords.join(" ");
+            sentenceBuilderEl.style.color = "#2c3e50";
+          } else {
+            sentenceBuilderEl.innerHTML = "Click words to build sentence";
+            sentenceBuilderEl.style.color = "#999";
+          }
+        }
+
+        function checkSentence() {
+          if (answered) return;
+
+          if (selectedWords.length !== currentQuestion.correctOrder.length) {
+            feedbackEl.textContent = "❌ Use all the words!";
+            feedbackEl.classList.add("incorrect");
+            speakText("Please use all the words");
+            return;
+          }
+
+          answered = true;
+          nextBtn.disabled = false;
+
+          const isCorrect =
+            selectedWords.join(" ") === currentQuestion.correctOrder.join(" ");
+
+          if (isCorrect) {
+            score++;
+            feedbackEl.textContent = "✅ Perfect! The sentence is correct.";
+            feedbackEl.classList.add("correct");
+            speakText(`Good job! ${selectedWords.join(" ")}`);
+          } else {
+            feedbackEl.textContent = `❌ Not quite. The correct sentence is: ${currentQuestion.correctOrder.join(" ")}.`;
+            feedbackEl.classList.add("incorrect");
+            speakText(
+              `The correct sentence is: ${currentQuestion.correctOrder.join(" ")}`,
+            );
+
+            // Show correct order
+            sentenceBuilderEl.innerHTML =
+              currentQuestion.correctOrder.join(" ");
+            sentenceBuilderEl.style.color = "#27ae60";
+          }
+        }
+
+        function handleNext() {
+          if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+          } else {
+            showFinalScore();
+          }
+        }
+
+        function showFinalScore() {
+          questionPhraseEl.textContent = "🎉 Sentence structure mastered! 🎉";
+          wordCardsEl.innerHTML = "";
+          sentenceBuilderEl.innerHTML = "Great job! 🏆";
+          questionBoxEl.textContent = "You can build sentences correctly!";
+          optionsContainer.innerHTML = "";
+          nextBtn.style.display = "none";
+          feedbackEl.textContent = "";
+          scoreBox.style.display = "block";
+          scoreBox.textContent = `You scored ${score} out of ${questions.length}!`;
+          speakText(
+            `Quiz finished. You got ${score} out of ${questions.length} correct.`,
+            0.9,
+          );
+        }
+
+        globalSpeaker.addEventListener("click", () => {
+          if (currentIndex < questions.length) {
+            speakText(currentQuestion.question);
+          } else {
+            speakText(
+              `Quiz completed. Your score is ${score} out of ${questions.length}.`,
+            );
+          }
+        });
+
+        loadQuestion();
+        window.handleNext = handleNext;
+      })();
+    </script>
+  </body>
+</html>

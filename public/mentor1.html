@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <title>HelpingHands | Mentor Dashboard</title>
+  <style>
+    :root {
+      --bg: #f4f4f4;
+      --card: #ffffff;
+      --accent: #dc2626;
+      --muted: #b91c1c;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; font-family: 'Times New Roman', Times, serif; }
+    body { margin: 0; background: var(--bg); color: #7f1d1d; }
+    
+    /* ✅ NEW HORIZONTAL STICKY NAVBAR STYLES */
+    .top-navbar {
+      background: #dc2b2b;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    
+    .logo { color: white; font-size: 26px; font-weight: bold; margin: 0; }
+    .logo span { color: #7CE04A; }
+    
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: rgba(33, 9, 9, 0.556);
+      border-radius: 8px;
+    }
+    
+    .nav-links a { 
+      padding: 10px 15px; 
+      color: white; 
+      text-decoration: none; 
+      border-radius: 8px; 
+      transition: background 0.2s;
+    }
+    
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main Container */
+    .main-content { 
+      max-width: 1200px; 
+      margin: 30px auto; 
+      padding: 0 20px; 
+    }
+
+    /* Page Header & Greeting */
+    .page-header { margin-bottom: 30px; }
+    .page-header h1 { margin: 0 0 5px 0; font-size: 28px; }
+    .mentor-greeting { font-size: 22px; color: var(--accent); margin: 0 0 10px 0; display: flex; align-items: center; }
+    
+    /* ✅ NEW ROLE BADGE STYLING */
+    .role-badge {
+      font-size: 14px;
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 4px 12px;
+      border-radius: 8px;
+      margin-left: 15px;
+      border: 1px solid #fca5a5;
+      font-weight: bold;
+    }
+
+    .subtitle { color: var(--muted); font-size: 16px; }
+
+    /* Existing Content Styles */
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .stats { display: flex; gap: 15px; margin-bottom: 20px; }
+    .stat-box { flex: 1; background: white; padding: 15px; border-radius: 12px; text-align: center; border-bottom: 4px solid var(--accent); }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { background: #fee2e2; padding: 12px; text-align: left; font-size: 13px; }
+    td { padding: 12px; border-bottom: 1px solid #fee2e2; }
+
+    .star-rating {
+      display: flex;
+      gap: 12px;
+      background: #fff5f5;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px dashed #fecaca;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+
+    .star {
+      font-size: 32px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      filter: grayscale(100%);
+      opacity: 0.3;
+    }
+
+    .star:hover {
+      transform: scale(1.3);
+      opacity: 0.8;
+    }
+
+    .star.active {
+      filter: grayscale(0%);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    @keyframes celebrate {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1.1); }
+    }
+
+    .celebrate { animation: celebrate 0.4s ease-out; }
+
+    label { display: block; font-size: 13px; margin-bottom: 5px; color: var(--muted); font-weight: bold; }
+    .form-group { margin-bottom: 20px; }
+    input, textarea, select { width: 100%; padding: 10px; border: 1px solid #fee2e2; border-radius: 8px; }
+    button.submit-btn { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+    button.submit-btn:hover { background: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <nav class="top-navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <div class="nav-links">
+      <a href="view-score.html" onclick="active">📊 View Performance</a>
+      <a href="index.html" onclick="logout()">⚙️ Logout</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    
+    <header class="page-header">
+      <h1>Mentor Control Center</h1>
+      <h2 class="mentor-greeting">
+        Welcome, <span id="loggedMentorName" style="margin-left: 5px;">Loading...</span>! 
+        <span class="role-badge">♾️ Autism Spectrum Specialist</span>
+      </h2>
+      <div class="subtitle">Manage your assigned sessions and reward student progress.</div>
+    </header>
+
+    <div class="stats">
+      <div class="stat-box"><h3>Today's Meetings</h3><p id="meeting-count">0</p></div>
+      <div class="stat-box"><h3>Pending Requests</h3><p id="pending-count">0</p></div>
+    </div>
+
+    <section class="card" id="schedule">
+      <h2>Upcoming Sessions (Synced)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Requested Date</th>
+            <th>Time Slot</th>
+            <th>Goal</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="mentor-booking-table">
+          <tr><td colspan="5" style="text-align:center">Fetching live bookings...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Post-Session Evaluation</h2>
+      <form id="evaluation-form">
+        <div class="form-group">
+          <label>Student Name</label>
+          <select id="eval-student" required>
+            <option value="">Select a student</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Award Reward Stars (Tap to select)</label>
+          <div class="star-rating" id="star-selector">
+            <span class="star" data-value="1" title="1 Star">⭐</span>
+            <span class="star" data-value="2" title="2 Stars">⭐</span>
+            <span class="star" data-value="3" title="3 Stars">⭐</span>
+            <span class="star" data-value="4" title="4 Stars">⭐</span>
+            <span class="star" data-value="5" title="5 Stars">⭐</span>
+            <span class="star" data-value="6" title="Great Job!">🔥</span>
+            <span class="star" data-value="7" title="Amazing!">🌈</span>
+            <span class="star" data-value="8" title="Superb!">🏆</span>
+            <span class="star" data-value="9" title="Brilliant!">💎</span>
+            <span class="star" data-value="10" title="Perfect!">✨</span>
+          </div>
+          <input type="hidden" id="eval-stars" name="stars" value="0">
+          <div id="star-label" style="text-align: center; font-size: 14px; color: #16a34a; font-weight: bold; margin-top: 10px;">Select a rating</div>
+        </div>
+
+        <div class="form-group">
+          <label>Observation Notes</label>
+          <textarea id="eval-notes" rows="4" placeholder="How was the student's focus and progress today?"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Complete Session & Send Update</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // ✅ LOAD MENTOR NAME FROM STORAGE
+    window.addEventListener('DOMContentLoaded', () => {
+      const userName = localStorage.getItem('userName') || 'Mentor';
+      document.getElementById('loggedMentorName').textContent = userName;
+    });
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userName');
+    }
+
+    // ✅ SYNC STAR SELECTION LOGIC
+    const stars = document.querySelectorAll('.star');
+    const starInput = document.getElementById('eval-stars');
+    const starLabel = document.getElementById('star-label');
+
+    stars.forEach(s => {
+      s.addEventListener('click', function() {
+        const val = parseInt(this.getAttribute('data-value'));
+        starInput.value = val;
+
+        // Reset all stars
+        stars.forEach(star => {
+          const starVal = parseInt(star.getAttribute('data-value'));
+          if (starVal <= val) {
+            star.classList.add('active');
+          } else {
+            star.classList.remove('active');
+          }
+          star.classList.remove('celebrate');
+        });
+
+        // Add pop animation to the clicked one
+        this.classList.add('celebrate');
+        starLabel.textContent = `Selected: ${this.getAttribute('title')} (${val})`;
+      });
+    });
+
+    // 1. Security Check
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+    }
+
+    // ✅ FETCH SECURE BOOKINGS (With Accept Button)
+    async function loadBookings() {
+      try {
+        const res = await fetch('/api/getMentorBookings', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const table = document.getElementById('mentor-booking-table');
+        const studentSelect = document.getElementById('eval-student');
+
+        if(data.success && data.bookings.length > 0) {
+          table.innerHTML = data.bookings.map(b => {
+            
+            // Logic for Mentor Action Buttons
+            let actionHtml = '';
+            if (b.status === 'Pending') {
+                actionHtml = `<button onclick="acceptBooking('${b._id}')" style="background:#16a34a; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">Accept Booking</button>`;
+            } else {
+                actionHtml = `<button class="reward-btn" style="background:#0D5791; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;" onclick="document.getElementById('eval-student').value='${b.studentName}'">Write Review</button>`;
+            }
+
+            return `
+            <tr>
+              <td><strong>${b.studentName}</strong><br><span style="font-size:12px; color:var(--muted)">${b.bookingType}</span></td>
+              <td>${b.date}</td>
+              <td><span style="color:var(--accent)">${b.time}</span></td>
+              <td>${b.goal}</td>
+              <td>${actionHtml}</td>
+            </tr>
+          `}).join('');
+
+          studentSelect.innerHTML = '<option value="">Select a student</option>' + 
+            data.bookings.map(b => `<option value="${b.studentName}">${b.studentName}</option>`).join('');
+
+          document.getElementById('meeting-count').textContent = data.bookings.length;
+        } else {
+          table.innerHTML = '<tr><td colspan="5" style="text-align:center">No bookings yet.</td></tr>';
+          document.getElementById('meeting-count').textContent = "0";
+        }
+      } catch (e) {
+        table.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Failed to load bookings.</td></tr>';
+      }
+    }
+
+    // ✅ MENTOR ACCEPTS THE BOOKING (Bulletproof Version)
+    async function acceptBooking(id) {
+        try {
+            console.log("Attempting to accept booking ID:", id);
+            const res = await fetch(`/api/acceptBooking/${id}`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                }
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                alert("Booking Accepted! Priya can now see the Video Call button.");
+                loadBookings(); // Refresh the table
+            } else {
+                alert("Server rejected it: " + data.error);
+            }
+        } catch(e) {
+            console.error(e);
+            alert("Error accepting booking! Did you restart your node.js server?");
+        }
+    }
+
+    // ✅ SECURE FORM SUBMISSION (Save Evaluation)
+    document.getElementById('evaluation-form').onsubmit = async (e) => {
+      e.preventDefault();
+      if(starInput.value == "0") return alert("Please select a star rating!");
+
+      const payload = {
+        studentName: document.getElementById('eval-student').value,
+        stars: starInput.value,
+        notes: document.getElementById('eval-notes').value
+      };
+
+      try {
+          const res = await fetch('/api/completeSession', {
+              method: 'POST',
+              headers: { 
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(payload)
+          });
+          
+          const data = await res.json();
+          
+          if(data.success) {
+              alert(`Success! Awarded ${payload.stars} stars to ${payload.studentName}`);
+              document.getElementById('evaluation-form').reset();
+              starInput.value = "0";
+              document.querySelectorAll('.star').forEach(s => {
+                  s.classList.remove('active', 'celebrate');
+              });
+              document.getElementById('star-label').textContent = "Select a rating";
+              
+              // Reload table to clear the completed session
+              loadBookings(); 
+          } else {
+              alert(data.error);
+          }
+      } catch (error) {
+          alert('Failed to connect to server.');
+      }
+    };
+
+    window.onload = loadBookings;
+  </script>
+</body>
+</html>

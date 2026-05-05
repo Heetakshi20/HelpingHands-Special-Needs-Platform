@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>UFO Puzzle | Space Adventure</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Nunito:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#050a18;color:white;min-height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
+
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d) infinite alternate;}
+@keyframes twinkle{0%{opacity:.2;} 100%{opacity:.8;}}
+
+/* --- Updated Navbar with Exit Button --- */
+.navbar{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;margin-bottom:10px;z-index:100;}
+.logo{font-family:'Outfit',sans-serif;font-size:1.6rem;color:#ffeb3b;}
+.exit-btn{background:#f44336;color:white;text-decoration:none;padding:10px 20px;border-radius:30px;font-weight:bold;font-size:0.9rem;transition:0.2s;}
+.exit-btn:hover{background:#d32f2f;transform:scale(1.05);}
+
+.instr-bar{background:#ffeb3b;color:#0D5791;padding:12px 30px;border-radius:50px;font-weight:900;margin-bottom:15px;font-size:1.1rem;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+
+/* Puzzle Layout */
+.game-box { display: flex; gap: 30px; align-items: flex-start; }
+
+.puzzle-board {
+    display: grid; grid-template-columns: repeat(2, 160px); grid-template-rows: repeat(2, 160px);
+    gap: 4px; border: 6px solid #7ce04a; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 6px;
+    position: relative;
+}
+
+/* The Ghost Background Hint */
+.ghost-bg {
+    position: absolute; inset: 6px; opacity: 0.15; pointer-events: none;
+    background-size: 320px 320px; z-index: 0; filter: grayscale(1);
+}
+
+.slot {
+    width: 160px; height: 160px; border: 2px dashed rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+}
+
+.tray {
+    width: 200px; min-height: 340px; background: rgba(255,255,255,0.1);
+    border: 3px solid #ffbb33; border-radius: 25px; padding: 20px;
+    display: flex; flex-direction: column; gap: 15px; align-items: center;
+}
+
+.piece {
+    width: 140px; height: 140px; cursor: pointer; border: 3px solid white; border-radius: 12px;
+    background-size: 320px 320px; transition: 0.2s;
+}
+.piece.selected { border-color: #ffbb33; transform: scale(1.1); box-shadow: 0 0 25px #ffbb33; }
+.piece.placed { width: 160px; height: 160px; border: none; border-radius: 0; cursor: default; }
+
+.win-overlay { 
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
+    z-index: 1000; flex-direction: column; align-items: center; justify-content: center;
+}
+.win-btn { background: #7ce04a; color: black; padding: 15px 40px; border-radius: 50px; font-weight: 900; border: none; cursor: pointer; font-size: 1.5rem; margin-top: 20px;}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<nav class="navbar">
+    <div class="logo">🛸 UFO PUZZLE</div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <span id="lvl-txt" style="font-weight: bold;">Puzzle 1 of 3</span>
+        <a href="../down_syndrome.html" class="exit-btn">EXIT GAME</a>
+    </div>
+</nav>
+
+<div class="instr-bar" id="status">Match the pieces to the ghost shape!</div>
+
+<div class="game-box">
+    <div class="puzzle-board">
+        <div class="ghost-bg" id="ghost"></div>
+        <div class="slot" data-id="0" onclick="drop(0)"></div>
+        <div class="slot" data-id="1" onclick="drop(1)"></div>
+        <div class="slot" data-id="2" onclick="drop(2)"></div>
+        <div class="slot" data-id="3" onclick="drop(3)"></div>
+    </div>
+    <div class="tray" id="tray"></div>
+</div>
+
+<div class="win-overlay" id="winMenu">
+    <h1 style="font-size: 3.5rem; color: #ffeb3b; font-family:'Outfit'">🌟 GREAT JOB! 🌟</h1>
+    <p id="win-sub" style="font-size: 1.5rem;">You are a Space Master!</p>
+    <button class="win-btn" onclick="nextLevel()">NEXT PUZZLE 🚀</button>
+</div>
+
+<script>
+(function(){
+const levels = [
+    { name: "the Astronaut", img: "https://img.freepik.com/free-vector/cute-astronaut-flying-with-rocket-cartoon-vector-icon-illustration_138676-3534.jpg" },
+    { name: "the Alien Friend", img: "https://img.freepik.com/free-vector/cute-alien-flying-with-ufo-cartoon-vector-icon-illustration_138676-2449.jpg" },
+    { name: "the Rocket Ship", img: "https://img.freepik.com/free-vector/rocket-space-shuttle-launch-cartoon-vector-icon-illustration_138676-2453.jpg" }
+];
+
+let curLvl = 0;
+let activeId = null;
+let winCount = 0;
+
+function setupStars() {
+    const sc = document.getElementById('stars');
+    for(let i=0; i<80; i++){
+        let s = document.createElement('div');
+        s.className = 'star';
+        let sz = Math.random()*3;
+        s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*3+1}s`;
+        sc.appendChild(s);
+    }
+}
+
+function startLevel() {
+    activeId = null; winCount = 0;
+    const tray = document.getElementById('tray');
+    const ghost = document.getElementById('ghost');
+    
+    tray.innerHTML = '';
+    document.getElementById('winMenu').style.display = 'none';
+    document.getElementById('lvl-txt').innerText = `Puzzle ${curLvl+1} of 3`;
+    
+    // Reset board slots
+    document.querySelectorAll('.slot').forEach(s => s.innerHTML = '');
+
+    // Set Ghost Background
+    ghost.style.backgroundImage = `url(${levels[curLvl].img})`;
+
+    const pieces = [
+        { id: 0, x: '0%', y: '0%' },
+        { id: 1, x: '100%', y: '0%' },
+        { id: 2, x: '0%', y: '100%' },
+        { id: 3, x: '100%', y: '100%' }
+    ];
+
+    const mixed = [...pieces].sort(() => Math.random() - 0.5);
+
+    mixed.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'piece';
+        div.id = `piece-${p.id}`;
+        div.style.backgroundImage = `url(${levels[curLvl].img})`;
+        div.style.backgroundPosition = `${p.x} ${p.y}`;
+        div.onclick = (e) => { e.stopPropagation(); pick(p.id); };
+        tray.appendChild(div);
+    });
+    
+    speak("Let's fix " + levels[curLvl].name);
+}
+
+function pick(id) {
+    if(activeId !== null) document.getElementById(`piece-${activeId}`).classList.remove('selected');
+    activeId = id;
+    const el = document.getElementById(`piece-${id}`);
+    if(el) el.classList.add('selected');
+}
+
+window.drop = function(slotId) {
+    if(activeId === null) return;
+    if(activeId === slotId) {
+        const p = document.getElementById(`piece-${activeId}`);
+        const s = document.querySelector(`.slot[data-id="${slotId}"]`);
+        p.classList.remove('selected');
+        p.classList.add('placed');
+        s.appendChild(p);
+        activeId = null; winCount++;
+        speak("Snap!");
+        if(winCount === 4) {
+            setTimeout(() => {
+                document.getElementById('winMenu').style.display = 'flex';
+                speak("Wow! You finished the puzzle!");
+            }, 600);
+        }
+    } else { 
+        speak("Try again!"); 
+    }
+}
+
+window.nextLevel = function() {
+    curLvl++;
+    if(curLvl >= levels.length) curLvl = 0;
+    startLevel();
+}
+
+function speak(t) {
+    window.speechSynthesis.cancel();
+    const m = new SpeechSynthesisUtterance(t);
+    m.pitch = 1.2;
+    window.speechSynthesis.speak(m);
+}
+
+setupStars();
+startLevel();
+})();
+</script>
+</body>
+</html>

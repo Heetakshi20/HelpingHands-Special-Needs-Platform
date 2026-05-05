@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Gingerbread Builder | UFO Puzzle</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@900&family=Nunito:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;touch-action:none;}
+body{font-family:'Nunito',sans-serif;background:#050a18;color:white;min-height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
+
+#snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+.navbar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: #0D5791; border-bottom: 3px solid #7ce04a; z-index: 100;}
+.logo { font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: #ffeb3b; }
+.exit-btn { background: #f44336; color: white; text-decoration: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; }
+
+.instr-bar { background: #ffeb3b; color: #0D5791; padding: 12px 30px; border-radius: 50px; font-weight: 900; margin: 15px 0; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); min-width: 300px; text-align: center;}
+
+/* --- Construction Stage --- */
+#game-stage {
+    position: relative; width: 600px; height: 350px;
+    background: rgba(255,255,255,0.1); border: 4px solid #fff; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+
+#house-base {
+    width: 300px; height: 250px; background: #8B4513; 
+    transition: all 0.5s ease; position: relative;
+    border: 5px solid #5D2E0C; display: none; /* Starts hidden until Step 1 */
+}
+
+/* Base Shapes */
+.shape-cottage { clip-path: polygon(50% 0%, 100% 40%, 100% 100%, 0% 100%, 0% 40%); }
+.shape-tower { clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); }
+.shape-square { clip-path: inset(0 0 0 0); border-radius: 10px; }
+
+/* Frosting Layers */
+.frosting-white { border: 10px solid #fff !important; filter: drop-shadow(0 0 10px #fff); }
+.frosting-pink { border: 10px solid #ff80ab !important; filter: drop-shadow(0 0 10px #ff80ab); }
+.frosting-blue { border: 10px solid #81d4fa !important; filter: drop-shadow(0 0 10px #81d4fa); }
+
+.decoration { position: absolute; transform: translate(-50%, -50%); pointer-events: none; font-size: 2rem; }
+
+/* --- Step Tray --- */
+.tray {
+    width: 90%; max-width: 650px; background: rgba(255,255,255,0.2);
+    padding: 15px; margin-top: 15px; border-radius: 20px;
+    display: flex; gap: 15px; justify-content: center;
+}
+
+.step-panel { display: none; gap: 15px; align-items: center; }
+.step-panel.active { display: flex; }
+
+.item {
+    width: 70px; height: 70px; background: white; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 2rem; border: 4px solid transparent;
+}
+.item:hover { transform: scale(1.1); }
+
+.next-btn {
+    background: #7ce04a; color: #000; padding: 12px 25px; 
+    border-radius: 50px; font-weight: 900; cursor: pointer;
+    border: none; animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+</style>
+</head>
+<body>
+
+<canvas id="snow-canvas"></canvas>
+
+<nav class="navbar">
+    <div class="logo">🏠 GINGERBREAD BUILDER</div>
+    <a href="../autism.html" class="exit-btn">EXIT</a>
+</nav>
+
+<div class="instr-bar" id="status">Step 1: Pick a house shape!</div>
+
+<div id="game-stage" onclick="handleStageClick(event)">
+    <div id="house-base"></div>
+</div>
+
+<div class="tray">
+    <div id="step1" class="step-panel active">
+        <div class="item" onclick="setBase('shape-cottage')">🏠</div>
+        <div class="item" onclick="setBase('shape-tower')">🏰</div>
+        <div class="item" onclick="setBase('shape-square')">📦</div>
+    </div>
+
+    <div id="step2" class="step-panel">
+        <div class="item" style="background:#fff;" onclick="setFrosting('frosting-white')"></div>
+        <div class="item" style="background:#ff80ab;" onclick="setFrosting('frosting-pink')"></div>
+        <div class="item" style="background:#81d4fa;" onclick="setFrosting('frosting-blue')"></div>
+    </div>
+
+    <div id="step3" class="step-panel">
+        <div class="item" onclick="setDeco('🍭')">🍭</div>
+        <div class="item" onclick="setDeco('🍬')">🍬</div>
+        <div class="item" onclick="setDeco('⭐')">⭐</div>
+        <div class="item" onclick="setDeco('🍓')">🍓</div>
+        <button class="next-btn" onclick="location.reload()">FINISH!</button>
+    </div>
+
+    <button id="main-next" class="next-btn" onclick="nextStep()" style="display:none;">NEXT STEP ➡️</button>
+</div>
+
+<script>
+let currentStep = 1;
+let selectedDeco = '';
+const house = document.getElementById('house-base');
+const status = document.getElementById('status');
+
+function setBase(shapeClass) {
+    house.style.display = 'block';
+    house.className = shapeClass;
+    document.getElementById('main-next').style.display = 'block';
+    speak("Great shape! Click next step.");
+}
+
+function setFrosting(frostClass) {
+    house.classList.remove('frosting-white', 'frosting-pink', 'frosting-blue');
+    house.classList.add(frostClass);
+    document.getElementById('main-next').style.display = 'block';
+    speak("Yummy frosting! Click next step.");
+}
+
+function setDeco(emoji) {
+    selectedDeco = emoji;
+    speak("Selected " + emoji + ". Now tap the house!");
+}
+
+function nextStep() {
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    currentStep++;
+    document.getElementById(`step${currentStep}`).classList.add('active');
+    document.getElementById('main-next').style.display = 'none';
+
+    if (currentStep === 2) status.innerText = "Step 2: Choose your Frosting color!";
+    if (currentStep === 3) status.innerText = "Step 3: Put candies on the house!";
+    speak(status.innerText);
+}
+
+function handleStageClick(e) {
+    if (currentStep !== 3 || !selectedDeco) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const deco = document.createElement('div');
+    deco.className = 'decoration';
+    deco.innerText = selectedDeco;
+    deco.style.left = x + 'px';
+    deco.style.top = y + 'px';
+    
+    e.currentTarget.appendChild(deco);
+    speak("Perfect!");
+}
+
+function speak(t) {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(t));
+}
+
+// Snow effect
+const canvas = document.getElementById('snow-canvas');
+const ctx = canvas.getContext('2d');
+let flakes = [];
+function initSnow() {
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    flakes = [];
+    for(let i=0; i<100; i++) flakes.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, d: Math.random()*1});
+}
+function drawSnow() {
+    ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="white"; ctx.beginPath();
+    for(let f of flakes) {
+        ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+        f.y += 1 + f.r/2; f.x += Math.sin(f.d);
+        if(f.y > canvas.height) { f.y = -10; f.x = Math.random()*canvas.width; }
+    }
+    ctx.fill(); requestAnimationFrame(drawSnow);
+}
+initSnow(); drawSnow();
+speak("Let's build a gingerbread house! Step 1: Pick a house shape.");
+</script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C4 - Introduction to Decimals | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Gold: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f2f1 0%, #c3cfe2  100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1100px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #A1E231;
+            padding-bottom: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            background: #A1E231;
+            border-radius: 50%;
+            color: #0D5791;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #0D5791; font-weight: 600; font-size: 1.3rem; margin: 0; }
+
+        /* HINT BOX */
+        .hint {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f4ffdf;
+            border-left: 5px solid #A1E231;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        /* ARITHMETIC AREA (Redesigned for Decimal Discovery) */
+        .arithmetic-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        /* DECIMAL DISPLAY */
+        .decimal-display-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            background: #f0f7ff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #0D5791;
+            min-width: 300px;
+        }
+
+        .large-decimal {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 4rem;
+            color: #0D5791;
+            font-weight: bold;
+        }
+
+        .place-value-tags {
+            display: flex;
+            gap: 10px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-top: -5px;
+        }
+
+        .slider-box {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: #0D5791;
+            cursor: pointer;
+        }
+
+        /* VISUAL AID: 100 GRID */
+        .visual-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+
+        .area-model {
+            width: 220px;
+            height: 220px;
+            border: 3px solid #333;
+            position: relative;
+            background: white;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+        }
+
+        .cell {
+            border: 0.5px solid #eee;
+            transition: background 0.1s;
+        }
+
+        .cell.filled {
+            background: #A1E231;
+            border-color: #8bc34a;
+        }
+
+        /* FRACTION BOX */
+        .fraction-box {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .fraction-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fraction-line {
+            width: 100%;
+            height: 3px;
+            background: #333;
+            margin: 2px 0;
+        }
+
+        /* ACTIONS */
+        .btn-group {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        #message {
+            margin-top: 5px;
+            font-weight: 600;
+            min-height: 24px;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-logo { height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; }
+        .footer-links ul { padding: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; }
+        .footer-links a:hover { color: #A1E231; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #A1E231; transform: translateY(-5px); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .arithmetic-area { gap: 20px; }
+            .decimal-display-card { min-width: 100%; }
+            .area-model { width: 180px; height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-left">
+                    <div class="header-icon"><i class="fas fa-microscope"></i></div>
+                    <h2 id="lab-title">C4 - Decimal Lab: Place Value Discovery</h2>
+                </div>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-lightbulb" style="color: #f39c12; margin-right: 8px;"></i>
+                <strong>Pro Tip:</strong> A <strong>Decimal</strong> is just a fraction of a whole. Move the slider to see how many "hundredths" ($0.01$) make up a "tenth" ($0.10$).
+            </div>
+
+            <div class="arithmetic-area">
+                
+                <!-- Interaction Area -->
+                <div class="decimal-display-card">
+                    <div class="large-decimal" id="decimal-val">0.00</div>
+                    <div class="place-value-tags">
+                        <span>Ones</span>
+                        <span style="font-weight: bold; color: #0D5791;">.</span>
+                        <span>Tenths</span>
+                        <span>Hundredths</span>
+                    </div>
+                    
+                    <div class="slider-box">
+                        <input type="range" id="val-slider" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="fraction-box">
+                        <span>=</span>
+                        <div class="fraction-display">
+                            <div id="num-val">0</div>
+                            <div class="fraction-line"></div>
+                            <div>100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Area Model -->
+                <div class="visual-container">
+                    <h4 style="font-size: 0.85rem; margin-bottom: 5px;">The Whole (1.00)</h4>
+                    <div class="area-model" id="grid">
+                        <!-- 100 cells generated by JS -->
+                    </div>
+                    <div style="display: flex; gap: 15px; font-size: 0.75rem; margin-top: 5px;">
+                        <span style="color: #A1E231;"><i class="fas fa-square"></i> Shaded Parts</span>
+                        <span style="color: #ccc;"><i class="far fa-square"></i> Empty Parts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <div id="message">Slide the bar to explore!</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Math Experts</div>
+    </footer>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const slider = document.getElementById('val-slider');
+        const decimalText = document.getElementById('decimal-val');
+        const numText = document.getElementById('num-val');
+        const message = document.getElementById('message');
+
+        // Initialize 100 grid cells
+        function initGrid() {
+            grid.innerHTML = "";
+            for (let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                grid.appendChild(cell);
+            }
+        }
+
+        function updateDisplay() {
+            const val = parseInt(slider.value);
+            const dec = (val / 100).toFixed(2);
+            
+            // Update Numbers
+            decimalText.innerText = dec;
+            numText.innerText = val;
+
+            // Update Grid
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                if (index < val) {
+                    cell.classList.add('filled');
+                } else {
+                    cell.classList.remove('filled');
+                }
+            });
+
+            // Update Message
+            if (val === 0) {
+                message.style.color = "#444";
+                message.innerText = "The grid is empty. This is zero.";
+            } else if (val === 1) {
+                message.style.color = "#0D5791";
+                message.innerText = "0.01 is one hundredth. It's one tiny piece!";
+            } else if (val === 10) {
+                message.style.color = "#0D5791";
+                message.innerText = "0.10 is one tenth. Notice it fills one full column.";
+            } else if (val === 50) {
+                message.style.color = "#0D5791";
+                message.innerText = "0.50 is half of the whole grid!";
+            } else if (val === 100) {
+                message.style.color = "#27ae60";
+                message.innerText = "1.00 is the entire whole!";
+            } else {
+                message.style.color = "#444";
+                message.innerText = `You are showing ${val} hundredths.`;
+            }
+        }
+
+        slider.addEventListener('input', updateDisplay);
+
+        window.onload = () => {
+            initGrid();
+            updateDisplay();
+        };
+    </script>
+</body>
+</html>

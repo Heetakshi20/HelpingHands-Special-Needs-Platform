@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpingHands | AI Parent Support</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <style>
+        :root { --accent: #dc2b2b; --bg: #1a1a2e; --text: #ffffff; --chat-bg: #11111f; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: 'Times New Roman', Times, serif; color: var(--text); overflow: hidden; display: flex; height: 100vh; }
+        
+        /* Main Layout */
+        .main-call-area { flex: 1; position: relative; display: flex; justify-content: center; align-items: center; }
+        
+        /* Header */
+        .header { background-color: rgba(0,0,0,0.6); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 20; }
+        .header h2 { margin: 0; font-size: 20px; }
+        .leave-btn { background: #ff4d4d; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .leave-btn:hover { background: #cc0000; }
+
+        /* The AI Mentor (Center Screen) */
+        .mentor-avatar-container { text-align: center; }
+        .mentor-avatar { 
+            width: 300px; 
+            height: 300px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 5px solid #4CAF50; 
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .speaking { animation: pulse-glow 1s infinite alternate; border-color: #7CE04A; }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 20px rgba(124, 224, 74, 0.4); transform: scale(1); }
+            100% { box-shadow: 0 0 60px rgba(124, 224, 74, 0.8); transform: scale(1.05); }
+        }
+
+        .mentor-name { margin-top: 15px; font-size: 24px; font-weight: bold; }
+        .status-text { color: #aaa; font-size: 16px; margin-top: 5px; font-style: italic; }
+
+        /* BIGGER Student Camera */
+        .local-video-container {
+            position: absolute;
+            bottom: 30px;
+            left: 30px; 
+            width: 320px; 
+            height: 240px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        #localVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+
+        /* Captions */
+        .captions { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.7); padding: 15px 30px; border-radius: 15px; font-size: 20px; text-align: center; max-width: 60%; display: none; z-index: 10; }
+
+        /* Controls */
+        .controls { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 10; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 50px;}
+        .control-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 15px; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; transition: 0.3s; }
+        .control-btn:hover { background: rgba(255,255,255,0.4); }
+        .control-btn.active { background: #4CAF50; }
+
+        /* CHAT SIDEBAR */
+        .chat-sidebar {
+            width: 350px;
+            background-color: var(--chat-bg);
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            box-sizing: border-box;
+            z-index: 15;
+        }
+        .chat-header { padding: 15px; background: #1a1a2e; border-bottom: 1px solid #333; font-weight: bold; font-size: 18px; text-align: center; color: #7CE04A;}
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .msg { padding: 10px 14px; border-radius: 10px; font-size: 15px; max-width: 85%; word-wrap: break-word; line-height: 1.4; }
+        .msg-you { background: #0D5791; color: white; align-self: flex-end; border-bottom-right-radius: 2px;}
+        .msg-ai { background: #333; color: white; align-self: flex-start; border-bottom-left-radius: 2px;}
+        .msg strong { display: block; font-size: 12px; margin-bottom: 4px; opacity: 0.8; }
+
+        .chat-input-area {
+            padding: 15px;
+            background: #1a1a2e;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            background: #222;
+            color: white;
+            font-size: 14px;
+        }
+        .chat-input-area button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .chat-input-area button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+
+    <div class="main-call-area">
+        <div class="header">
+            <h2>🔴 AI Parent Support Session</h2>
+            <button class="leave-btn" onclick="endCall()">End Call</button>
+        </div>
+
+        <div class="mentor-avatar-container">
+            <img src="img/img33.avif" alt="AI Mentor" class="mentor-avatar" id="mentorAvatar" onerror="this.src='https://via.placeholder.com/300/4CAF50/FFFFFF?text=AI+Mentor'">
+            <div class="mentor-name" id="mentorNameDisplay">Your AI Specialist</div>
+            <div class="status-text" id="statusText">Waiting to start...</div>
+        </div>
+
+        <div class="captions" id="captionsBox"></div>
+
+        <div class="local-video-container">
+            <video id="localVideo" autoplay muted playsinline></video>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" id="micBtn" onclick="toggleMic()" title="Toggle Microphone">🎤</button>
+            <button class="control-btn active" id="startAiBtn" onclick="startAIConversation()" title="Start Call">🤖</button>
+        </div>
+    </div>
+
+    <div class="chat-sidebar">
+        <div class="chat-header">Support Chat 💬</div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="msg msg-ai">
+                <strong>System</strong>
+                Welcome. You can ask me any questions about Autism, Down Syndrome, or Dyslexia, in any order.
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ask a question...">
+            <button onclick="sendTypedMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Setup Webcam
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                document.getElementById('localVideo').srcObject = stream;
+            } catch (err) {
+                console.error("Camera access denied:", err);
+            }
+        }
+        startCamera();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const mentorName = urlParams.get('mentor') || "AI Support Mentor";
+        document.getElementById('mentorNameDisplay').innerText = mentorName;
+
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+
+        function appendMessage(sender, text) {
+            const msgDiv = document.createElement('div');
+            if (sender === 'You') {
+                msgDiv.className = 'msg msg-you';
+                msgDiv.innerHTML = `<strong>You</strong>${text}`;
+            } else {
+                msgDiv.className = 'msg msg-ai';
+                msgDiv.innerHTML = `<strong>${mentorName}</strong>${text}`;
+            }
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight; 
+        }
+
+        chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendTypedMessage();
+        });
+
+        // Speech APIs Setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const synth = window.speechSynthesis;
+        let recognition;
+        
+        const statusText = document.getElementById('statusText');
+        const captionsBox = document.getElementById('captionsBox');
+        const mentorAvatar = document.getElementById('mentorAvatar');
+        
+        let isAiSpeaking = false; 
+        let speechTimeout; 
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true; 
+            recognition.interimResults = true; 
+            
+            recognition.onstart = () => {
+                if (!isAiSpeaking) {
+                    statusText.innerText = "Listening... Start speaking!";
+                    document.getElementById('micBtn').classList.add('active');
+                }
+            };
+
+            recognition.onresult = (event) => {
+                if (isAiSpeaking) return; 
+
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+
+                const currentSpeech = finalTranscript || interimTranscript;
+                if (currentSpeech.trim() !== '') {
+                    captionsBox.style.display = "block";
+                    captionsBox.innerText = `You: "${currentSpeech}"`;
+                }
+
+                clearTimeout(speechTimeout);
+
+                if (finalTranscript.trim() !== '') {
+                    appendMessage('You', finalTranscript);
+                    
+                    speechTimeout = setTimeout(() => {
+                        generateAIResponse(finalTranscript.toLowerCase());
+                    }, 1500); 
+                }
+            };
+
+            recognition.onend = () => {
+                if (!isAiSpeaking) {
+                    try { recognition.start(); } catch(e) {}
+                }
+            };
+        } else {
+            alert("Sorry, your browser doesn't support speech recognition. Please use Google Chrome or Edge.");
+        }
+
+        function sendTypedMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            appendMessage('You', text); 
+            chatInput.value = ''; 
+            clearTimeout(speechTimeout);
+            
+            setTimeout(() => {
+                generateAIResponse(text.toLowerCase());
+            }, 1000);
+        }
+
+        function startAIConversation() {
+            document.getElementById('startAiBtn').style.display = 'none'; 
+            speakText(`Hello! I am your AI Parent Mentor. You can ask me any questions about Autism, Down Syndrome, or Dyslexia. How can I help you today?`);
+        }
+
+        // ==========================================
+        // THE AI BRAIN: Handles ANY sequence of questions based on keyword matching
+        // ==========================================
+        function generateAIResponse(userInput) {
+            // Default response if the AI doesn't recognize the question
+            let response = "That is a great question. Every child is unique, so documenting what you see and discussing it with a pediatrician is always a great step. Can you tell me more about what you are observing?";
+
+            // ---------------------------------------------------------
+            // GENERAL BEHAVIOR & DISEASE REFRAMING
+            // ---------------------------------------------------------
+            if (userInput.includes("guess") && (userInput.includes("disease") || userInput.includes("what"))) {
+                response = "It is very difficult to guess a diagnosis at home. Conditions like Autism, ADHD, and Dyslexia often have overlapping signs. Rather than thinking of it as a disease, think of it as a developmental difference. The best step is to share your observations with a child psychologist for a proper evaluation.";
+            }
+            else if (userInput.includes("handle") && (userInput.includes("disease") || userInput.includes("condition"))) {
+                response = "First, it helps to frame it as a neurodevelopmental difference rather than a disease. Handling daily challenges requires immense patience, establishing predictable routines, and understanding their specific needs. Focus on positive reinforcement and creating a calm, safe environment.";
+            }
+            else if (userInput.includes("work properly") || (userInput.includes("not doing") && userInput.includes("work"))) {
+                response = "If your child is struggling to do their work properly, they might be facing sensory overload, misunderstanding instructions, or lacking the right accommodations. Try breaking tasks into very small, manageable steps and offering visual checklists.";
+            }
+            else if (userInput.includes("behaving off") || userInput.includes("acting weird") || userInput.includes("acting off")) {
+                response = "When a child is behaving 'off' or differently than usual, it is almost always a form of communication. They might be overstimulated, experiencing a break in routine, or feeling unwell. Focus on co-regulating with them—stay calm, reduce demands, and offer a quiet space.";
+            }
+
+            // ---------------------------------------------------------
+            // 1. AUTISM QUESTIONS
+            // ---------------------------------------------------------
+            else if (userInput.includes("autism")) {
+                if (userInput.includes("what is")) {
+                    response = "Autism, or Autism Spectrum Disorder, is a complex neurodevelopmental condition. It affects how a person processes information, interacts with others, communicates, and experiences the world around them. It is a spectrum because it affects everyone differently.";
+                } else if (userInput.includes("symptom") || userInput.includes("sign")) {
+                    response = "Common symptoms fall into two categories: social communication challenges, like difficulty with eye contact or holding a conversation; and repetitive behaviors, like stimming, strict routines, or high sensory sensitivities.";
+                } else if (userInput.includes("stage") || userInput.includes("early") || userInput.includes("starting")) {
+                    response = "Autism doesn't progress in 'stages' like an illness, but early signs in toddlers include not responding to their name by 9 months, not pointing by 12 months, delayed speech, or preferring to play entirely alone.";
+                } else if (userInput.includes("high stage") || userInput.includes("severe") || userInput.includes("how much") || userInput.includes("level")) {
+                    response = "Professionals categorize autism into three levels of support. Level 1 requires some support for social interactions. Level 2 requires substantial support with noticeable communication challenges. Level 3 requires very substantial, ongoing daily care.";
+                } else if (userInput.includes("control") || userInput.includes("meltdown") || userInput.includes("stressful")) {
+                    response = "During a meltdown, the goal is to support and co-regulate, not 'control'. Stay calm, lower your voice, reduce sensory input like bright lights, and offer a safe space or a weighted blanket. Give them time to recover.";
+                } else if (userInput.includes("cause")) {
+                    response = "There is no single cause of autism. Research suggests it develops from a combination of genetic and environmental influences that affect early brain development. It is not caused by parenting styles or vaccines.";
+                } else if (userInput.includes("cure") || userInput.includes("heal")) {
+                    response = "There is no cure for autism, and many advocates emphasize that neurodivergent brains don't need to be cured. However, early therapies like speech and occupational therapy are incredibly effective at helping children thrive.";
+                } else {
+                    response = "Autism is a broad spectrum, and every autistic child is unique. Did you want to know about early signs, symptoms, or how to support them during meltdowns?";
+                }
+            }
+
+            // ---------------------------------------------------------
+            // 2. DOWN SYNDROME QUESTIONS
+            // ---------------------------------------------------------
+            else if (userInput.includes("down syndrome")) {
+                if (userInput.includes("what is")) {
+                    response = "Down syndrome is a genetic condition caused by an extra 21st chromosome. This extra genetic material alters the course of physical and brain development, causing mild to moderate intellectual disability and specific physical traits.";
+                } else if (userInput.includes("symptom") || userInput.includes("trait") || userInput.includes("feature")) {
+                    response = "Common physical traits include a flattened facial profile, upward slanting eyes, and low muscle tone. Developmentally, individuals usually experience mild to moderate cognitive, speech, and motor skill delays.";
+                } else if (userInput.includes("stage") || userInput.includes("early") || userInput.includes("infancy")) {
+                    response = "Physical traits are usually noticeable right at birth. Babies with Down syndrome often have low muscle tone, which can make them feel 'floppy' and cause delays in early milestones like rolling over, sitting up, and crawling.";
+                } else if (userInput.includes("severe") || userInput.includes("level")) {
+                    response = "While everyone with Down syndrome has an extra chromosome, the impact varies. Some individuals may have severe intellectual disabilities and health issues, while others hold jobs, live independently, and have only mild delays.";
+                } else if (userInput.includes("support") || userInput.includes("develop") || userInput.includes("help")) {
+                    response = "Patience and consistency are key. Break tasks into very small steps. Use visual aids like pictures, as they are strong visual learners. Most importantly, celebrate 'inchstones' or small wins rather than just major milestones.";
+                } else if (userInput.includes("health") || userInput.includes("condition") || userInput.includes("medical")) {
+                    response = "Children with Down syndrome are at a higher risk for certain medical issues, including congenital heart defects, hearing loss, and thyroid conditions. Regular medical screenings are essential to manage these safely.";
+                } else if (userInput.includes("therapy") || userInput.includes("effective")) {
+                    response = "Early intervention is life-changing. Physical therapy helps strengthen their low muscle tone, occupational therapy helps with daily tasks, and speech therapy is crucial for helping them communicate clearly.";
+                } else {
+                    response = "Down syndrome affects every child differently. Did you have a specific question about symptoms, early development, or therapies?";
+                }
+            }
+
+            // ---------------------------------------------------------
+            // 3. DYSLEXIA QUESTIONS
+            // ---------------------------------------------------------
+            else if (userInput.includes("dyslexia")) {
+                if (userInput.includes("what is")) {
+                    response = "Dyslexia is a specific learning disability that is neurological in origin. It affects the area of the brain that processes language, making it difficult to read, spell, write, and sometimes speak fluently.";
+                } else if (userInput.includes("symptom") || userInput.includes("sign")) {
+                    response = "The most common symptom is a slow, effortful reading pace. Other symptoms include difficulty sounding out new words, poor spelling, and trouble remembering sequence or number facts.";
+                } else if (userInput.includes("stage") || userInput.includes("early") || userInput.includes("starting")) {
+                    response = "Early signs can appear in preschool before they even read. These include difficulty learning nursery rhymes, trouble remembering letter names, or mispronouncing familiar words.";
+                } else if (userInput.includes("severe") || userInput.includes("level") || userInput.includes("high stage")) {
+                    response = "Dyslexia ranges from mild to severe. Mild dyslexia might just require extra time on tests, while severe dyslexia means the child struggles to read basic sentences and requires intensive, multi-sensory reading intervention.";
+                } else if (userInput.includes("frustrated") || userInput.includes("help") || userInput.includes("handle")) {
+                    response = "Homework can cause intense anxiety. Try reading aloud together, taking turns so they don't get exhausted. Introduce audiobooks, and always praise their effort, reminding them their brain works incredibly hard.";
+                } else if (userInput.includes("smart") || userInput.includes("intelligence") || userInput.includes("dumb")) {
+                    response = "Dyslexia has absolutely zero connection to intelligence. Many dyslexic individuals have above-average IQs; their brains simply process written language differently. They are often highly creative and excellent problem solvers.";
+                } else if (userInput.includes("outgrow") || userInput.includes("cure")) {
+                    response = "Dyslexia is a lifelong condition; it is not something a child outgrows. However, with the right teaching methods, accommodations, and emotional support, they can become highly successful readers and students.";
+                } else {
+                    response = "Dyslexia is very common but can be frustrating for a child. Did you want to know about symptoms, early signs, or how to help them with homework?";
+                }
+            }
+
+            // ---------------------------------------------------------
+            // BASIC GREETINGS & EMOTIONAL SUPPORT
+            // ---------------------------------------------------------
+            else if (userInput.includes("hello") || userInput.includes("hi ") || userInput.startsWith("hi") || userInput.includes("hey")) {
+                response = "Hello there! I am here to listen and help. What questions do you have about Autism, Down Syndrome, or Dyslexia today?";
+            } else if (userInput.includes("thank you") || userInput.includes("thanks")) {
+                response = "You are very welcome. I am always here to support you and your family. You've got this!";
+            } else if (userInput.includes("hard") || userInput.includes("exhausted") || userInput.includes("tired")) {
+                response = "It is completely normal to feel overwhelmed. Parenting a neurodivergent child takes incredible love, patience, and energy. Please remember to give yourself grace. You are doing a wonderful job.";
+            }
+
+            // Trigger the text-to-speech
+            speakText(response);
+        }
+
+        // ==========================================
+        // TEXT TO SPEECH FUNCTION
+        // ==========================================
+        function speakText(text) {
+            synth.cancel(); 
+            isAiSpeaking = true; 
+            try { recognition.stop(); } catch(e) {} 
+
+            appendMessage(mentorName, text);
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            const voices = synth.getVoices();
+            const femaleVoice = voices.find(voice => voice.name.includes("Female") || voice.name.includes("Google UK English Female"));
+            if (femaleVoice) utterance.voice = femaleVoice;
+
+            utterance.pitch = 1.1; 
+            utterance.rate = 0.95;  
+
+            utterance.onstart = () => {
+                statusText.innerText = "Mentor is speaking...";
+                captionsBox.style.display = "block";
+                captionsBox.innerText = `Mentor: "${text}"`;
+                mentorAvatar.classList.add('speaking'); 
+                document.getElementById('micBtn').classList.remove('active');
+            };
+
+            utterance.onend = () => {
+                mentorAvatar.classList.remove('speaking');
+                isAiSpeaking = false; 
+                statusText.innerText = "Listening... Your turn!";
+                captionsBox.style.display = "none";
+                
+                setTimeout(() => {
+                    try { recognition.start(); } catch(e) {}
+                }, 300);
+            };
+
+            synth.speak(utterance);
+        }
+
+        // ==========================================
+        // END CALL FUNCTION
+        // ==========================================
+        function endCall() {
+            const video = document.getElementById('localVideo');
+            if (video && video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            synth.cancel();
+            window.close();
+            setTimeout(() => { window.location.href = 'mentorbooking.html'; }, 500);
+        }
+    </script>
+</body>
+</html>

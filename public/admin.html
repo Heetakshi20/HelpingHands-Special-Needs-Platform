@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HelpingHands - Admin Command Center</title>
+    <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+    <style>
+        /* Base Resets */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Times New Roman', Times, serif; 
+            background-color: #f4f7f6; 
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            width: 100%;
+            align-items: flex-start; 
+        }
+
+        /* Sidebar Styling (STICKY) */
+        .left-panel {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .left-panel::-webkit-scrollbar {
+            display: none;
+        }
+        .left-panel {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .brand-header {
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+
+        .brand-header h4 {
+            color: #7b0d0d;
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0 0 5px 0;
+            font-size: 20px;
+        }
+
+        .brand-header p {
+            color: #d32f2f;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .sidebar {
+            background-color: #da292e;
+            border-radius: 15px;
+            flex-grow: 1;
+            width: 94%;
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+            margin-bottom: 30px;
+        }
+
+        .logo-helping { color: white; }
+        .logo-hands { color: #52d017; } 
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Modified to work cleanly with <a> tags */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin: 0 15px;
+            color: white;
+            text-decoration: none; /* Prevents underline on links */
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: #fbd6d6;
+            color: #da292e;
+        }
+
+        .nav-icon {
+            margin-right: 15px;
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            flex: 1;
+            padding: 10px 40px;
+            box-sizing: border-box;
+        }
+
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+        }
+        
+        button.logout-btn { 
+            background-color: #ff4d4d; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+        }
+
+        table { 
+            margin: -10px -40px;
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #ddd; 
+        }
+        
+        th { 
+            background-color: #fee2e2; 
+            color: rgb(187, 29, 29); 
+        }
+        
+        tr:hover { background-color: #f9f9f9; }
+        
+        .badge { 
+            padding: 5px 10px; 
+            border-radius: 12px; 
+            font-size: 12px; 
+            color: white; 
+        }
+        
+        .role-admin { background-color: #e74c3c; }
+        .role-student { background-color: #3498db; }
+        .role-mentor { background-color: #f39c12; }
+
+        /* Dashboard Cards Styling */
+        .dashboard-cards {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px; 
+            justify-content: space-between;
+        }
+        
+        .dash-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+
+        .dash-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
+        }
+
+        .card-header {
+            color: #941111; 
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .card-main {
+            color: #da292e; 
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 22px;
+        }
+
+        .card-action {
+            color: #941111;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .dash-card:hover .card-action {
+            text-decoration: underline;
+        }
+
+        /* Quick Activity Manager Styling */
+        .activity-manager {
+            margin-top: 40px;
+            width: 65%; 
+            margin-bottom: 40px;
+        }
+
+        .manager-title {
+            color: #7b0d0d;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .manager-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .input-card label {
+            display: block;
+            color: #da292e;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #fbd6d6;
+            border-radius: 6px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #da292e;
+        }
+
+        .btn-create {
+            background-color: #da292e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-create:hover {
+            background-color: #b51f23;
+        }
+
+        .list-card {
+            padding: 0; 
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #fce4e4;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-text {
+            color: #7b0d0d;
+            font-size: 16px;
+        }
+
+        .btn-delete {
+            background-color: #fbd6d6;
+            color: #7b0d0d;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #f7b2b2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="left-panel">
+            <div class="brand-header">
+                <h4>HelpingHands — Dashboard</h4>
+                <p>Manage students, staff, activities & progress</p>
+            </div>
+            
+            <nav class="sidebar">
+                <div class="sidebar-logo">
+                    <span class="logo-helping">Helping</span><span class="logo-hands">Hands</span>
+                </div>
+                
+                <ul class="nav-list">
+                    <li>
+                        <a href="admin.html" class="nav-item active">
+                            <span class="nav-icon">📊</span> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="score.html" class="nav-item">
+                            <span class="nav-icon">📚</span> Assignment Scores
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin-register.html" class="nav-item">
+                            <span class="nav-icon">👤</span> Register New User
+                        </a>
+                    </li>
+                    <li>
+                        <a href="feedback.html" class="nav-item">
+                            <span class="nav-icon">📄</span> Feedback
+                        </a>
+                    </li>
+                    <li>
+                        <a href="message.html" class="nav-item">
+                            <span class="nav-icon">✉️</span> Messages
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" onclick="logout(); return false;">
+                            <span class="nav-icon">⚙️</span> Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h2 id="welcomeHeader">Admin Dashboard</h2>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <p>Overview of all registered users on the HelpingHands platform.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Condition (If Student)</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="4">Loading user data...</td></tr>
+                </tbody>
+            </table>
+
+            <div class="dashboard-cards">
+                <div class="dash-card" onclick="window.location.href='score.html'">
+                    <div class="card-header">Assignments</div>
+                    <div class="card-main">Scores <span class="card-icon">📊</span></div>
+                    <a href="score.html" class="card-action">View Results →</a>
+                </div>
+                
+                <div class="dash-card" onclick="window.location.href='feedback.html'">
+                    <div class="card-header">Feedback</div>
+                    <div class="card-main">Parents <span class="card-icon">📄</span></div>
+                    <a href="feedback.html" class="card-action">Read Reviews →</a>
+                </div>
+                
+                <div class="dash-card" onclick="window.location.href='message.html'">
+                    <div class="card-header">Messages</div>
+                    <div class="card-main">Inbox <span class="card-icon">✉️</span></div>
+                    <a href="message.html" class="card-action">Check Mail →</a>
+                </div>
+                
+                <div class="dash-card" onclick="window.location.href='admin-mentor.html'">
+                    <div class="card-header">Mentors</div>
+                    <div class="card-main">Available <span class="card-icon">✅</span></div>
+                    <a href="admin-mentor.html" class="card-action">Manage Staff →</a>
+                </div>
+            </div>
+
+            <div class="activity-manager">
+                <div class="manager-title">Quick Activity Manager</div>
+                
+                <div class="manager-card input-card">
+                    <label for="newActivityInput">Create new activity (visible to all students)</label>
+                    <div class="input-group">
+                        <input type="text" id="newActivityInput" placeholder="e.g. Fine motor puzzle" onkeypress="handleKeyPress(event)">
+                        <button class="btn-create" onclick="addActivity()">Create Activity</button>
+                    </div>
+                </div>
+
+                <div class="manager-card list-card" id="activity-list" style="display: flex; flex-direction: column;">
+                    <div class="muted small" style="padding: 15px;">Loading activities...</div>
+                </div>
+            </div>
+
+                
+
+        </main>
+
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const userName = localStorage.getItem('userName');
+
+        if (!token) {
+            alert('Unauthorized access.');
+            window.location.href = '/';
+        } else {
+            document.getElementById('welcomeHeader').innerText = `Admin: ${userName}`;
+            fetchAllUsers();
+        }
+
+        async function fetchAllUsers() {
+            try {
+                const response = await fetch('/api/admin/users', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    populateTable(data.users);
+                } else {
+                    alert(data.error || 'Session expired. Please log in again.');
+                    logout();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="4">Failed to load data.</td></tr>';
+            }
+        }
+
+        function populateTable(users) {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = ''; 
+
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">No users found.</td></tr>';
+                return;
+            }
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                const displayCondition = user.condition ? user.condition.replace('_', ' ').toUpperCase() : 'N/A';
+                
+                tr.innerHTML = `
+                    <td><strong>${user.name}</strong></td>
+                    <td>${user.email}</td>
+                    <td><span class="badge role-${user.role}">${user.role.toUpperCase()}</span></td>
+                    <td>${displayCondition}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userName');
+            window.location.href = '/';
+        }
+
+        // ==========================================
+        // ✅ DYNAMIC QUICK ACTIVITY MANAGER
+        // ==========================================
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                addActivity();
+            }
+        }
+
+        async function loadActivities() {
+            try {
+                const response = await fetch('/api/getActivities', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    renderActivities(data.activities);
+                }
+            } catch (error) {
+                document.getElementById('activity-list').innerHTML = '<div class="muted small" style="padding: 15px;">Failed to load activities</div>';
+            }
+        }
+
+        function renderActivities(activities) {
+            // FIXED: Now looking for 'activity-list'
+            const listCard = document.getElementById('activity-list');
+            listCard.innerHTML = ''; 
+
+            if (activities.length === 0) {
+                listCard.innerHTML = '<div class="muted small" style="padding: 15px;">No activities created yet.</div>';
+                return;
+            }
+
+            activities.forEach((act, index) => {
+                const newItem = document.createElement('div');
+                newItem.className = 'activity-item';
+                newItem.innerHTML = `
+                    <span class="activity-text">${index + 1}. ${act.title}</span>
+                    <button class="btn-delete" onclick="deleteActivity('${act._id}')">Delete</button>
+                `;
+                listCard.appendChild(newItem);
+            });
+        }
+
+        async function addActivity() {
+            const input = document.getElementById('newActivityInput');
+            const title = input.value.trim();
+            
+            if (!title) return;
+
+            try {
+                const response = await fetch('/api/createActivity', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ title })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    input.value = ''; 
+                    loadActivities();  // Refreshes the list to show the new item immediately!
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                alert('Failed to connect to server.');
+            }
+        }
+
+        async function deleteActivity(activityId) {
+            try {
+                const response = await fetch(`/api/deleteActivity/${activityId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadActivities(); // Refreshes the list to update the numbers
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                alert('Failed to delete activity.');
+            }
+        }
+
+        // Load activities immediately when the page starts
+        loadActivities();
+    </script>
+</body>
+</html>

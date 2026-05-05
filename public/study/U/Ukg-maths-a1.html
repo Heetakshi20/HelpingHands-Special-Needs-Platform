@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A1 - Count to 20 | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',"Poppins",sans-serif;background:linear-gradient(135deg,#87ceeb 0%,#e0f6ff 100%);min-height:100vh;display:flex;flex-direction:column;}
+        
+        /* NAVBAR - EXACT C3 REFERENCE */
+        .navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 30px;background:#0D5791;color:white;gap:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+        .logo{font-size:26px;font-weight:bold;white-space:nowrap;}
+        .logo span{color:#7CE04A;}
+        .nav-links{list-style:none;display:flex;gap:20px;flex:1;justify-content:center;}
+        .nav-links a{text-decoration:none;color:white;font-weight:bold;padding:8px 14px;border-radius:5px;transition:.3s;}
+        .nav-links a:hover{background:rgba(255,255,255,0.2);}
+        .nav-buttons{display:flex;gap:10px;}
+        .nav-buttons button{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:0.3s;}
+        .manage-btn{background:white;color:#0D5791;}
+        .manage-btn:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.2);}
+        .launch-btn{background:#A1E231;color:black;}
+        .launch-btn:hover{background:#8fd31a;transform:translateY(-2px);}
+        
+        /* MAIN WRAPPER */
+        .main-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;}
+        .container{background:white;border-radius:15px;padding:30px;max-width:950px;width:100%;box-shadow:0 8px 30px rgba(0,0,0,0.12);}
+        
+        /* HEADER */
+        .header{display:flex;align-items:center;gap:10px;margin-bottom:25px;border-bottom:2px solid #6f42c1;padding-bottom:10px;}
+        .header-icon{width:50px;height:50px;background:#6f42c1;border-radius:50%;color:white;font-size:1.5rem;display:flex;justify-content:center;align-items:center;}
+        h2{color:#6f42c1;font-weight:600;font-size:1.5rem;}
+        
+        /* COUNTING SECTION */
+        .counting-section{display:flex;flex-direction:column;align-items:center;gap:30px;margin:30px 0;}
+        .picture-display{width:200px;height:200px;background:linear-gradient(135deg,#e9d5ff,#d6bcfa);border-radius:25px;border:5px solid #6f42c1;display:flex;align-items:center;justify-content:center;font-size:8rem;color:#6f42c1;box-shadow:0 12px 35px rgba(111,66,193,0.3);}
+        
+        .instruction-text{font-weight:600;font-size:2rem;color:#6f42c1;text-align:center;margin-bottom:20px;}
+        
+        /* NUMBER GRID */
+        .numbers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:20px;max-width:600px;}
+        .number-btn{
+            background:linear-gradient(135deg,white,#f8f0fc);border:4px solid #d6bcfa;border-radius:18px;
+            height:90px;font-size:3.5rem;font-weight:700;color:#4c1d95;cursor:pointer;display:flex;
+            align-items:center;justify-content:center;padding:15px;user-select:none;transition:all .3s ease;
+            box-shadow:0 8px 25px rgba(0,0,0,0.12);position:relative;overflow:hidden;text-transform:uppercase;
+        }
+        .number-btn::before{
+            content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transition:left 0.6s;
+        }
+        .number-btn:hover{background:#e9d5ff;border-color:#6f42c1;transform:translateY(-8px) scale(1.05);box-shadow:0 15px 40px rgba(111,66,193,0.4);}
+        .number-btn:hover::before{left:100%;}
+        .number-btn:active{transform:translateY(-4px);}
+        .number-btn:disabled{cursor:not-allowed;transform:none;}
+        .number-btn.clicked{background:linear-gradient(135deg,#28a745,#20c997);border-color:#218838;color:white;box-shadow:0 15px 40px rgba(40,167,69,0.5);}
+        
+        /* PROGRESS */
+        .progress-section{margin:25px 0;padding:25px;border-radius:15px;background:#f8f9fa;border:3px dashed #6f42c1;text-align:center;}
+        .progress-text{font-weight:600;font-size:1.6rem;color:#6f42c1;margin-bottom:15px;}
+        .progress-bar{width:100%;height:20px;background:#e0e0e0;border-radius:10px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,0.1);}
+        .progress-fill{height:100%;background:linear-gradient(90deg,#6f42c1,#ab47bc);width:0%;transition:width 0.6s ease;border-radius:10px;box-shadow:0 0 15px rgba(111,66,193,0.4);}
+        
+        /* SPEAKER BUTTON */
+        .speaker-btn{
+            width:60px;height:60px;background:linear-gradient(135deg,#6f42c1,#5a32a3);
+            border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;font-size:1.8rem;color:white;transition:all .3s ease;
+            box-shadow:0 6px 20px rgba(111,66,193,0.4);position:relative;margin:20px auto;
+        }
+        .speaker-btn:hover{transform:translateY(-5px) scale(1.05);box-shadow:0 10px 30px rgba(111,66,193,0.6);}
+        .speaker-btn:active{transform:translateY(-2px) scale(0.98);}
+        
+        /* FOOTER - EXACT C3 REFERENCE */
+        .footer{background:#0a4a82;color:white;padding:40px 20px 15px;margin-top:auto;width:100%;}
+        .footer-content{display:grid;grid-template-columns:auto 1fr auto;max-width:1100px;margin:0 auto;gap:50px;align-items:flex-start;}
+        .footer-section{display:flex;flex-direction:column;justify-content:flex-start;}
+        .footer-logo-section{min-width:120px;align-items:center;}
+        .footer-logo{display:flex;justify-content:center;align-items:center;height:100px;width:120px;}
+        .footer-logo img{height:90px;width:auto;max-width:140px;object-fit:contain;display:block;}
+        .footer-links-section{flex:1;}
+        .footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:50px;}
+        .footer-links h4{margin-bottom:15px;font-weight:600;font-size:1rem;color:white;text-transform:capitalize;}
+        .footer-links ul{padding:0;margin:0;list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;transition:.3s;display:inline-block;}
+        .footer-links a:hover{color:#7CE04A;transform:translateX(5px);}
+        .footer-social-section{min-width:80px;align-items:center;}
+        .footer-social{display:flex;flex-direction:column;gap:15px;align-items:center;}
+        .footer-social a{color:white;font-size:1.8rem;transition:.3s;display:flex;justify-content:center;align-items:center;width:50px;height:50px;background:rgba(255,255,255,0.12);border-radius:50%;border:2px solid rgba(255,255,255,0.2);text-decoration:none;}
+        .footer-social a:hover{color:#7CE04A;background:rgba(122,224,74,0.15);border-color:#7CE04A;transform:translateY(-5px) scale(1.1);}
+        .footer-bottom{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-size:0.8rem;color:rgba(255,255,255,0.6);}
+
+        /* RESPONSIVE */
+        @media(max-width:1024px){
+            .navbar{flex-wrap:wrap;padding:10px 15px;gap:10px;}
+            .nav-links{order:3;width:100%;justify-content:center;gap:10px;font-size:0.85rem;}
+            .nav-buttons{gap:8px;}.nav-buttons button{padding:6px 12px;font-size:0.85rem;}
+            .numbers-grid{grid-template-columns:repeat(5,1fr);gap:15px;}
+            .footer{padding:30px 20px 15px;}
+            .footer-content{grid-template-columns:1fr;gap:40px;text-align:center;}
+        }
+        @media(max-width:768px){
+            .main-wrapper{padding:20px 10px;}.container{padding:20px;}
+            .picture-display{font-size:6rem;width:160px;height:160px;}
+            .instruction-text{font-size:1.6rem;}
+            .numbers-grid{grid-template-columns:repeat(4,1fr);gap:12px;}
+            .number-btn{height:75px;font-size:2.8rem;}
+        }
+        @media(max-width:480px){
+            .picture-display{font-size:5rem;width:140px;height:140px;}
+            .instruction-text{font-size:1.4rem;}
+            .numbers-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+            .number-btn{height:65px;font-size:2.2rem;}
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR - EXACT C3 COPY -->
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn" onclick="window.location.href='auth.html'">Sign Up / Login</button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon">🔢</div>
+                <h2>A1 - Count to 20</h2>
+            </div>
+
+            <div class="counting-section">
+                <div class="picture-display" id="mainNumber">🎉</div>
+                <div class="instruction-text" id="instructionText">Click numbers 1 to 20 in any order!</div>
+                
+                <div class="numbers-grid" id="numbersGrid"></div>
+                
+                <div class="progress-section">
+                    <div class="progress-text">Progress: <span id="progressCount">0</span> / 20</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                
+                <button class="speaker-btn" id="speakerBtn" title="Count Again">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER - EXACT C3 COPY -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" />
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div>
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Games</a></li>
+                            <li><a href="#">Activities</a></li>
+                            <li><a href="#">Resources</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Support</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 HelpingHands. All rights reserved.</div>
+    </footer>
+
+    <script>
+        const numbers = Array.from({length: 20}, (_, i) => i + 1);
+        const grid = document.getElementById('numbersGrid');
+        const progressCount = document.getElementById('progressCount');
+        const progressFill = document.getElementById('progressFill');
+        const speakerBtn = document.getElementById('speakerBtn');
+        const instructionText = document.getElementById('instructionText');
+        
+        let count = 0;
+        const synth = window.speechSynthesis;
+
+        function speak(text) {
+            synth.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.pitch = 1.1;
+            utterance.rate = 0.85;
+            utterance.volume = 0.9;
+            synth.speak(utterance);
+        }
+
+        function createNumbers() {
+            grid.innerHTML = '';
+            numbers.forEach(num => {
+                const btn = document.createElement('button');
+                btn.className = 'number-btn';
+                btn.type = 'button';
+                btn.textContent = num;
+                btn.onclick = () => clickNumber(btn, num);
+                grid.appendChild(btn);
+            });
+        }
+
+        function clickNumber(btn, num) {
+            if (btn.classList.contains('clicked')) return;
+            
+            btn.classList.add('clicked');
+            count++;
+            progressCount.textContent = count;
+            progressFill.style.width = `${(count / 20) * 100}%`;
+            
+            speak(`Number ${num}! Great job!`);
+            instructionText.textContent = `Clicked ${count} numbers! Keep going! 🎉`;
+        }
+
+        speakerBtn.onclick = () => {
+            count = 0;
+            progressCount.textContent = 0;
+            progressFill.style.width = '0%';
+            document.querySelectorAll('.number-btn').forEach(btn => btn.classList.remove('clicked'));
+            instructionText.textContent = 'Click numbers 1 to 20 in any order!';
+            speak("Let's count to 20! Click all the numbers from 1 to 20. Great job!");
+        };
+
+        // Initialize
+        createNumbers();
+        speak("Welcome! Click all numbers from 1 to 20. You can click in any order!");
+    </script>
+</body>
+</html>

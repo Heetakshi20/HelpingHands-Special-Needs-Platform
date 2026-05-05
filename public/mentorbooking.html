@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <title>HelpingHands | Booking & Feedback</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --accent: #0D5791;
+      --muted: #6b7280;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; font-family: 'Times New Roman', Times, serif; }
+    body { margin: 0; background: var(--bg); }
+    .app { margin: 24px auto; padding: 20px; }
+    .layout { display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
+    .sidebar { background: var(--accent); border-radius: var(--radius); padding: 18px; height: 100vh; position: sticky; top: 0; }
+    .logo { color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+    .logo span { color: #7CE04A; }
+    .nav a { display: block; padding: 10px; color: white; text-decoration: none; border-radius: 10px; margin-bottom: 6px; }
+    .nav a:hover { background: #357dc0; }
+    .nav a.active { background: #80adf0; font-weight: bold; }
+    
+    .panel { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .mentor-card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+    .mentor-card:hover { border-color: var(--accent); background: #f0f7ff; }
+    .mentor-card.selected { border-left: 5px solid #7CE04A; background: #f0fff4; }
+
+    label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--accent); }
+    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #7f99ff; border-radius: 10px; margin-bottom: 15px; }
+    button { width: 100%; padding: 15px; background: #32cd32; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+    button:hover { background: #228b22; }
+
+    /* --- NEW CREATIVE FEEDBACK STYLES --- */
+    .feedback-section {
+      background: #eef2ff;
+      border-radius: 15px;
+      padding: 20px;
+      border: 2px solid #cbd5e1;
+      position: relative;
+    }
+    
+    .mentor-speech {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid #80adf0;
+    }
+
+    /* The "tail" of the speech bubble */
+    .mentor-speech::after {
+      content: '';
+      position: absolute;
+      left: 30px;
+      bottom: -15px;
+      border-width: 15px 15px 0;
+      border-style: solid;
+      border-color: white transparent transparent;
+      filter: drop-shadow(0 5px 2px rgba(0,0,0,0.05));
+    }
+
+    .star-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-weight: bold;
+      border: 1px solid #fcd34d;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .pulse {
+      animation: pulse-animation 2s infinite;
+    }
+
+    @keyframes pulse-animation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .small-text { font-size: 12px; color: #6b7280; margin: 4px 0; }
+  .mentor-card { 
+    border: 1px solid #e2e8f0; 
+    padding: 15px; 
+    border-radius: 12px; 
+    text-align: center; 
+    transition: 0.3s;
+  }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <nav class="nav">
+          <a href="#">🏠 Home</a>
+          <a href="learning.html">📝 Notes</a>
+          <a href="exam.html">📚 Assignments-Tasks</a>
+          <a href="story.html">💡 Stories</a>
+          <a href="mentorbooking.html">📅 Mentor Booking</a>
+          <a href="mywork.html">🖌️ My Work</a>
+          <a href="index.html">⚙️ Logout</a>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="panel">
+          <h2 style="color:var(--accent); margin-top:0;">💡 Mentor's Latest Note</h2>
+          <div id="feedback-display-container">
+            <div class="feedback-section">
+              <div id="latest-star-badge" class="star-badge pulse">✨ Fetching Stars...</div>
+              <div class="mentor-speech">
+                <p id="mentor-note-text" style="margin:0; font-style: italic;">"Loading your mentor's latest observations..."</p>
+              </div>
+              <div style="margin-top:20px; font-weight: bold; color:var(--accent);">
+                — From <span id="note-author">Your Mentor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 style="color:var(--accent); margin-top:0;">📅 Your Scheduled Sessions</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+              <tr style="background: #eef2ff; text-align: left;">
+                <th style="padding: 10px; border-bottom: 2px solid #cbd5e1; color: var(--muted);">Mentor</th>
+                <th style="padding: 10px; border-bottom: 2px solid #cbd5e1; color: var(--muted);">Date & Time</th>
+                <th style="padding: 10px; border-bottom: 2px solid #cbd5e1; color: var(--muted);">Status</th>
+                <th style="padding: 10px; border-bottom: 2px solid #cbd5e1; color: var(--muted);">Action</th>
+              </tr>
+            </thead>
+            <tbody id="my-bookings-table">
+              <tr><td colspan="4" style="text-align:center; padding: 15px;">Loading your sessions...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <h1 style="color:var(--accent)">Request a Specialist</h1>
+          <p class="muted">Select a mentor and schedule a session. Your mentor will be notified instantly.</p>
+          
+          <label>1. Select Specialist for your Child's Needs</label>
+
+          <div id="mentor-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+  
+            <div class="mentor-card" onclick="selectMentor(this, 'Dr. Ashi Singh', 'Autism')">
+              <div style="font-size: 20px;">🧩</div>
+              <strong>Dr. Ashi Singh</strong>
+              <div class="small-text">Autism Spectrum Specialist</div>
+              <span class="pill" style="background:#e0f2fe; color:#0369a1; font-size:10px; padding:2px 8px; border-radius:10px;">ASD Expert</span>
+            </div>
+
+            <div class="mentor-card" onclick="selectMentor(this, 'Ms. Nisha Sharma', 'Down Syndrome')">
+              <div style="font-size: 20px;">💙</div>
+              <strong>Ms. Nisha Sharma</strong> 
+              <div class="small-text">Speech & Motor Therapist</div>
+            </div>
+
+            <div class="mentor-card" onclick="selectMentor(this, 'Raj Kumar', 'Dyslexia')">
+              <div style="font-size: 20px;">📖</div>
+              <strong>Mr. Raj Kumar</strong>
+              <div class="small-text">Literacy & Reading Specialist</div>
+            </div>
+
+          </div>
+
+          <form id="booking-form" style="margin-top:20px">
+            <input type="hidden" id="chosen-mentor" required>
+            
+            <label>2. Date & Time</label>
+            <div style="display:flex; gap:10px;">
+              <input type="date" id="book-date" required>
+              <select id="book-time" required>
+                <option value="">Choose Time</option>
+                <option>10:00 AM</option>
+                <option>02:00 PM</option>
+              </select>
+            </div>
+
+            <label>3. What is the goal of this session?</label>
+            <textarea id="book-goal" rows="3" placeholder="e.g., Working on social cues..."></textarea>
+            
+            <label>4. Select Session Type</label>
+            <select id="book-type" required>
+                <option value="Normal Text">Normal Text Session</option>
+                <option value="Video AI">Live AI Video Call</option>
+            </select>
+            
+            <button type="submit" style="margin-top: 15px;">Send Booking Request</button>
+
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // 1. Security & Token Check
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+    }
+
+    let selectedMentorName = "";
+
+    // 2. Fetch Mentor Feedback (Latest Stars/Notes)
+    async function loadMentorFeedback() {
+        try {
+            const response = await fetch('/api/getLatestFeedback', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }); 
+            const data = await response.json();
+
+            const display = document.getElementById('feedback-display-container');
+            if (data.success && data.feedback) {
+                const fb = data.feedback;
+                document.getElementById('latest-star-badge').innerHTML = `✨ Reward: ${fb.stars} Stars Earned!`;
+                document.getElementById('mentor-note-text').textContent = `"${fb.notes}"`;
+                document.getElementById('note-author').textContent = fb.mentorName || 'Your Mentor';
+            } else {
+                display.innerHTML = '<div class="muted" style="padding:15px; text-align:center; color:#666;">No session evaluations yet. Complete a session to see feedback!</div>';
+            }
+        } catch (err) {
+            console.error('Error loading feedback:', err);
+        }
+    }
+
+    // 3. Selection Logic
+    function selectMentor(el, name) {
+        document.querySelectorAll('.mentor-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedMentorName = name;
+        document.getElementById('chosen-mentor').value = name;
+    }
+
+    // 4. Submit Booking (SINGLE HANDLER)
+    document.getElementById('booking-form').onsubmit = async (e) => {
+        e.preventDefault();
+        
+        if(!selectedMentorName) return alert('Please select a mentor first!');
+        
+        const body = {
+            mentorName: selectedMentorName,
+            date: document.getElementById('book-date').value,
+            time: document.getElementById('book-time').value,
+            goal: document.getElementById('book-goal').value,
+            bookingType: document.getElementById('book-type').value 
+        };
+        
+        try {
+            const res = await fetch('/api/bookMentor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+            
+            const data = await res.json();
+            
+            if(data.success) {
+                alert('Booking Sent! Waiting for your Mentor to accept.');
+                document.getElementById('booking-form').reset();
+                document.querySelectorAll('.mentor-card').forEach(c => c.classList.remove('selected'));
+                selectedMentorName = "";
+                loadMyBookings(); // Refresh table instantly
+            } else {
+                alert("Error: " + data.error);
+            }
+        } catch (error) {
+            alert('Connection failed. Is your server running?');
+        }
+    };
+
+    // 5. Load Student's Scheduled Sessions
+    async function loadMyBookings() {
+        try {
+            const res = await fetch('/api/getStudentBookings', { 
+                headers: { 'Authorization': `Bearer ${token}` } 
+            });
+            const data = await res.json();
+            const table = document.getElementById('my-bookings-table');
+
+            if(data.success && data.bookings.length > 0) {
+                table.innerHTML = data.bookings.map(b => {
+                    let actionHtml = '';
+                    if (b.status === 'Pending') {
+                        actionHtml = `<span style="color: #b91c1c; font-weight: bold; font-size: 14px; margin-right:10px;">⏳ Waiting...</span>`;
+                    } else if (b.status === 'Accepted') {
+                        if (b.bookingType === 'Video AI') {
+                            actionHtml = `<a href="ai-video-call.html?mentor=${encodeURIComponent(b.mentorName)}" target="_blank" style="background:#0D5791; color:white; text-decoration:none; padding:8px 12px; border-radius:8px; font-weight:bold; margin-right: 10px; display:inline-block;">Join Call 🎥</a>`;
+                        } else {
+                            actionHtml = `<span style="color:#16a34a; font-weight:bold; margin-right: 10px;">Ready 💬</span>`;
+                        }
+                    }
+                    
+                    actionHtml += `<button onclick="deleteMyBooking('${b._id}')" style="background:#dc2626; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;">Done ✔️</button>`;
+
+                    return `
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;"><strong>${b.mentorName}</strong><br><small>${b.bookingType}</small></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">${b.date} <br> <span style="color:var(--accent)">${b.time}</span></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight:bold; color:${b.status === 'Accepted' ? '#16a34a' : '#b91c1c'}">${b.status}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">${actionHtml}</td>
+                    </tr>`;
+                }).join('');
+            } else {
+                table.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px; color:#666;">No upcoming sessions scheduled.</td></tr>';
+            }
+        } catch (e) {
+            console.error("Fetch error:", e);
+        }
+    }
+
+    // 6. Delete Session Logic
+    async function deleteMyBooking(id) {
+        if(!confirm("Mark this session as complete and remove it?")) return;
+        
+        try {
+            const res = await fetch(`/api/deleteBookingStudent/${id}`, {
+                method: 'DELETE',
+                headers: { 
+                    'Authorization': `Bearer ${token}` 
+                }
+            });
+            
+            const data = await res.json();
+            if (data.success) {
+                loadMyBookings(); 
+            } else {
+                alert("Error: " + data.error);
+            }
+        } catch(e) { 
+            alert("Connection error."); 
+        }
+    }
+
+    // Initialize page
+    window.onload = () => {
+        loadMentorFeedback();
+        loadMyBookings();
+    };
+</script>
+</body>
+</html>

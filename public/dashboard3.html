@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HelpingHands | Dyslexia Dashboard</title>
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --accent: #0D5791;
+      --muted: #6b7280;
+      --success: #16a34a;
+      --radius: 12px;
+      --maxw: 1200px;
+      font-family: 'Times New Roman', Times, serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: #0f172a; }
+    .app { margin: 24px auto; padding: 20px; }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    h1 { font-size: 20px; margin: 0; }
+    .sub { color: var(--muted); font-size: 13px; }
+    .layout { display: grid; grid-template-columns: 260px 1fr; gap: 18px; align-items: start; }
+    .sidebar { background: var(--accent); border-radius: var(--radius); padding: 18px; position: sticky; top: 20px; height: calc(100vh - 40px); overflow-y: auto; }
+    .logo { display: flex; align-items: center; justify-content: center; margin-bottom: 18px; font-size: 26px; color: white; font-weight: bold; }
+    .logo span { color: #7CE04A; }
+    .nav a { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; color: #fff; text-decoration: none; margin-bottom: 6px; transition: background 0.2s; cursor: pointer;}
+    .nav a:hover { background: #357dc0; }
+    .nav a.active { background: #80adf0; color: white; font-weight: bold; }
+    .main { min-height: 80vh; }
+    .name { font-size: 30px; font-weight: bold; color: #0D5791; margin-bottom: 15px; }
+    .condition { font-size: 20px; color: #333; margin-bottom: 30px; }
+    
+    .top-cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    .card { background: var(--card); padding: 14px; border-radius: 12px; flex: 1; min-width: 180px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04); }
+    .card h3 { margin: 0; font-size: 13px; color: var(--muted); }
+    .card p { margin: 6px 0 0; font-size: 20px; font-weight: 600; }
+    
+    /* --- NEW CSS FOR THE REPLACEMENT CARDS --- */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 20px; }
+    .cards .card { display: flex; flex-direction: column; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s; }
+    .cards .card:hover { transform: translateY(-4px); }
+    .cards .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 14px; }
+    .cards .card h3 { font-size: 18px; color: #0f172a; margin-bottom: 8px; font-weight: bold; }
+    .cards .card p { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 18px; font-weight: normal; flex-grow: 1; }
+    .signup-btn { display: inline-block; background-color: var(--accent); color: white; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: bold; text-align: center; margin-top: auto; transition: background-color 0.2s; }
+    .signup-btn:hover { background-color: #0a4370; }
+    /* ----------------------------------------- */
+
+    .panel { background: var(--card); padding: 20px; width: 150vh; border-radius: 12px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); margin-bottom: 14px; }
+    .panel3 { background: var(--card); padding: 20px; width: 100vh; border-radius: 12px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); margin-bottom: 14px; }
+    .panel4 { background: #ffffff; width: 150vh; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); margin-bottom: 14px; }
+    
+    .tabs { display: flex; border-bottom: 2px solid #aaa; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab { padding: 12px 30px; border: 1px solid #888; border-bottom: none; background: #eee; cursor: pointer; margin-right: 2px; border-top-left-radius: 10px; border-top-right-radius: 10px; font-weight: bold; font-size: 17px; }
+    .tab.active { background: #fff; color: #3751ad; border-bottom: 2px solid #fff; }
+    .tabcontent { border: 1px solid #888; border-radius: 0 10px 10px 10px; background: #dce7f5ac; padding: 24px; min-height: 200px; font-size: 15px; }
+    
+    .condition-title { font-size: 26px; font-weight: bold; margin-bottom: 12px; color: #333; }
+    .condition-info { color: #444; line-height: 1.5; }
+    
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input, textarea { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #7f99ff; margin-bottom: 10px; color: #0a0450; }
+    button { padding: 10px 20px; background-color: #32cd32; color: white; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; }
+    button:hover { background-color: #228b22; }
+    
+    .muted { color: var(--muted); font-size: 13px; }
+    .loading { text-align: center; color: #0D5791; font-size: 1.2rem; padding: 2rem; }
+    .error { background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; border: 1px solid #f5c6cb; margin-bottom: 1rem; }
+    .success-message { background-color: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; border: 1px solid #c3e6cb; margin-bottom: 1rem; font-weight: bold; }
+    .error-message { background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; border: 1px solid #f5c6cb; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>HelpingHands — Dyslexia Dashboard</h1>
+        <div class="sub">Overview & Progress for Child Learning</div>
+      </div>
+      <div class="flex muted small">
+        Student Name: <strong id="loggedUser" style="color: #0D5791; font-size: 16px; margin-left: 5px;">Loading...</strong>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" aria-label="Sidebar navigation">
+        <div class="logo">Helping<span>Hands</span></div>
+        <nav class="nav">
+          <a href="#welcome">🏠 Home</a>
+          <a href="learning.html">📝 Notes</a>
+          <a href="exam.html">📚 Assignments-Tasks</a>
+          <a href="story.html">💡 Stories</a>
+          <a href="mentorbooking.html">📅 Mentor Booking</a>
+          <a href="mywork.html">🖌️ My Work</a>
+          <a onclick="logout()">⚙️ Logout</a> 
+        </nav>
+      </aside>
+
+      <main class="main">
+        <div id="loadingContainer" class="loading">⏳ Loading your profile...</div>
+        <div id="errorContainer"></div>
+
+        <div id="userInfoContainer" style="display:none;">
+          <div class="name">Hi Welcome! <span id="childName">____</span></div><br>
+          <div class="condition">Diagnosis: <span id="diagnosisValue" style="text-transform: capitalize;">____</span></div><br>
+        </div>
+
+        <section class="top-cards">
+          <div class="card"><h3>Stars Earned</h3><p id="stars">28</p></div>
+          <div class="card"><h3>Time Spent</h3><p id="time">3h 45m</p></div>
+          <div class="card"><h3>Modules Completed</h3><p id="modulesCompleted">4</p></div>
+        </section>
+
+        <section class="cards">
+          <div class="card">
+            <img src="img/img29.png" alt="Games & Activities">
+            <h3>Games & Activities</h3>
+            <p>Game-based learning activities categorised by learning objectives and designed to teach a progression of skills.</p>
+            <a href="dyslexia.html" class="signup-btn">Sign up now ➤</a>
+          </div>
+          <div class="card">
+            <img src="img/img30.png" alt="ChooseIt Maker">
+            <h3>Personal Classroom</h3>
+            <p>Create, edit and play personalised learning activities that can be used in your classroom and with individual students.</p>
+            <a href="personalized/dyslexia/index3.html" class="signup-btn">Sign up now ➤</a>
+          </div>
+          <div class="card">
+            <img src="img/img31.png" alt="ChooseIt Readymades">
+            <h3>Foundation Building</h3>
+            <p>Multiple choice, play-based curriculum activities that provide a secure foundation for learning that will help kids to learn.</p>
+            <a href="dyslexia_foundation.html" class="signup-btn">Sign up now ➤</a>
+          </div>
+          <div class="card">
+            <img src="img/img32.png" alt="Inclusive Stories">
+            <h3>Exciting Stories</h3>
+            <p>Engaging, interactive sensory stories and resources designed for learners with a wide range of educational needs.</p>
+            <a href="story.html" class="signup-btn">Sign up now ➤</a>
+          </div>
+        </section>
+
+        <section id="notes" class="panel">
+          <h2 style="margin-top:0">Parents Feedback</h2>
+          <div id="feedbackMessage"></div>
+          <div class="card" style="box-shadow: none; padding: 0;">
+            <form id="feedback-form">
+              <label for="parent-name">Parent Name</label>
+              <input id="parent-name" required placeholder="Enter parent name">
+              <label for="child-name">Child Name</label>
+              <input id="child-name" required placeholder="Enter child name">
+              <label for="contact">Contact No</label>
+              <input id="contact" type="tel" required placeholder="Enter contact number">
+              <label for="message">Feedback</label>
+              <textarea id="message" rows="4" required placeholder="Write feedback..."></textarea>
+            </form>
+          </div>
+          <button id="saveNoteBtn">Send Feedback</button>
+        </section>
+
+        <section id="suggestions" class="panel3">
+          <h2 style="margin-top:0">💡 Suggested Next</h2>
+          <div id="suggestedActivitiesList" style="padding: 10px;">
+            <div class="muted" id="activities-loading">Loading activities...</div>
+          </div>
+        </section>
+
+        <section id="diagnosis-info" class="panel4">
+          <h2 style="margin-top:0">ℹ️ Information about Diagnosis</h2>
+          <div class="tabs">
+            <div class="tab active" onclick="showTab(0)">Autism</div>
+            <div class="tab" onclick="showTab(1)">Down Syndrome</div>
+            <div class="tab" onclick="showTab(2)">Dyslexia</div>
+          </div>
+          <div class="tabcontent" id="tabcontent">
+            <div class="condition-title">Autism</div>
+            <div class="condition-info">Information</div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Security check: Make sure user is actually logged in
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+    }
+
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        window.location.href = 'index.html';
+    }
+
+    const titles = ["Autism", "Down Syndrome", "Dyslexia"];
+    const infos = [
+      //Autism
+      "Autism Spectrum Disorder (ASD)<br>Overview:<br>• ASD is a lifelong neurodevelopmental disorder affecting communication, behavior, and social interaction. It usually appears before age 3, though signs can emerge later. People with autism may have unique strengths in attention to detail, memory, or specific interests.<br>Risk Factors:<br>• Genetics, family history, advanced parental age, prenatal exposures (certain medications, toxins), and pregnancy complications.<br>Symptoms:<br>• Difficulty with verbal/nonverbal communication, limited eye contact, use of repetitive movements (such as hand-flapping), resistance to change, and intense fixation on specific interests. Sensory sensitivity (to light, sound, texture) is also common.<br>Diagnosis:<br>• Diagnosis involves observing behavior, developmental screening, and standardized tests (like ADOS), often with input from parents and teachers.<br>Measures You Can Take:<br>• Seek early intervention (Applied Behavior Analysis, speech therapy, occupational therapy).<br>• Use visual schedules and structured routines to reduce anxiety.<br>• Encourage social interaction and praise small progress.<br>• Involve professionals for individualized support.<br>• Monitor for co-occurring health issues.<br>Care Tips:<br>• Be patient and avoid overstimulation or sudden changes.<br>• Address sensory needs with appropriate tools (noise-cancelling headphones, soft lighting).<br>• Foster independence in daily activities.<br>• Promote access to support groups and educational resources.<br>• Medication may help with symptoms like anxiety, aggression, or attention issues (under doctor supervision).<br>Prognosis:<br>• Early and tailored interventions dramatically improve social, communication, and daily living skills. Many individuals thrive with ongoing treatment and family support.<br>",
+      //Down Syndrome
+      "Down Syndrome<br>Overview:<br>• Down syndrome is a genetic condition caused by an extra copy of chromosome 21 (trisomy 21). It results in intellectual disabilities, characteristic facial features, and increased risks for certain health problems.<br>Risk Factors:<br>• Advanced maternal age is the primary risk; family history (rare); errors in cell division (nondisjunction, translocation, mosaicism).<br>Symptoms:<br>• Distinctive physical traits (flat facial profile, upward slanting eyes, small ears).<br>• Developmental delays (speech, motor skills), learning disability.<br>• Health issues: heart defects, hearing/vision loss, thyroid disorders, increased risk of infections and Alzheimer’s disease.<br>Diagnosis:<br>• Confirmed with genetic testing (prenatal via amniocentesis/chorionic villus sampling; postnatal by karyotype).<br>Measures You Can Take:<br>• Early intervention therapies (speech, occupational, physical).<br>• Regular medical screenings and prompt treatment of associated health problems.<br>• Individualized Education Plan (IEP) at school.<br>• Support social inclusion and self-care skills.<br>Care Tips:<br>• Encourage independence with daily routines.<br>• Provide opportunities for social interaction and community participation.<br>• Monitor for changes in health and communicate with healthcare professionals.<br>• Celebrate achievements and maintain positive reinforcement.<br>Prognosis:<br>• With improved medical care and support, life expectancy and independence have increased. Many individuals live semi-independent and fulfilling lives.<br>",
+      //Dyslexia
+      "Dyslexia<br>Overview:<br>• Dyslexia is a common learning disorder affecting reading, writing, and spelling. It is caused by differences in brain regions involved in language processing and usually persists lifelong.<br>Risk Factors:<br>• Genetic predisposition (runs in families), neurodevelopmental differences, premature birth, exposure to nicotine or alcohol in pregnancy.<br>Symptoms:<br>• Difficulty decoding and recognizing words, slow or inaccurate reading, poor spelling, challenges with understanding and following complex instructions.<br>• May accompany attention or memory issues.<br>Diagnosis:<br>• Diagnosed using educational, psychological, and language assessments after ruling out hearing or vision problems.<br>Measures You Can Take:<br>• Use multisensory teaching methods (visual, auditory, kinesthetic strategies).<br>• Allow extra time for reading and written tasks.<br>• Provide audiobooks, speech-to-text tools, and other assistive technology.<br>• Implement phonics-based interventions and regular practice.<br>Care Tips:<br>• Encourage progress and avoid negative labeling or criticism.<br>• Foster communication between parents, teachers, and child.<br>• Create a supportive home environment for reading practice.<br>• Promote strengths in other academic or creative areas.<br>Prognosis:<br>• With ongoing support and proper tools, individuals can succeed academically and professionally."
+    ];
+
+    function showTab(index) {
+      document.querySelectorAll('.tab').forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+      });
+      document.getElementById('tabcontent').innerHTML = `
+        <div class="condition-title">${titles[index]}</div>
+        <div class="condition-info">${infos[index]}</div>
+      `;
+    }
+
+    // Default to Autism on load
+    showTab(0);
+
+    // ✅ FETCH USER PROFILE 
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/getUserProfile', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.error || 'Failed to load profile');
+
+        document.getElementById('loadingContainer').style.display = 'none';
+        document.getElementById('userInfoContainer').style.display = 'block';
+
+        // Load the actual name from the secure backend data!
+        const userName = data.fullName || localStorage.getItem('userName') || 'User';
+        
+        // Update both the top right header and the welcome message
+        document.getElementById('loggedUser').textContent = userName;
+        document.getElementById('childName').textContent = userName;
+        
+        document.getElementById('diagnosisValue').textContent = data.condition || 'Autism';
+        document.getElementById('child-name').value = userName; // Auto-fill feedback form
+
+      } catch (error) {
+        document.getElementById('loadingContainer').style.display = 'none';
+        document.getElementById('errorContainer').innerHTML = `<div class="error">⚠️ Error: ${error.message}</div>`;
+      }
+    });
+
+    // ✅ FEEDBACK SUBMISSION
+    document.getElementById('saveNoteBtn').addEventListener('click', async function(e) {
+      e.preventDefault();
+      const parentName = document.getElementById('parent-name').value.trim();
+      const childName = document.getElementById('child-name').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!parentName || !childName || !contact || !message) {
+        showFeedbackMessage('❌ Please fill all fields', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/submitFeedback', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+          },
+          body: JSON.stringify({ parentName, childName, contact, message })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          showFeedbackMessage('✅ Feedback sent successfully!', 'success');
+          document.getElementById('message').value = '';
+        } else {
+          showFeedbackMessage('❌ Failed to send feedback', 'error');
+        }
+      } catch (err) {
+        showFeedbackMessage('❌ Error sending feedback.', 'error');
+      }
+    });
+
+    function showFeedbackMessage(message, type) {
+      const container = document.getElementById('feedbackMessage');
+      container.innerHTML = type === 'success' ? `<div class="success-message">${message}</div>` : `<div class="error-message">${message}</div>`;
+      setTimeout(() => container.innerHTML = '', 5000);
+    }
+
+    // ✅ FETCH AND DISPLAY ACTIVITIES
+    async function loadStudentActivities() {
+      try {
+        const response = await fetch('/api/getActivities', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        const container = document.getElementById('suggestedActivitiesList');
+
+        if (response.ok && data.activities) {
+          container.innerHTML = '<ul style="margin: 0; padding-left: 20px;">';
+          data.activities.forEach(activity => {
+            container.innerHTML += `<li style="margin-bottom: 10px;">📌 ${activity.title}</li>`;
+          });
+          container.innerHTML += '</ul>';
+        } else {
+          container.innerHTML = '<div class="muted">No activities assigned yet.</div>';
+        }
+      } catch (err) {
+        document.getElementById('suggestedActivitiesList').innerHTML = '<div class="muted">Failed to load activities</div>';
+      }
+    }
+
+    loadStudentActivities();
+  </script>
+</body>
+</html>

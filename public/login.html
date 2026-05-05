@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HelpingHands | Welcome</title>
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to top right, #FFDEE9, #B5FFFC);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Box Container */
+    .container {
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 10;
+      animation: popIn 1s ease;
+    }
+
+    h2 {
+      text-align: center;
+      color: #0D5791;
+      margin-bottom: 20px;
+    }
+
+    /* Grouped input and select for uniform styling */
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 2px solid #0D5791;
+      font-size: 16px;
+      outline: none;
+      background-color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #0D5791;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0b4573;
+      transform: scale(1.03);
+    }
+
+    .toggle {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    .toggle a {
+      color: #0D5791;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Utility to hide forms dynamically */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Animation */
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Floating bubbles */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: float 8s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    .bubble:nth-child(1) {
+      width: 60px; height: 60px;
+      top: 10%; left: 10%;
+      background: #f5a623;
+    }
+    .bubble:nth-child(2) {
+      width: 80px; height: 80px;
+      bottom: 20%; left: 30%;
+      background: #7ed6df;
+      animation-delay: 2s;
+    }
+    .bubble:nth-child(3) {
+      width: 40px; height: 40px;
+      top: 30%; right: 15%;
+      background: #e056fd;
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-30px); }
+    }
+
+    /* Cartoon Character */
+    .cartoon-box {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .character {
+      width: 120px;
+      height: auto;
+      z-index: 2;
+    }
+
+    .speech {
+      background: #fff;
+      padding: 10px 15px;
+      border-radius: 15px;
+      margin-left: 15px;
+      position: relative;
+      font-size: 14px;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border: 2px solid #0D5791;
+      transition: all 0.3s ease;
+    }
+
+    .speech::after {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 10px solid transparent;
+      border-right-color: #0D5791; /* Match border color */
+    }
+    
+    .speech::before {
+      content: '';
+      position: absolute;
+      left: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 8px solid transparent;
+      border-right-color: #fff;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+
+  <div class="cartoon-box">
+    <img src="img/img13.jpg" class="character" alt="Character">
+    <div class="speech" id="characterSpeech">Welcome Back! Please Login 😊</div>
+  </div>
+
+  <div class="container">
+    
+    <div id="loginSection">
+      <h2>Student & Staff Login</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <div class="toggle">
+        Don't have an account? <a onclick="toggleForms()">Sign up here</a>
+      </div>
+    </div>
+
+    <div id="signupSection" class="hidden">
+      <h2>Join HelpingHands!</h2>
+      <form id="signupForm">
+        <input type="text" id="signupName" placeholder="Full Name" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        
+        <select id="signupRole" required onchange="toggleConditionField()">
+          <option value="" disabled selected>Select Role</option>
+          <option value="student">Student</option>
+          <option value="mentor">Mentor</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <select id="signupCondition" class="hidden">
+          <option value="" id="conditionPlaceholder" disabled selected>Select Specialization/Condition</option>
+          <option value="autism">Autism (or Autism Specialist)</option>
+          <option value="down_syndrome">Down Syndrome (or DS Specialist)</option>
+          <option value="dyslexia">Dyslexia (or Dyslexia Specialist)</option>
+        </select>
+
+        <button type="submit">Create Account</button>
+      </form>
+      <div class="toggle">
+        Already have an account? <a onclick="toggleForms()">Login here</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 1. Toggle between Login and Signup forms dynamically
+    function toggleForms() {
+      const signup = document.getElementById('signupSection');
+      const login = document.getElementById('loginSection');
+      const speech = document.getElementById('characterSpeech'); 
+      
+      // Safety check: If the sections are missing, print an error and stop
+      if (!signup || !login) {
+          console.error("Error: Could not find the login or signup sections in the HTML!");
+          return;
+      }
+
+      if (signup.classList.contains('hidden')) {
+        // Show Signup
+        signup.classList.remove('hidden');
+        login.classList.add('hidden');
+        
+        // Only update the speech bubble if it actually exists on the page
+        if (speech) speech.innerText = "Yay! Let's get you registered! 🚀";
+      } else {
+        // Show Login
+        signup.classList.add('hidden');
+        login.classList.remove('hidden');
+        
+        // Only update the speech bubble if it actually exists
+        if (speech) speech.innerText = "Welcome Back! Please Login 😊";
+      }
+    }
+
+    // 2. Show condition dropdown for BOTH students AND mentors
+    function toggleConditionField() {
+      const role = document.getElementById('signupRole').value;
+      const conditionField = document.getElementById('signupCondition');
+      const placeholder = document.getElementById('conditionPlaceholder');
+
+      // 👇 THIS IS THE MAGIC LINE! It checks for both roles now.
+      if (role === 'student' || role === 'mentor') {
+        conditionField.classList.remove('hidden');
+        conditionField.required = true;
+        
+        // Dynamically change the text based on the role!
+        if (role === 'mentor') {
+            if (placeholder) placeholder.innerText = "Select Mentor Specialization";
+        } else {
+            if (placeholder) placeholder.innerText = "Select Student Condition";
+        }
+      } else {
+        // Hide it if Admin is selected
+        conditionField.classList.add('hidden');
+        conditionField.required = false;
+        conditionField.value = ""; 
+      }
+    }
+
+    // 3. Handle Signup API Call
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const emailValue = document.getElementById('signupEmail').value;
+
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+      if (!gmailRegex.test(emailValue)) {
+        alert("Only @gmail.com addresses are allowed.");
+        return; // Stops the function from proceeding
+      }
+
+      const data = {
+        name: document.getElementById('signupName').value,
+        email: document.getElementById('signupEmail').value,
+        password: document.getElementById('signupPassword').value,
+        role: document.getElementById('signupRole').value,
+        condition: document.getElementById('signupCondition').value
+      };
+
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert('Account created successfully! Please login.');
+          toggleForms(); // Slide back to login view
+          document.getElementById('loginEmail').value = data.email; // Pre-fill email
+        } else {
+          alert(result.error);
+        }
+      } catch (err) {
+        alert("Make sure your backend server is running!");
+      }
+    });
+
+    // 4. Handle Login API Call
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const emailValue = document.getElementById('loginEmail').value;
+
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+      if (!gmailRegex.test(emailValue)) {
+        alert("Only @gmail.com addresses are allowed.");
+        return; // Stops the function from proceeding
+      }
+      
+      const data = {
+        email: emailValue,
+        password: document.getElementById('loginPassword').value
+      };
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          localStorage.setItem('userName', result.name);
+          localStorage.setItem('token', result.token); 
+          window.location.href = result.redirectUrl;
+        } else {
+          alert(result.error);
+        }
+      } catch (err) {
+        alert("Make sure your backend server is running!");
+      }
+    });
+  </script>
+
+</body>
+</html>

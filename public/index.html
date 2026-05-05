@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title>HelpingHands</title>
+  <link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    body {
+      background-color: #57A8DD;
+    }
+
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: #0D5791;
+      color: white;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #7CE04A;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li {
+      display: inline-block;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      /* underline hatana */
+      color: inherit;
+      /* parent ka color use karna */
+      padding: 8px 14px;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      /* hover effect */
+    }
+
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .manage-btn {
+      background-color: white;
+      color: #0D5791;
+    }
+
+    .launch-btn {
+      background-color: #A1E231;
+      color: black;
+    }
+
+
+    /* Hero Section */
+    .hero-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px 20px;
+      background-color: #f5f8fc;
+      min-height: 80vh;
+    }
+
+    .hero-content {
+      max-width: 50%;
+    }
+
+    .hero-content h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #084b84;
+      margin-bottom: 20px;
+      line-height: 1.2
+    }
+
+    .hero-content p {
+      font-size: 1.3rem;
+      color: #5a5a5a;
+      line-height: 1.6;
+    }
+
+    .hero-image {
+      flex: 1 1 45%;
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .hero-image .char {
+      position: absolute;
+      max-width: 100px;
+    }
+
+    .hero-image .alien {
+      top: -30px;
+      left: 20%;
+    }
+
+    .hero-image .mouse {
+      bottom: -20px;
+      left: 5%;
+    }
+
+    .hero-image .genie {
+      top: 0;
+      right: -20px;
+    }
+
+    .hero-image .boy {
+      bottom: -20px;
+      right: 10%;
+    }
+
+    .learn-more-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #084b84;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .learn-more-btn:hover {
+      background-color: #063b6b;
+    }
+
+
+    .hero-text {
+      color: white;
+      text-align: center;
+      padding: 20px 50px;
+      font-size: 16px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 30px;
+    }
+
+    .card {
+      background-color: white;
+      width: 250px;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 120px;
+      height: 100px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      color: #003B75;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+
+    .signup-btn {
+      display: inline-block;
+      background-color: #A1E231;
+      color: black;
+      padding: 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .signup-btn:hover {
+      background-color: #8ec627;
+    }
+
+    .resources-section {
+      background-color: #7b45aa;
+      /* Purple background */
+      padding: 60px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      flex-wrap: wrap;
+    }
+
+    .resources-content {
+      flex: 1 1 50%;
+      max-width: 600px;
+    }
+
+    .resources-content h2 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .resources-content p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .resources-button {
+      margin-top: 25px;
+      display: inline-block;
+      background: #ff8800;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .resources-button:hover {
+      background: #e67300;
+    }
+
+    .resources-images {
+      flex: 1 1 40%;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding-top: 30px;
+    }
+
+    .resources-images img {
+      max-height: 300px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Features Section */
+    .features-section {
+      background: #e6f1ff;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .features-intro {
+      max-width: 800px;
+      margin: 0 auto 40px;
+      font-size: 18px;
+      color: #0056a6;
+    }
+
+    .features-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #003366;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    .learn-btn {
+      display: inline-block;
+      padding: 8px 15px;
+      background: orange;
+      color: white;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      margin-top: 15px;
+      /* ⬅️ adds space above the button */
+    }
+
+    .learn-btn:hover {
+      background: darkorange;
+    }
+
+    .cta-section {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      position: relative;
+    }
+
+    .cta-section h2 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #084b84;
+      max-width: 800px;
+      margin: 0 auto 20px;
+    }
+
+    .cta-button {
+      background-color: #7ED321;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .cta-button:hover {
+      background-color: #5fa318;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: url('wave-shape.svg') no-repeat bottom;
+      background-size: cover;
+    }
+
+    .footer {
+      background-color: #0a4a82;
+      color: white;
+      padding: 40px 20px 20px;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .footer-logo img {
+      height: 80px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .footer-links h4 {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-social a img {
+      height: 24px;
+      margin: 0 8px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+    }
+
+    .footer-social {
+      display: flex;
+      flex-direction: column;
+      /* stack vertically */
+      align-items: center;
+      /* center horizontally */
+      gap: 12px;
+      /* space between icons */
+    }
+
+    .footer-social a {
+      color: white;
+      font-size: 2rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-social a:hover {
+      color: #178bf1;
+    }
+
+    @media screen and (max-width: 768px) {
+
+      .navbar,
+      .nav-links,
+      .nav-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cards {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="chatbot.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-item">Home</a></li>
+      <li><a href="login.html" class="nav-item">Admin</a></li>
+      <li><a href="resources.html" class="nav-item">Resources</a></li>
+      <li><a href="blog.html" class="nav-item">Blog</a></li>
+      <li><a href="contact.html" class="nav-item">Contact Us</a></li>
+      <li><a href="about.html" class="nav-item">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn" onclick="window.location.href='register.html'">
+        Register Yourself
+      </button>
+      <button class="launch-btn" onclick="window.location.href='login.html'">
+        Sign Up / Login
+      </button>
+
+    </div>
+  </nav>
+
+  <body>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Enhancing and Building a lifelong love of learning with HelpingHands.</h1>
+        <p>Engagement and motivation are not just "nice-to-haves"; they are critical cornerstones in any learning
+          environment.</p>
+        <a href="blog.html" class="learn-more-btn">Learn More</a>
+      </div>
+      <div class="hero-image">
+        <img src="img/banner.png" alt="Happy child learning">
+      </div>
+    </section>
+
+
+    <!-- Product Cards -->
+    <section class="cards">
+      <div class="card">
+        <img src="img/img1.jpg" alt="Games & Activities">
+        <h3>Games & Activities</h3>
+        <p>Game-based learning activities categorised by learning objectives and designed to teach a progression of
+          skills.</p>
+        <a href="payment.html" class="signup-btn">Sign up now ➤</a>
+      </div>
+      <div class="card">
+        <img src="img/img2.webp" alt="ChooseIt Maker">
+        <h3>Personal Classroom</h3>
+        <p>Create, edit and play personalised learning activities that can be used in your classroom and with individual
+          students.</p>
+        <a href="payment.html" class="signup-btn">Sign up now ➤</a>
+      </div>
+      <div class="card">
+        <img src="img/img3.jpg" alt="ChooseIt Readymades">
+        <h3>Foundation Building</h3>
+        <p>Multiple choice, play-based curriculum activities that provide a secure foundation for learning that will
+          help kids to learn.</p>
+        <a href="payment.html" class="signup-btn">Sign up now ➤</a>
+      </div>
+      <div class="card">
+        <img src="img/img4.png" alt="Inclusive Stories">
+        <h3>Exciting Stories</h3>
+        <p>Engaging, interactive sensory stories and resources designed for learners with a wide range of educational
+          needs.</p>
+        <a href="payment.html" class="signup-btn">Sign up now ➤</a>
+      </div>
+    </section>
+    <!-- Free Resources Section -->
+    <section class="resources-section">
+      <div class="resources-content">
+        <h2>Free resources, guidebooks, roadmaps, and advice!</h2>
+        <p>
+          Explore our extensive library of free resources and guidebooks, designed to empower educators and families.
+          We offer unique access progression roadmaps, including our eye gaze and switch progression guides – perfect
+          for developing switch and eye gaze skills.
+          HelpKidzLearn also goes beyond skills, we focus on the entire learning journey. Our classroom activities
+          target individual needs, promoting learning and developing choice-making progression.
+        </p>
+        <a href="resources.html" class="learn-btn">Get your free resources ></a>
+      </div>
+      <div class="resources-images">
+        <img src="img/img6.jpg" alt="Guidebook 1">
+      </div>
+    </section>
+
+    <!-- Features Section (Cards) -->
+    <section class="features-section">
+      <div class="features-intro">
+        <p>
+          HelpingHands has been specially designed for the individual needs of every student and offers adaptable tools
+          and flexible pathways to empower all learners.
+        </p>
+      </div>
+
+      <div class="features-cards">
+        <div class="feature-card">
+          <img src="img/img8.jpg" alt="Game-based" class="feature-img">
+          <h3>Game-based Learning</h3>
+          <p>Specially designed learning activities that let students engage with materials in a playful way.That'll
+            help them to understand things in the fun way.</p>
+          <a href="blog.html" class="learn-btn">Learn more ></a>
+        </div>
+
+        <div class="feature-card">
+          <img src="img/img10.jpg" alt="Personalised" class="feature-img">
+          <h3>Personalised Learning</h3>
+          <p>Personalise your student’s experience with profiles that remember preferences and guide the students for
+            the particular need.This website is all about understanding them.</p>
+          <a href="blog.html" class="learn-btn">Learn more ></a>
+        </div>
+      </div>
+    </section>
+    <!-- Feature Section -->
+    <section id="features">
+      <!-- your features content -->
+    </section>
+
+    <!-- Wave Get Started Section -->
+    <section class="cta-section">
+      <h2>Let's unlock the potential of learners and give them deeper understanding and knowledge about skill
+        development.</h2>
+      <a href="login.html" class="cta-button">Get started!</a>
+      <div class="wave"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="img/logo.jpeg" alt="HelpingHands Logo">
+        </div>
+        <div class="footer-links">
+          <div>
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">Games</a></li>
+              <li><a href="#">Activities</a></li>
+              <li><a href="#">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-social">
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 HelpingHands. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <div id="chatbot-placeholder"></div>
+    <script>
+      fetch("chatbot.html")
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("chatbot-placeholder").innerHTML = data;
+        });
+    </script>
+    <script src="chatbot.js"></script>
+
+
+  </body>
+
+</html>

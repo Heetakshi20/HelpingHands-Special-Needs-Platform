@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A3 - Rounding to 100 & 1,000 | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Gold: #f39c12 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f2f1 0%, #c3cfe2 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #f39c12;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #f39c12; font-weight: 600; font-size: 1.4rem; margin: 0; }
+
+        /* HINT BOX */
+        .hint {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fffdf0;
+            border-left: 5px solid #f39c12;
+            border-radius: 4px;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        /* LAB BOX */
+        .lab-box {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        /* PLACE VALUE VISUALIZER */
+        .visualizer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+            border: 1px dashed #ccc;
+        }
+
+        .pv-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .pv-column h4 { font-size: 0.75rem; color: #777; text-transform: uppercase; margin-bottom: 5px; }
+
+        /* Block Assets */
+        .block-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            align-content: flex-start;
+        }
+
+        .block-cube { width: 30px; height: 30px; background: #e67e22; border: 1px solid #d35400; box-shadow: 2px 2px 0 #b33939; } 
+        .block-flat { width: 25px; height: 25px; background: #3498db; border: 1px solid #2980b9; } 
+        .block-rod { width: 6px; height: 25px; background: #2ecc71; border: 1px solid #27ae60; } 
+        .block-unit { width: 8px; height: 8px; background: #f1c40f; border: 1px solid #f39c12; } 
+
+        /* INPUT AREA */
+        .input-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .row-label { font-weight: 600; color: #2c3e50; text-align: left; flex: 1; }
+
+        .answer-input {
+            width: 140px;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            outline: none;
+        }
+
+        .answer-input:focus { border-color: #f39c12; }
+
+        /* ACTIONS */
+        .btn-group {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .check-btn { background: #f39c12; color: white; }
+        .next-btn { background: #0D5791; color: white; display: none; }
+        
+        #message {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+            padding: 0 20px;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-section { display: flex; flex-direction: column; justify-content: flex-start; }
+        .footer-logo-section { min-width: 120px; align-items: center; }
+        .footer-logo { display: flex; justify-content: center; align-items: center; height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links-section { flex: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; text-transform: capitalize; }
+        .footer-links ul { padding: 0; margin: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; display: inline-block; }
+        .footer-links a:hover { color: #f39c12; transform: translateX(5px); }
+        .footer-social-section { min-width: 80px; align-items: center; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #f39c12; background: rgba(243, 156, 18, 0.15); border-color:#f39c12; transform: translateY(-5px) scale(1.1); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { grid-template-columns: 1fr; gap: 20px; }
+            .nav-links { display: none; }
+            .visualizer-grid { grid-template-columns: 1fr 1fr; }
+            .input-row { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-arrows-to-circle"></i></div>
+                <h2>A3 - Rounding Lab (100 & 1,000)</h2>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-lightbulb" style="color: #f39c12; margin-right: 8px;"></i>
+                <strong>Rounding Rule:</strong> Look at the digit to the right of the place you are rounding to. 
+                If it's <strong>5 or more</strong>, round up. If it's <strong>4 or less</strong>, let it rest (stay the same).
+            </div>
+
+            <div class="lab-box">
+                <div class="visualizer-grid">
+                    <div class="pv-column">
+                        <h4>Thousands</h4>
+                        <div id="thousands" class="block-container"></div>
+                    </div>
+                    <div class="pv-column">
+                        <h4>Hundreds</h4>
+                        <div id="hundreds" class="block-container"></div>
+                    </div>
+                    <div class="pv-column">
+                        <h4>Tens</h4>
+                        <div id="tens" class="block-container"></div>
+                    </div>
+                    <div class="pv-column">
+                        <h4>Ones</h4>
+                        <div id="ones" class="block-container"></div>
+                    </div>
+                </div>
+
+                <div class="input-sections">
+                    <div class="input-row">
+                        <span class="row-label">1. What is the number?</span>
+                        <input type="number" id="baseNum" class="answer-input" placeholder="Value">
+                    </div>
+                    <div class="input-row">
+                        <span class="row-label">2. Round to nearest 100:</span>
+                        <input type="number" id="round100" class="answer-input" placeholder="???">
+                    </div>
+                    <div class="input-row">
+                        <span class="row-label">3. Round to nearest 1,000:</span>
+                        <input type="number" id="round1000" class="answer-input" placeholder="???">
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn check-btn" id="checkBtn" onclick="checkAnswer()">Check Answers</button>
+                <button class="action-btn next-btn" onclick="initLab()" id="nextBtn">New Challenge <i class="fas fa-arrow-right"></i></button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Math Experts</div>
+    </footer>
+
+    <script>
+        let currentNumber = 0;
+        let hasAnswered = false;
+
+        function initLab() {
+            hasAnswered = false;
+            document.getElementById('message').innerHTML = "";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('checkBtn').style.display = "block";
+            
+            const inputs = ['baseNum', 'round100', 'round1000'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                el.value = "";
+                el.disabled = false;
+                el.style.borderColor = "#ddd";
+                el.style.backgroundColor = "white";
+            });
+            
+            generateNumber();
+        }
+
+        function generateNumber() {
+            // Generate a random number between 1000 and 9999
+            const th = Math.floor(Math.random() * 9) + 1;
+            const h = Math.floor(Math.random() * 10);
+            const t = Math.floor(Math.random() * 10);
+            const o = Math.floor(Math.random() * 10);
+            
+            currentNumber = (th * 1000) + (h * 100) + (t * 10) + o;
+
+            renderBlocks('thousands', th, 'block-cube');
+            renderBlocks('hundreds', h, 'block-flat');
+            renderBlocks('tens', t, 'block-rod');
+            renderBlocks('ones', o, 'block-unit');
+        }
+
+        function renderBlocks(id, count, className) {
+            const container = document.getElementById(id);
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = className;
+                container.appendChild(div);
+            }
+        }
+
+        function checkAnswer() {
+            const userBase = parseInt(document.getElementById('baseNum').value);
+            const user100 = parseInt(document.getElementById('round100').value);
+            const user1000 = parseInt(document.getElementById('round1000').value);
+
+            if (isNaN(userBase) || isNaN(user100) || isNaN(user1000)) {
+                showMessage("Please fill in all three boxes!", "#f39c12", null);
+                return;
+            }
+
+            hasAnswered = true;
+            const correct100 = Math.round(currentNumber / 100) * 100;
+            const correct1000 = Math.round(currentNumber / 1000) * 1000;
+
+            let score = 0;
+            
+            // Validate Base Number
+            if (userBase === currentNumber) {
+                styleInput('baseNum', true);
+                score++;
+            } else {
+                styleInput('baseNum', false);
+            }
+
+            // Validate Rounding 100
+            if (user100 === correct100) {
+                styleInput('round100', true);
+                score++;
+            } else {
+                styleInput('round100', false);
+            }
+
+            // Validate Rounding 1000
+            if (user1000 === correct1000) {
+                styleInput('round1000', true);
+                score++;
+            } else {
+                styleInput('round1000', false);
+            }
+
+            if (score === 3) {
+                showMessage("Excellent! All answers are correct.", "#27ae60", true);
+            } else {
+                showMessage(`The correct values were: Number: ${currentNumber}, Nearest 100: ${correct100}, Nearest 1000: ${correct1000}`, "#e74c3c", false);
+            }
+
+            document.getElementById('checkBtn').style.display = "none";
+            document.getElementById('nextBtn').style.display = "block";
+            
+            ['baseNum', 'round100', 'round1000'].forEach(id => document.getElementById(id).disabled = true);
+        }
+
+        function styleInput(id, isCorrect) {
+            const el = document.getElementById(id);
+            el.style.borderColor = isCorrect ? "#27ae60" : "#e74c3c";
+            el.style.backgroundColor = isCorrect ? "#f0fff4" : "#fff5f5";
+        }
+
+        function showMessage(text, color, isSuccess) {
+            const msg = document.getElementById('message');
+            msg.style.color = color;
+            let icon = 'fa-info-circle';
+            if (isSuccess === true) icon = 'fa-check-circle';
+            if (isSuccess === false) icon = 'fa-times-circle';
+            msg.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
+        }
+
+        window.onload = initLab;
+    </script>
+</body>
+</html>

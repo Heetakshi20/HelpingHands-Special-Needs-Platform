@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E3- Data Interpretation | HelpingHands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap');
+
+        /* THEME COLORS: Blue: #0D5791, Green: #A1E231, Orange: #e67e22 (Trend/Line) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0f2f1 0%, #ebedee 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0D5791;
+            color: white;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 26px; font-weight: bold; white-space: nowrap; }
+        .logo span { color: #A1E231; }
+
+        .nav-links { list-style: none; display: flex; gap: 20px; flex: 1; justify-content: center; }
+        .nav-links a { text-decoration: none; color: white; font-weight: bold; padding: 8px 14px; border-radius: 5px; transition: 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+
+        .nav-buttons { display: flex; gap: 10px; align-items: center; }
+        .nav-buttons button { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .manage-btn { background: white; color: #0D5791; }
+        .launch-btn { background: #A1E231; color: black; }
+
+        /* MAIN WRAPPER */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: #e67e22;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 { color: #e67e22; font-weight: 600; font-size: 1.4rem; margin: 0; }
+
+        /* HINT BOX */
+        .hint {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fff9f3;
+            border-left: 5px solid #e67e22;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        /* LAB BOX */
+        .lab-box {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .scenario-box {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed #e67e22;
+        }
+
+        .canvas-area {
+            width: 100%;
+            height: 360px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        #graphSvg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .data-line {
+            stroke: #e67e22;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.5s ease;
+        }
+
+        .data-point {
+            fill: white;
+            stroke: #e67e22;
+            stroke-width: 3;
+            cursor: pointer;
+            transition: r 0.2s, fill 0.2s;
+        }
+        .data-point:hover {
+            r: 8;
+            fill: #e67e22;
+        }
+
+        .axis-label {
+            font-size: 12px;
+            fill: #666;
+            font-weight: 600;
+        }
+
+        .grid-line {
+            stroke: #f0f0f0;
+            stroke-width: 1;
+        }
+
+        /* INPUT GROUP */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .answer-input {
+            width: 180px;
+            padding: 12px;
+            font-size: 1.3rem;
+            text-align: center;
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            font-family: 'Roboto Mono', monospace;
+            outline: none;
+        }
+
+        /* ACTIONS */
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .check-btn { background: #e67e22; color: white; }
+        .next-btn { background: #0D5791; color: white; display: none; }
+        
+        #message {
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+        }
+
+        /* FOOTER */
+        .footer { background: #0a4a82; color: white; padding: 40px 20px 15px; margin-top: auto; width: 100%; }
+        .footer-content { display: grid; grid-template-columns: auto 1fr auto; max-width: 1100px; margin: 0 auto; gap: 50px; align-items: flex-start; }
+        .footer-section { display: flex; flex-direction: column; justify-content: flex-start; }
+        .footer-logo-section { min-width: 120px; align-items: center; }
+        .footer-logo { display: flex; justify-content: center; align-items: center; height: 100px; width: 120px; }
+        .footer-logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .footer-links-section { flex: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+        .footer-links h4 { margin-bottom: 15px; font-weight: 600; font-size: 1rem; color: white; text-transform: capitalize; }
+        .footer-links ul { padding: 0; margin: 0; list-style: none; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: .3s; display: inline-block; }
+        .footer-links a:hover { color: #e67e22; transform: translateX(5px); }
+        .footer-social-section { min-width: 80px; align-items: center; }
+        .footer-social { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .footer-social a { color: white; font-size: 1.8rem; transition: .3s; display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background: rgba(255,255,255,0.12); border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); text-decoration: none; }
+        .footer-social a:hover { color: #e67e22; background: rgba(230,126,34,0.15); border-color:#e67e22; transform: translateY(-5px) scale(1.1); }
+        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { grid-template-columns: 1fr; gap: 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helping<span>Hands</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="manage-btn">Manage Account</button>
+            <button class="launch-btn">Login</button>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-icon"><i class="fas fa-search-plus"></i></div>
+                <h2>E3- Data Interpretation Lab</h2>
+            </div>
+
+            <div class="hint">
+                <i class="fas fa-lightbulb" style="color: #e67e22; margin-right: 8px;"></i>
+                <strong>Interpretation Task:</strong> Beyond just reading values, can you calculate the <strong>difference</strong> or find the <strong>combined total</strong>? 
+            </div>
+
+            <div class="lab-box">
+                <div id="scenario" class="scenario-box">Loading Case Study...</div>
+                
+                <div class="canvas-area">
+                    <svg id="graphSvg" viewBox="0 0 600 360">
+                        <g id="gridLines"></g>
+                        <path id="trendLine" class="data-line" d="" />
+                        <g id="pointsGroup"></g>
+                        <g id="labelsGroup"></g>
+                        <line x1="60" y1="300" x2="560" y2="300" stroke="#333" stroke-width="2" />
+                        <line x1="60" y1="50" x2="60" y2="300" stroke="#333" stroke-width="2" />
+                    </svg>
+                </div>
+
+                <div class="input-group">
+                    <div id="question" class="question-text">Calculating Challenge...</div>
+                    <input type="number" id="answerInput" class="answer-input" placeholder="Result">
+                    <button class="action-btn check-btn" id="checkBtn" onclick="checkAnswer()">Verify Interpretation</button>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="action-btn next-btn" onclick="initLab()" id="nextBtn">Next Case Study <i class="fas fa-arrow-right"></i></button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="HelpingHands Logo" onerror="this.src='https://via.placeholder.com/120x100?text=Logo'"/>
+                </div>
+            </div>
+            <div class="footer-section footer-links-section">
+                <div class="footer-links">
+                    <div><h4>Products</h4><ul><li><a href="#">Games</a></li><li><a href="#">Activities</a></li></ul></div>
+                    <div><h4>Resources</h4><ul><li><a href="#">Support</a></li><li><a href="#">Help Center</a></li></ul></div>
+                    <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+                </div>
+            </div>
+            <div class="footer-section footer-social-section">
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 HelpingHands Academy | Data Visual Specialists</div>
+    </footer>
+
+    <script>
+        const scenarios = [
+            { title: "Weekly Energy Use", categories: ["Mon", "Tue", "Wed", "Thu", "Fri"], unit: "kWh" },
+            { title: "Visitor Statistics", categories: ["10am", "12pm", "2pm", "4pm", "6pm"], unit: "people" },
+            { title: "Monthly Production", categories: ["Jan", "Feb", "Mar", "Apr", "May"], unit: "units" },
+            { title: "Water Consumption", categories: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5"], unit: "liters" }
+        ];
+
+        let currentData = [];
+        let correctAnswer = 0;
+        let hasAnswered = false;
+
+        function initLab() {
+            hasAnswered = false;
+            document.getElementById('message').innerText = "";
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('checkBtn').style.display = "block";
+            document.getElementById('answerInput').value = "";
+            document.getElementById('answerInput').disabled = false;
+            document.getElementById('answerInput').style.borderColor = "#ddd";
+            
+            generateData();
+        }
+
+        function generateData() {
+            const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+            document.getElementById('scenario').innerText = `Interpretation: ${scenario.title}`;
+            
+            currentData = scenario.categories.map((cat, i) => ({
+                label: cat,
+                value: Math.floor(Math.random() * 15) + 5 // Values between 5 and 20
+            }));
+
+            // Question Logic: Difference, Sum, or Extreme values
+            const qType = Math.floor(Math.random() * 3);
+            let qText = "";
+
+            if (qType === 0) { // Calculate Difference
+                const idx1 = 0;
+                const idx2 = 4;
+                const diff = Math.abs(currentData[idx1].value - currentData[idx2].value);
+                qText = `What is the <strong>difference</strong> in value between <strong>${currentData[idx1].label}</strong> and <strong>${currentData[idx2].label}</strong>?`;
+                correctAnswer = diff;
+            } else if (qType === 1) { // Calculate Total
+                const idx1 = 1;
+                const idx2 = 2;
+                const sum = currentData[idx1].value + currentData[idx2].value;
+                qText = `What is the <strong>combined total</strong> for <strong>${currentData[idx1].label}</strong> and <strong>${currentData[idx2].label}</strong>?`;
+                correctAnswer = sum;
+            } else { // Identify Extreme
+                const sorted = [...currentData].sort((a,b) => b.value - a.value);
+                const maxVal = sorted[0].value;
+                const minVal = sorted[sorted.length-1].value;
+                const range = maxVal - minVal;
+                qText = `Look at the whole graph. What is the <strong>range</strong> (Highest - Lowest)?`;
+                correctAnswer = range;
+            }
+            
+            document.getElementById('question').innerHTML = qText;
+            renderGraph();
+        }
+
+        function renderGraph() {
+            const gridGroup = document.getElementById('gridLines');
+            const pointsGroup = document.getElementById('pointsGroup');
+            const labelsGroup = document.getElementById('labelsGroup');
+            const pathElement = document.getElementById('trendLine');
+            
+            gridGroup.innerHTML = '';
+            pointsGroup.innerHTML = '';
+            labelsGroup.innerHTML = '';
+
+            const chartHeight = 250;
+            const baseY = 300;
+            const maxValue = 25;
+            const startX = 100;
+            const spacing = 100;
+
+            for (let i = 0; i <= maxValue; i += 5) {
+                const yPos = baseY - (i * (chartHeight / maxValue));
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute('x1', 60); line.setAttribute('y1', yPos);
+                line.setAttribute('x2', 560); line.setAttribute('y2', yPos);
+                line.setAttribute('class', 'grid-line');
+                gridGroup.appendChild(line);
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute('x', 45); text.setAttribute('y', yPos + 5);
+                text.setAttribute('text-anchor', 'end');
+                text.setAttribute('class', 'axis-label');
+                text.textContent = i;
+                gridGroup.appendChild(text);
+            }
+
+            let d = "";
+            currentData.forEach((item, index) => {
+                const x = startX + (index * spacing);
+                const y = baseY - (item.value * (chartHeight / maxValue));
+
+                if (index === 0) d += `M ${x} ${y}`;
+                else d += ` L ${x} ${y}`;
+
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', 6);
+                circle.setAttribute('class', 'data-point');
+                pointsGroup.appendChild(circle);
+
+                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                label.setAttribute('x', x);
+                label.setAttribute('y', baseY + 25);
+                label.setAttribute('text-anchor', 'middle');
+                label.setAttribute('class', 'axis-label');
+                label.textContent = item.label;
+                labelsGroup.appendChild(label);
+            });
+
+            pathElement.setAttribute('d', d);
+        }
+
+        function checkAnswer() {
+            if (hasAnswered) return;
+
+            const input = document.getElementById('answerInput');
+            const userVal = parseInt(input.value);
+
+            if (isNaN(userVal)) {
+                showMessage("Please enter a numeric result!", "#e67e22");
+                return;
+            }
+
+            hasAnswered = true;
+            input.disabled = true;
+
+            if (userVal === correctAnswer) {
+                input.style.borderColor = "#27ae60";
+                showMessage(`Perfect! You interpreted the data correctly.`, "#27ae60", true);
+            } else {
+                input.style.borderColor = "#e74c3c";
+                showMessage(`Calculation error. The correct interpretation was ${correctAnswer}.`, "#e74c3c", false);
+            }
+
+            document.getElementById('checkBtn').style.display = "none";
+            document.getElementById('nextBtn').style.display = "block";
+        }
+
+        function showMessage(text, color, isSuccess) {
+            const msg = document.getElementById('message');
+            msg.style.color = color;
+            const icon = isSuccess === true ? 'fa-check-circle' : (isSuccess === false ? 'fa-times-circle' : 'fa-info-circle');
+            msg.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
+        }
+
+        document.getElementById('answerInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkAnswer();
+        });
+
+        window.onload = initLab;
+    </script>
+</body>
+</html>

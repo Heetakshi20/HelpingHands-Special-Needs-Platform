@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+<title>Helping Hands | Resources</title>
+<link rel="shortcut icon" href="img/logo1.png" type="image/x-icon">
+<style>
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Times New Roman', Times, serif;
+    }
+    
+    body {
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        background-color: #e6f1ff; /* Dark Blue background */
+        color: #0D5791;
+    }
+        .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: #0D5791;
+      color: white;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #7CE04A;
+    }
+
+   .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline-block;
+  font-size: 17px;
+}
+
+.nav-links a {
+  text-decoration: none;     /* underline hatana */
+  color: inherit;            /* parent ka color use karna */
+  padding: 8px 14px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* hover effect */
+}
+
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .manage-btn {
+      background-color: white;
+      color: #0D5791;
+    }
+
+    .launch-btn {
+      background-color: #A1E231;
+      color: black;
+    }
+
+
+        /* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 20px;
+  background-color: #e6f1ff;
+   min-height: 80vh;
+}
+
+.hero-content {
+ max-width: 50%;
+}
+
+.hero-content h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #084b84;
+  margin-bottom: 20px;
+   line-height: 1.2
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  color: #5a5a5a;
+  line-height: 1.6;
+}
+
+.hero-image {
+  flex: 1 1 45%;
+  position: relative;
+  text-align: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-image .char {
+  position: absolute;
+  max-width: 100px;
+}
+
+.hero-image .alien { top: -30px; left: 20%; }
+.hero-image .mouse { bottom: -20px; left: 5%; }
+.hero-image .genie { top: 0; right: -20px; }
+.hero-image .boy { bottom: -20px; right: 10%; }
+
+
+
+    .hero-text {
+      color: white;
+      text-align: center;
+      padding: 20px 50px;
+      font-size: 16px;
+    }
+    .resources-section {
+  background-color: white; /* Purple background */
+  padding: 60px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #084b84;
+  flex-wrap: wrap;
+}
+
+.resources-content {
+  flex: 1 1 50%;
+  max-width: 600px;
+}
+
+.resources-content h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.resources-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333
+}
+
+
+.resources-images {
+  flex: 1 1 40%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 30px;
+}
+
+.resources-images img {
+  max-height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.pdf-downloads {
+  background-color: #e6f1ff;
+  padding: 60px 0;
+}
+
+.pdf-downloads h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #002b5c;
+}
+
+.pdf-downloads p {
+  text-align: center;
+  color: #555;
+  max-width: 700px;
+  margin: 10px auto 40px;
+}
+
+.pdf-cards {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card img {
+  max-height: 160px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: #002b5c;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.download-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #7dc242;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+  background: #68a736;
+}
+ .footer {
+  background-color: #0a4a82;
+  color: white;
+  padding: 40px 20px 20px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-logo img {
+  height: 80px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-links h4 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-social a img {
+  height: 24px;
+  margin: 0 8px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+}
+.footer-social {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;   /* center horizontally */
+  gap: 12px;              /* space between icons */
+}
+
+.footer-social a {
+  color: white;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #178bf1;
+}
+
+
+    @media (max-width: 900px) {
+        .container {
+            flex-direction: column;
+            text-align: center;
+        }
+        .book-section {
+            margin-top: 20px;
+        }
+    }
+</style>
+</head>
+<link rel="stylesheet" href="chatbot.css">
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Helping<span>Hands</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-item">Home</a></li>
+     <li><a href="#" class="nav-item">Resources</a></li>
+         <li><a href="blog.html" class="nav-item">Blog</a></li>
+       <li><a href="contact.html" class="nav-item">Contact Us</a></li>
+    <li><a href="about.html" class="nav-item">About Us</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="manage-btn" onclick="window.location.href='register.html'">
+        Register Yourself
+      </button>
+      <button class="launch-btn" onclick="window.location.href='signup.html'">
+        Sign Up / Login
+      </button>
+
+    </div>
+  </nav>
+  <body>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Free Guidebooks and Educational Resources.</h1>
+      <p>Guidebook, resources, eBooks, content and more to assist educators and help students grow using HelpingHands online software.</p>
+    </div>
+    <div class="hero-image">
+      <img src="img/img11.png" alt="Happy child learning">
+    </div>
+  </section>
+    <!-- Back to school Section -->
+<section class="resources-section">
+  <div class="resources-content">
+    <h2>Back to School Packs</h2>
+    <p>
+      Start the year strong with three free downloadable packs designed for learners with SEND. Each pack includes interactive activities, printable visuals, communication supports, routine builders, and reward tools like sticker charts and certificates. Perfect for easing transitions, building confidence, and celebrating progress in the first weeks of school.
+    </p>
+  </div>
+  <div class="resources-images">
+    <img src="img/img12.png" alt="Guidebook 1">
+  </div>
+</section>
+<section class="pdf-downloads">
+  <div class="container">
+    <h2>PDF Downloads.</h2>
+    <p>Free guidebooks and resources from Helping Hands and Inclusive Technology, in one place.</p>
+
+    <div class="pdf-cards">
+      <div class="card">
+        <img src="img/book 1.png" alt="Eye Gaze Guide">
+        <h3>The Complete Guide to Eye Gaze in the Classroom.</h3>
+        <p>This guidebook aims to provide you with everything you need to know about eye gaze technology, including set-up, positioning and calibration, a range of activities, information about the latest eye gaze products and more.</p>
+        <a href="https://www.zyteq.com.au/uploads/PDF/Access/EyeGaze_inthe_Classroom_byINCLUSIVETechnologies.pdf" class="download-btn" download>Download now ›</a>
+      </div>
+
+      <div class="card">
+        <img src="img/book 2.png" alt="Tobii Guide">
+        <h3>How to Use Tobii with Helping Hands.</h3>
+        <p>Download our free document that outlines how to use Tobii eye tracking devices with Helping Hands online software using the Windows control and mouse emulation features of your eye gaze system.</p>
+       <a href="https://download.mytobiidynavox.com/MyTobiiDynavox/Lesson%20Plan%20-%20Help.pdf" class="download-btn" download>Download now ›</a>
+
+      </div>
+
+      <div class="card">
+        <img src="img/book 3.png" alt="Apple Volume Purchase Program">
+        <h3>Apple Volume Purchase Program Flyer.</h3>
+        <p>Download this free guide that provides information that allows educational institutions to purchase iOS Apps in volume and distribute them to pupils, teachers, administrators and employees.</p>
+        <a href="https://www.apple.com/ca/education/docs/vpp_education_guide_en_Oct2013.pdf" class="download-btn" download>Download now ›</a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</div>
+  <!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="img/logo.jpeg" alt="HelpingHands Logo">
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Games</a></li>
+          <li><a href="#">Activities</a></li>
+          <li><a href="#">Resources</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-social">
+      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 HelpingHands. All rights reserved.</p>
+  </div>
+</footer>
+<div id="chatbot-placeholder"></div>
+<script>
+fetch("chatbot.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("chatbot-placeholder").innerHTML = data;
+  });
+</script>
+
+<script src="chatbot.js"></script>
+
+
+</body>
+</html>
