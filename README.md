@@ -1,4 +1,4 @@
-# 🤝 HelpingHands | Inclusive AI Mentoring Platform
+# 🤝 HelpingHands | Personalized Virtual Reality Learning for Special Students
 
 **HelpingHands** is a full-stack educational web application built to provide tailored, accessible support for neurodiverse students—specifically those with Autism, Down Syndrome, and Dyslexia. The platform seamlessly connects students with specialized mentors through adaptive interfaces and features an integrated AI-driven video call system for real-time emotional and educational support.
 
@@ -18,7 +18,7 @@
 
 *   **Frontend:** HTML5, CSS3, JavaScript (Vanilla UI architecture)
 *   **Backend:** Node.js, Express.js
-*   **Database:** MongoDB (MERN architecture principles)
+*   **Database:** MongoDB
 *   **Security & Auth:** JSON Web Tokens (JWT) & Bcrypt.js
 *   **Real-Time Integrations:** Web Speech API (Browser-native) & Jitsi Meet WebRTC (Video Streaming)
 
@@ -39,10 +39,3 @@ Follow these instructions to get a copy of the project up and running on your lo
 ### Prerequisites
 *   [Node.js](https://nodejs.org/) installed on your machine.
 *   A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) account (or a local MongoDB instance).
-
-### Installation Steps
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/Heetakshi20/HelpingHands-Special-Needs-Platform.git](https://github.com/Heetakshi20/HelpingHands-Special-Needs-Platform.git)
-    cd HelpingHands-Special-Needs-Platform
