@@ -39,3 +39,16 @@ Follow these instructions to get a copy of the project up and running on your lo
 ### Prerequisites
 *   [Node.js](https://nodejs.org/) installed on your machine.
 *   A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) account (or a local MongoDB instance).
+
+---
+
+## 👩‍💻 Author
+
+**Heetakshi Shirgaonkar**
+
+Aspiring Data Analyst passionate about transforming raw data into meaningful insights using SQL, Excel, Power BI, and Python.
+
+- GitHub: https://github.com/Heetakshi20
+- LinkedIn: https://www.linkedin.com/in/heetakshi-shirgaonkar/
+
+---
